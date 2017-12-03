@@ -9,7 +9,7 @@ import { reactotronRedux } from 'reactotron-redux';
 import sagaPlugin from 'reactotron-redux-saga';
 
 if (__DEV__) {
-  Reactotron.configure({ name: 'rnmobile' })
+  Reactotron.configure({ name: 'bitcoinwallet' })
     .use(reactotronRedux())
     .use(sagaPlugin())
     .use(trackGlobalErrors())

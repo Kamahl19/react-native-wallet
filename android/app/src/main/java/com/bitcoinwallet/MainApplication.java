@@ -1,4 +1,4 @@
-package com.rnmobile;
+package com.bitcoinwallet;
 
 import android.app.Application;
 
