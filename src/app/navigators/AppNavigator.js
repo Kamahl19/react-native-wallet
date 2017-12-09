@@ -3,31 +3,19 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { DrawerNavigator } from 'react-navigation';
 
+import CustomDrawer from './drawer/CustomDrawer';
 import { selectIsLoggedIn } from '../../features/auth/ducks';
 import AuthNavigator from '../../features/auth/AuthNavigator';
-import { ScreenWrapper, CenterView, Text } from '../../common/components';
-import CustomDrawer from './drawer/CustomDrawer';
-
-const DemoHomeScreen = () => (
-  <ScreenWrapper>
-    <CenterView>
-      <Text>Slide right to open the Sider</Text>
-    </CenterView>
-  </ScreenWrapper>
-);
-
-DemoHomeScreen.navigationOptions = {
-  drawerLabel: 'Home',
-};
+import { CreateWalletContainer } from '../../features/wallet/containers';
 
 const UserNavigator = DrawerNavigator(
   {
-    Home: {
-      screen: DemoHomeScreen,
+    CreateWallet: {
+      screen: CreateWalletContainer,
     },
   },
   {
-    initialRouteName: 'Home',
+    initialRouteName: 'CreateWallet',
     contentComponent: CustomDrawer,
   }
 );

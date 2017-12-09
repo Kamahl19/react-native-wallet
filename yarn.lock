@@ -4289,11 +4289,15 @@ react-native-keyboard-manager@^4.0.13-4:
   version "4.0.13-4"
   resolved "https://registry.yarnpkg.com/react-native-keyboard-manager/-/react-native-keyboard-manager-4.0.13-4.tgz#00ec1ab0b1960737a85be614c3fe175c0581cdd8"
 
-react-native-material-textfield@^0.10.3:
-  version "0.10.3"
-  resolved "https://registry.yarnpkg.com/react-native-material-textfield/-/react-native-material-textfield-0.10.3.tgz#57c56b8b999346b731427a8d0bbfdf2a845ba085"
+react-native-material-textfield@^0.10.4:
+  version "0.10.4"
+  resolved "https://registry.yarnpkg.com/react-native-material-textfield/-/react-native-material-textfield-0.10.4.tgz#0e3b566bc5bc7976a809a363f5b1fe69b7ab371b"
   dependencies:
     prop-types "^15.5.9"
+
+react-native-simple-radio-button@^2.7.0:
+  version "2.7.0"
+  resolved "https://registry.yarnpkg.com/react-native-simple-radio-button/-/react-native-simple-radio-button-2.7.0.tgz#0ad7e9beda7650519ca7ae479ee94cf7facd7d4e"
 
 react-native-tab-view@^0.0.70:
   version "0.0.70"
