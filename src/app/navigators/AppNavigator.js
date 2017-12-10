@@ -6,16 +6,19 @@ import { DrawerNavigator } from 'react-navigation';
 import CustomDrawer from './drawer/CustomDrawer';
 import { selectIsLoggedIn } from '../../features/auth/ducks';
 import AuthNavigator from '../../features/auth/AuthNavigator';
-import { CreateWalletContainer } from '../../features/wallet/containers';
+import { CreateWalletContainer, LoadWalletContainer } from '../../features/wallet/containers';
 
 const UserNavigator = DrawerNavigator(
   {
     CreateWallet: {
       screen: CreateWalletContainer,
     },
+    LoadWallet: {
+      screen: LoadWalletContainer,
+    },
   },
   {
-    initialRouteName: 'CreateWallet',
+    initialRouteName: 'LoadWallet',
     contentComponent: CustomDrawer,
   }
 );

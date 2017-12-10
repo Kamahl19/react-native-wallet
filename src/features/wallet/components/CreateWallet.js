@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import RadioForm from 'react-native-simple-radio-button';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
@@ -12,7 +11,8 @@ import {
   FormItem,
   TextInput,
 } from '../../../common/components';
-import { coinOptions, networkOptions } from '../walletUtils.js';
+import CoinSelect from './CoinSelect';
+import NetworkSelect from './NetworkSelect';
 
 @createForm()
 export default class CreateWallet extends Component {
@@ -50,18 +50,8 @@ export default class CreateWallet extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Text>Create Wallet</Text>
-          <RadioForm
-            radio_props={coinOptions}
-            initial={0}
-            onPress={coin => this.setState({ coin })}
-            formHorizontal
-          />
-          <RadioForm
-            radio_props={networkOptions}
-            initial={0}
-            onPress={network => this.setState({ network })}
-            formHorizontal
-          />
+          <CoinSelect onChange={coin => this.setState({ coin })} />
+          <NetworkSelect onChange={network => this.setState({ network })} />
           <FormItem>
             {getFieldDecorator('walletName', { rules: [rules.required] })(
               <TextInput label="Wallet Name" />
