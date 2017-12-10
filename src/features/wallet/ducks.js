@@ -24,17 +24,17 @@ export const createWalletActions = createApiActionCreators(CREATE_WALLET);
  * REDUCERS
  */
 const initialState = {
-  wallets: [],
+  encryptedWallets: [],
 };
 
-const wallets = createReducer(initialState.wallets, {
+const encryptedWallets = createReducer(initialState.encryptedWallets, {
   [CREATE_WALLET]: {
-    [SUCCESS]: (state, payload) => payload,
+    [SUCCESS]: (state, payload) => [...state, payload.walletEncrypted],
   },
 });
 
 export default combineReducers({
-  wallets,
+  encryptedWallets,
 });
 
 /**
@@ -42,17 +42,13 @@ export default combineReducers({
  */
 export const selectWallet = state => state.wallet;
 
-export const selectWallets = state => selectWallet(state).wallets;
+export const selectEncryptedWallets = state => selectWallet(state).encryptedWallets;
 
 /**
  * SAGAS
  */
 function* createWallet({ payload }) {
   const resp = yield call(api.createWallet, payload);
-
-  // TODO
-  console.log(resp);
-  return;
 
   if (resp.ok) {
     yield put(createWalletActions.success(resp.data));
