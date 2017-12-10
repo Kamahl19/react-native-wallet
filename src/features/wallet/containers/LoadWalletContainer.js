@@ -38,8 +38,8 @@ export default class LoadWalletContainer extends Component {
       null,
       password => {
         try {
-          const decrypted = CryptoJS.Rabbit.decrypt(wallet.encryptedWallet, password).toString(
-            CryptoJS.enc.Utf8
+          const decrypted = JSON.parse(
+            CryptoJS.Rabbit.decrypt(wallet.encryptedWallet, password).toString(CryptoJS.enc.Utf8)
           );
 
           this.props.actions.loadWallet(decrypted);
