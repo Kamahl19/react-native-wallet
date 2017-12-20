@@ -30,10 +30,10 @@ export default class CreateWallet extends Component {
     const { form, onSubmit } = this.props;
     const { coin, network } = this.state;
 
-    form.validateFields((err, { walletName, password }) => {
+    form.validateFields((err, { name, password }) => {
       if (!err) {
         onSubmit({
-          walletName,
+          name,
           password,
           coin,
           network,
@@ -53,8 +53,8 @@ export default class CreateWallet extends Component {
           <CoinSelect onChange={coin => this.setState({ coin })} />
           <NetworkSelect onChange={network => this.setState({ network })} />
           <FormItem>
-            {getFieldDecorator('walletName', { rules: [rules.required] })(
-              <TextInput label="Wallet Name" />
+            {getFieldDecorator('name', { rules: [rules.required] })(
+              <TextInput label="Wallet Name" autoFocus autoCorrect={false} />
             )}
           </FormItem>
 

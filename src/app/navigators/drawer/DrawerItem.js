@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Platform } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { Text, TouchableItem, View } from '../../../common/components';
 
@@ -24,7 +24,11 @@ export default DrawerItem;
 
 const ItemContent = ({ label }) => (
   <View style={styles.item}>
-    {typeof label === 'string' ? <Text style={styles.label}>{label}</Text> : label}
+    {typeof label === 'string' ? (
+      <Text style={styles.label}>{label}</Text>
+    ) : (
+      <View style={styles.labelView}>{label}</View>
+    )}
   </View>
 );
 
@@ -34,7 +38,6 @@ ItemContent.propTypes = {
 
 const styles = StyleSheet.create({
   component: {
-    marginTop: Platform.OS === 'ios' ? 20 : 0,
     paddingVertical: 4,
   },
   item: {
@@ -45,5 +48,8 @@ const styles = StyleSheet.create({
   label: {
     margin: 16,
     fontWeight: 'bold',
+  },
+  labelView: {
+    margin: 16,
   },
 });

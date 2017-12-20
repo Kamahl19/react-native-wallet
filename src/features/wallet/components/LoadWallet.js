@@ -8,7 +8,7 @@ import NetworkSelect from './NetworkSelect';
 export default class LoadWallet extends Component {
   static propTypes = {
     loadWallet: PropTypes.func.isRequired,
-    encryptedWallets: PropTypes.array.isRequired,
+    wallets: PropTypes.array.isRequired,
   };
 
   state = {
@@ -16,15 +16,10 @@ export default class LoadWallet extends Component {
     network: 'testnet',
   };
 
-  filterWallets = () =>
-    this.props.encryptedWallets.filter(
-      ({ network, coin }) => network === this.state.network && coin === this.state.coin
-    );
+  filterWallets = ({ network, coin }) => network === this.state.network && coin === this.state.coin;
 
   render() {
-    const { loadWallet } = this.props;
-
-    const filteredWallets = this.filterWallets();
+    const { loadWallet, wallets } = this.props;
 
     return (
       <ScrollView>
@@ -32,9 +27,9 @@ export default class LoadWallet extends Component {
           <Text>Load Wallet</Text>
           <CoinSelect onChange={coin => this.setState({ coin })} />
           <NetworkSelect onChange={network => this.setState({ network })} />
-          {filteredWallets.map((wallet, idx) => (
-            <TouchableItem onPress={() => loadWallet(wallet)} key={idx}>
-              <Text>{wallet.walletName}</Text>
+          {wallets.filter(this.filterWallets).map((wallet, idx) => (
+            <TouchableItem onPress={() => loadWallet(wallet.id)} key={idx}>
+              <Text>{wallet.name}</Text>
             </TouchableItem>
           ))}
         </ScreenWrapper>
