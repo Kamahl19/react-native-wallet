@@ -3,8 +3,8 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { loadWalletAction, selectWallets } from '../ducks';
-import LoadWallet from '../components/LoadWallet';
+import { selectActiveWalletAction, selectWallets } from '../ducks';
+import SelectActiveWallet from '../components/SelectActiveWallet';
 
 const mapStateToProps = state => ({
   wallets: selectWallets(state),
@@ -13,26 +13,26 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      loadWallet: loadWalletAction,
+      selectActiveWallet: selectActiveWalletAction,
     },
     dispatch
   ),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class LoadWalletContainer extends Component {
+export default class SelectActiveWalletContainer extends Component {
   static propTypes = {
     wallets: PropTypes.array.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   static navigationOptions = {
-    title: 'Load Wallet',
+    title: 'Select Active Wallet',
   };
 
   render() {
     const { wallets, actions } = this.props;
 
-    return <LoadWallet loadWallet={actions.loadWallet} wallets={wallets} />;
+    return <SelectActiveWallet selectActiveWallet={actions.selectActiveWallet} wallets={wallets} />;
   }
 }

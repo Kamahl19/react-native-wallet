@@ -6,9 +6,9 @@ import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
 
-export default class LoadWallet extends Component {
+export default class SelectActiveWallet extends Component {
   static propTypes = {
-    loadWallet: PropTypes.func.isRequired,
+    selectActiveWallet: PropTypes.func.isRequired,
     wallets: PropTypes.array.isRequired,
   };
 
@@ -23,21 +23,21 @@ export default class LoadWallet extends Component {
     );
 
   render() {
-    const { loadWallet } = this.props;
+    const { selectActiveWallet } = this.props;
     const { coin, network } = this.state;
 
     const wallets = this.getWallets();
 
     return (
       <ScreenWrapper>
-        <Text>Load Wallet</Text>
+        <Text>Select Active Wallet</Text>
 
         <CoinSelect onChange={coin => this.setState({ coin })} value={coin} />
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
         {wallets.map(wallet => (
-          <TouchableItem onPress={() => loadWallet(wallet.walletId)} key={wallet.walletId}>
+          <TouchableItem onPress={() => selectActiveWallet(wallet.walletId)} key={wallet.walletId}>
             <Text>{wallet.walletName}</Text>
           </TouchableItem>
         ))}

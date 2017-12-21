@@ -19,7 +19,7 @@ import { apiCallIds } from './constants';
 /**
  * ACTION TYPES
  */
-export const LOAD_WALLET = 'wallet/LOAD_WALLET';
+export const SELECT_ACTIVE_WALLET = 'wallet/SELECT_ACTIVE_WALLET';
 export const CREATE_WALLET = 'wallet/CREATE_WALLET';
 export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
@@ -27,7 +27,7 @@ export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
 /**
  * ACTIONS
  */
-export const loadWalletAction = createActionCreator(LOAD_WALLET);
+export const selectActiveWalletAction = createActionCreator(SELECT_ACTIVE_WALLET);
 export const createWalletActions = createApiActionCreators(CREATE_WALLET);
 export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
@@ -41,7 +41,7 @@ const initialState = {
 };
 
 const activeWalletId = createReducer(initialState.activeWalletId, {
-  [LOAD_WALLET]: (state, walletId) => walletId,
+  [SELECT_ACTIVE_WALLET]: (state, walletId) => walletId,
 });
 
 const wallets = createReducer(initialState.wallets, {

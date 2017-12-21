@@ -8,15 +8,15 @@ import { selectIsLoggedIn } from '../../features/auth/ducks';
 import AuthNavigator from '../../features/auth/AuthNavigator';
 import {
   CreateWalletContainer,
-  LoadWalletContainer,
+  SelectActiveWalletContainer,
   SendTransactionContainer,
   GenerateAddressContainer,
 } from '../../features/wallet/containers';
 
 const UserNavigator = DrawerNavigator(
   {
-    LoadWallet: {
-      screen: LoadWalletContainer,
+    SelectActiveWallet: {
+      screen: SelectActiveWalletContainer,
     },
     CreateWallet: {
       screen: CreateWalletContainer,
@@ -29,7 +29,7 @@ const UserNavigator = DrawerNavigator(
     },
   },
   {
-    initialRouteName: 'LoadWallet',
+    initialRouteName: 'SelectActiveWallet',
     contentComponent: CustomDrawer,
   }
 );

@@ -20,6 +20,7 @@ export default class GenerateAddress extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Text>Generate Address</Text>
+
           <Button onPress={onSubmit} title="Generate Address" type="primary" size="md" />
 
           {address && <TextInput label="Address" value={address} />}
