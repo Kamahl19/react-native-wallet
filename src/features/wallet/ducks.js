@@ -168,7 +168,7 @@ function* sendTransaction({ payload }) {
       activeWallet,
       payload.address,
       payload.amount,
-      payload.feePerKb,
+      payload.feeLevel,
       payload.note
     );
 

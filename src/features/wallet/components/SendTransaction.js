@@ -3,73 +3,64 @@ import PropTypes from 'prop-types';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import {
-  ScrollView,
-  Text,
-  ScreenWrapper,
-  Button,
-  FormItem,
-  TextInput,
-} from '../../../common/components';
+import { Text, ScreenWrapper, Button, FormItem, TextInput } from '../../../common/components';
+import FeeLevelSelect from './FeeLevelSelect';
+import { DEFAULT_FEE_LEVEL } from '../constants';
 
-// TODO validate address, amount, feePerKb
-// TODO recommend best fee
+// TODO validate address, amount
 // accept amount in btc, bits, satoshi
 
 @createForm()
 export default class SendTransaction extends Component {
   static propTypes = {
-    disabled: PropTypes.bool.isRequired,
     form: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
   };
 
+  state = {
+    feeLevel: DEFAULT_FEE_LEVEL,
+  };
+
   handleSendTransaction = () => {
     const { form, onSubmit } = this.props;
+    const { feeLevel } = this.state;
 
     form.validateFields((err, values) => {
       if (!err) {
-        onSubmit(values);
+        onSubmit({
+          ...values,
+          feeLevel,
+        });
       }
     });
   };
 
   render() {
-    const { disabled, form } = this.props;
-    const { getFieldDecorator } = form;
+    const { form } = this.props;
+    const { feeLevel } = this.state;
 
     return (
-      <ScrollView>
-        <ScreenWrapper>
-          <Text>Send Transaction</Text>
+      <ScreenWrapper>
+        <Text>Send Transaction</Text>
 
-          <FormItem>
-            {getFieldDecorator('address', { rules: [rules.required] })(
-              <TextInput label="Address" autoFocus autoCorrect={false} />
-            )}
-          </FormItem>
+        <FormItem>
+          {form.getFieldDecorator('address', { rules: [rules.required] })(
+            <TextInput label="Address" autoFocus autoCorrect={false} />
+          )}
+        </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('amount', { rules: [rules.required] })(<TextInput label="Amount" />)}
-          </FormItem>
+        <FormItem>
+          {form.getFieldDecorator('amount', { rules: [rules.required] })(
+            <TextInput label="Amount" />
+          )}
+        </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('feePerKb', { rules: [rules.required] })(
-              <TextInput label="Fee Per Kb" autoCorrect={false} />
-            )}
-          </FormItem>
+        <FeeLevelSelect onChange={feeLevel => this.setState({ feeLevel })} value={feeLevel} />
 
-          <FormItem>{getFieldDecorator('note')(<TextInput label="note" multiline />)}</FormItem>
+        <FormItem>{form.getFieldDecorator('note')(<TextInput label="note" multiline />)}</FormItem>
 
-          <Button
-            onPress={this.handleSendTransaction}
-            title="Send"
-            type="primary"
-            size="md"
-            disabled={disabled}
-          />
-        </ScreenWrapper>
-      </ScrollView>
+        <Button onPress={this.handleSendTransaction} title="Send" type="primary" size="md" />
+      </ScreenWrapper>
     );
   }
 }

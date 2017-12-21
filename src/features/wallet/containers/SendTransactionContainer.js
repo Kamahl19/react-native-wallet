@@ -8,6 +8,7 @@ import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { sendTransactionAction, selectActiveWalletId } from '../ducks';
 import SendTransaction from '../components/SendTransaction';
+import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWalletId: selectActiveWalletId(state),
@@ -44,9 +45,13 @@ export default class SendTransactionContainer extends Component {
   render() {
     const { isLoading, activeWalletId } = this.props;
 
+    if (!activeWalletId) {
+      return <NoActiveWallet />;
+    }
+
     return (
       <Spinner show={isLoading}>
-        <SendTransaction onSubmit={this.onSubmit} disabled={!activeWalletId} />
+        <SendTransaction onSubmit={this.onSubmit} />
       </Spinner>
     );
   }

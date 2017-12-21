@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioForm from 'react-native-simple-radio-button';
 
+import { OnePicker, Picker } from '../../../common/components';
 import { networkOptions } from '../constants';
 
-const NetworkSelect = ({ onChange }) => (
-  <RadioForm radio_props={networkOptions} initial={0} onPress={onChange} formHorizontal />
+const NetworkSelect = ({ value, onChange }) => (
+  <OnePicker selectedValue={value} onValueChange={onChange}>
+    {networkOptions.map(network => (
+      <Picker.Item label={network.label} value={network.value} key={network.value} />
+    ))}
+  </OnePicker>
 );
 
 NetworkSelect.propTypes = {
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 

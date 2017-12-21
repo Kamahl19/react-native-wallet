@@ -17,7 +17,7 @@ const mapDispatchToProps = dispatch => ({
   logout: () => dispatch(logout()),
 });
 
-const CustomDrawer = ({ email, activeWallet, logout, ...rest }) => (
+const CustomDrawer = ({ email, logout, ...rest }) => (
   <View style={styles.component}>
     <DrawerItem label={`Hi ${email}`} />
     <DrawerItems {...rest} />

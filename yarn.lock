@@ -4900,10 +4900,6 @@ react-native-qrcode@^0.2.6:
     prop-types "^15.5.10"
     qr.js "0.0.0"
 
-react-native-simple-radio-button@^2.7.0:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/react-native-simple-radio-button/-/react-native-simple-radio-button-2.7.0.tgz#0ad7e9beda7650519ca7ae479ee94cf7facd7d4e"
-
 react-native-tab-view@^0.0.70:
   version "0.0.70"
   resolved "https://registry.yarnpkg.com/react-native-tab-view/-/react-native-tab-view-0.0.70.tgz#1dd2ded32acd0cb6bfef38d26e53675db733b37b"

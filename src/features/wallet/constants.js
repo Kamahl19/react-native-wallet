@@ -25,6 +25,23 @@ export const COINS = {
   },
 };
 
+export const DEFAULT_FEE_LEVEL = 'normal';
+
+export const DEFAULT_COIN = 'btc';
+
+export const DEFAULT_NETWORK = __DEV__ ? 'testnet' : 'livenet';
+
+export const feeLevelOptions = {
+  btc: [
+    { label: 'Urgent', value: 'urgent' },
+    { label: 'Priority', value: 'priority' },
+    { label: 'Normal', value: 'normal' },
+    { label: 'Economy', value: 'economy' },
+    { label: 'Super Economy', value: 'superEconomy' },
+  ],
+  bch: [{ label: 'Normal', value: 'normal' }],
+};
+
 export const coinOptions = [
   { label: 'Bitcoin', value: 'btc' },
   { label: 'Bitcoin Cash', value: 'bch' },

@@ -9,6 +9,7 @@ import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { generateAddressActions, selectActiveWallet } from '../ducks';
 import GenerateAddress from '../components/GenerateAddress';
+import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
@@ -43,13 +44,16 @@ export default class GenerateAddressContainer extends Component {
   render() {
     const { activeWallet, isLoading, actions } = this.props;
 
+    if (!activeWallet) {
+      return <NoActiveWallet />;
+    }
+
     return (
       <Spinner show={isLoading}>
         <GenerateAddress
           onSubmit={actions.generateAddress}
           onCopy={this.onCopy}
-          disabled={!activeWallet}
-          address={activeWallet ? activeWallet.address : undefined}
+          address={activeWallet.address}
         />
       </Spinner>
     );

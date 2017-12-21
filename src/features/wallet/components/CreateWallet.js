@@ -3,16 +3,10 @@ import PropTypes from 'prop-types';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import {
-  ScrollView,
-  Text,
-  ScreenWrapper,
-  Button,
-  FormItem,
-  TextInput,
-} from '../../../common/components';
+import { Text, ScreenWrapper, Button, FormItem, TextInput } from '../../../common/components';
 import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
+import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
 
 @createForm()
 export default class CreateWallet extends Component {
@@ -22,8 +16,8 @@ export default class CreateWallet extends Component {
   };
 
   state = {
-    coin: 'btc',
-    network: 'testnet',
+    coin: DEFAULT_COIN,
+    network: DEFAULT_NETWORK,
   };
 
   handleCreateWallet = () => {
@@ -43,31 +37,24 @@ export default class CreateWallet extends Component {
 
   render() {
     const { form } = this.props;
-    const { getFieldDecorator } = form;
+    const { coin, network } = this.state;
 
     return (
-      <ScrollView>
-        <ScreenWrapper>
-          <Text>Create Wallet</Text>
+      <ScreenWrapper>
+        <Text>Create Wallet</Text>
 
-          <CoinSelect onChange={coin => this.setState({ coin })} />
+        <CoinSelect onChange={coin => this.setState({ coin })} value={coin} />
 
-          <NetworkSelect onChange={network => this.setState({ network })} />
+        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-          <FormItem>
-            {getFieldDecorator('walletName', { rules: [rules.required] })(
-              <TextInput label="Wallet Name" autoFocus autoCorrect={false} />
-            )}
-          </FormItem>
+        <FormItem>
+          {form.getFieldDecorator('walletName', { rules: [rules.required] })(
+            <TextInput label="Wallet Name" autoFocus autoCorrect={false} />
+          )}
+        </FormItem>
 
-          <Button
-            onPress={this.handleCreateWallet}
-            title="Create Wallet"
-            type="primary"
-            size="md"
-          />
-        </ScreenWrapper>
-      </ScrollView>
+        <Button onPress={this.handleCreateWallet} title="Create Wallet" type="primary" size="md" />
+      </ScreenWrapper>
     );
   }
 }

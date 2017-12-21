@@ -9,36 +9,23 @@ import { ScrollView, Text, ScreenWrapper, Button, TextInput } from '../../../com
 export default class GenerateAddress extends Component {
   static propTypes = {
     address: PropTypes.string,
-    disabled: PropTypes.bool.isRequired,
     onSubmit: PropTypes.func.isRequired,
     onCopy: PropTypes.func.isRequired,
   };
 
   render() {
-    const { address, onSubmit, onCopy, disabled } = this.props;
+    const { address, onSubmit, onCopy } = this.props;
 
     return (
       <ScrollView>
         <ScreenWrapper>
           <Text>Generate Address</Text>
-          <Button
-            onPress={onSubmit}
-            title="Generate Address"
-            type="primary"
-            size="md"
-            disabled={disabled}
-          />
+          <Button onPress={onSubmit} title="Generate Address" type="primary" size="md" />
 
           {address && <TextInput label="Address" value={address} />}
 
           {address && (
-            <Button
-              onPress={onCopy}
-              title="Copy to Clipboard"
-              type="default"
-              size="md"
-              disabled={!address}
-            />
+            <Button onPress={onCopy} title="Copy to Clipboard" type="default" size="md" />
           )}
 
           {address && <QRCode value={address} />}

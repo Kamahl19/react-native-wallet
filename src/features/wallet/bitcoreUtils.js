@@ -2,7 +2,7 @@ import BitcoreClient from 'bitcore-wallet-client';
 import bs58check from 'bs58check';
 
 import config from '../../config';
-import { COINS, coinOptions, networkOptions } from './constants';
+import { COINS, coinOptions, networkOptions, feeLevelOptions } from './constants';
 
 function getClient(wallet) {
   const client = new BitcoreClient({
@@ -85,6 +85,12 @@ function validateCoin(coin) {
   }
 }
 
+function validateFeeLevel(feeLevel, coin) {
+  if (feeLevelOptions[coin].filter(option => option.value === feeLevel).length === 0) {
+    throw new Error('Invalid fee level');
+  }
+}
+
 function validateNetwork(network) {
   if (networkOptions.filter(option => option.value === network).length === 0) {
     throw new Error('Invalid network');
@@ -125,7 +131,7 @@ function createAddressAsync(client) {
   });
 }
 
-function createTxProposalAsync(client, address, amount, feePerKb, note) {
+function createTxProposalAsync(client, address, amount, feeLevel, note) {
   return new Promise((resolve, reject) => {
     client.createTxProposal(
       {
@@ -136,7 +142,7 @@ function createTxProposalAsync(client, address, amount, feePerKb, note) {
           },
         ],
         message: note,
-        feePerKb,
+        feeLevel,
       },
       (err, txp) => {
         if (err) {
@@ -216,19 +222,19 @@ export async function generateAddress(wallet) {
   return address;
 }
 
-export async function sendTransaction(wallet, address, amount, feePerKb, note) {
+export async function sendTransaction(wallet, address, amount, feeLevel, note) {
   if (!wallet) {
     throw new Error('Missing wallet');
   }
 
   validateAddress(address);
+  validateFeeLevel(feeLevel, wallet.coin);
 
   amount = parseAmount(amount);
-  feePerKb = parseAmount(feePerKb);
 
   const client = await getClient(wallet);
 
-  let txp = await createTxProposalAsync(client, address, amount, feePerKb, note);
+  let txp = await createTxProposalAsync(client, address, amount, feeLevel, note);
 
   txp = await publishTxProposalAsync(client, txp);
 

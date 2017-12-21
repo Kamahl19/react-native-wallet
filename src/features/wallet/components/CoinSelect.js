@@ -1,14 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import RadioForm from 'react-native-simple-radio-button';
 
+import { OnePicker, Picker } from '../../../common/components';
 import { coinOptions } from '../constants';
 
-const CoinSelect = ({ onChange }) => (
-  <RadioForm radio_props={coinOptions} initial={0} onPress={onChange} formHorizontal />
+const CoinSelect = ({ value, onChange }) => (
+  <OnePicker selectedValue={value} onValueChange={onChange}>
+    {coinOptions.map(coin => (
+      <Picker.Item label={coin.label} value={coin.value} key={coin.value} />
+    ))}
+  </OnePicker>
 );
 
 CoinSelect.propTypes = {
+  value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
