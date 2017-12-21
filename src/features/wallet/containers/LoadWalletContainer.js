@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { fetchWalletsActions, loadWalletAction, selectWallets } from '../ducks';
+import { loadWalletAction, selectWallets } from '../ducks';
 import LoadWallet from '../components/LoadWallet';
 
 const mapStateToProps = state => ({
@@ -14,7 +14,6 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       loadWallet: loadWalletAction,
-      fetchWallets: fetchWalletsActions.request,
     },
     dispatch
   ),
@@ -30,10 +29,6 @@ export default class LoadWalletContainer extends Component {
   static navigationOptions = {
     title: 'Load Wallet',
   };
-
-  componentDidMount() {
-    this.props.actions.fetchWallets();
-  }
 
   render() {
     const { wallets, actions } = this.props;

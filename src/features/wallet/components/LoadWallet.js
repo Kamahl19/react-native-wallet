@@ -27,9 +27,9 @@ export default class LoadWallet extends Component {
           <Text>Load Wallet</Text>
           <CoinSelect onChange={coin => this.setState({ coin })} />
           <NetworkSelect onChange={network => this.setState({ network })} />
-          {wallets.filter(this.filterWallets).map((wallet, idx) => (
-            <TouchableItem onPress={() => loadWallet(wallet.id)} key={idx}>
-              <Text>{wallet.name}</Text>
+          {wallets.filter(this.filterWallets).map(wallet => (
+            <TouchableItem onPress={() => loadWallet(wallet.walletId)} key={wallet.walletId}>
+              <Text>{wallet.walletName}</Text>
             </TouchableItem>
           ))}
         </ScreenWrapper>

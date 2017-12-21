@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { AlertIOS, Clipboard } from 'react-native';
+import { Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
-import { apiCallIds } from '../api';
+import { apiCallIds } from '../constants';
 import { generateAddressActions, selectActiveWallet } from '../ducks';
 import GenerateAddress from '../components/GenerateAddress';
 
@@ -36,37 +36,17 @@ export default class GenerateAddressContainer extends Component {
     title: 'Generate Address',
   };
 
-  onSubmit = () => {
-    AlertIOS.prompt(
-      'Enter a password',
-      null,
-      password => {
-        if (password === '') {
-          AlertIOS.alert('Empty password', this.onSubmit);
-        }
-
-        const { actions, activeWallet } = this.props;
-
-        actions.generateAddress({
-          id: activeWallet.id,
-          password,
-        });
-      },
-      'secure-text'
-    );
-  };
-
   onCopy = () => {
     Clipboard.setString(this.props.address);
   };
 
   render() {
-    const { activeWallet, isLoading } = this.props;
+    const { activeWallet, isLoading, actions } = this.props;
 
     return (
       <Spinner show={isLoading}>
         <GenerateAddress
-          onSubmit={this.onSubmit}
+          onSubmit={actions.generateAddress}
           onCopy={this.onCopy}
           disabled={!activeWallet}
           address={activeWallet ? activeWallet.address : undefined}

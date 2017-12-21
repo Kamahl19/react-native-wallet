@@ -2,6 +2,7 @@ import { combineReducers } from 'redux';
 import { call, put, takeLatest, select } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
+import AlertService from '../../common/services/alert';
 import {
   createActionCreator,
   createApiActionCreators,
@@ -11,60 +12,57 @@ import {
   REQUEST,
   SUCCESS,
 } from '../../common/utils/reduxHelpers';
-import api from './api';
+import { finishApiCall, startApiCall } from '../spinner/ducks';
+import * as bitcoreUtils from './bitcoreUtils';
+import { apiCallIds } from './constants';
 
 /**
  * ACTION TYPES
  */
-export const FETCH_WALLETS = 'wallet/FETCH_WALLETS';
-export const CREATE_WALLET = 'wallet/CREATE_WALLET';
-export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
-export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const LOAD_WALLET = 'wallet/LOAD_WALLET';
+export const CREATE_WALLET = 'wallet/CREATE_WALLET';
+export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
+export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
 
 /**
  * ACTIONS
  */
-export const fetchWalletsActions = createApiActionCreators(FETCH_WALLETS);
-export const createWalletActions = createApiActionCreators(CREATE_WALLET);
-export const sendTransactionActions = createApiActionCreators(SEND_TRANSACTION);
-export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const loadWalletAction = createActionCreator(LOAD_WALLET);
+export const createWalletActions = createApiActionCreators(CREATE_WALLET);
+export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
+export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
 
 /**
  * REDUCERS
  */
 const initialState = {
-  wallets: [],
   activeWalletId: null,
+  wallets: [],
 };
 
+const activeWalletId = createReducer(initialState.activeWalletId, {
+  [LOAD_WALLET]: (state, walletId) => walletId,
+});
+
 const wallets = createReducer(initialState.wallets, {
-  [FETCH_WALLETS]: {
-    [SUCCESS]: (state, payload) => payload.wallets,
-  },
   [CREATE_WALLET]: {
-    [SUCCESS]: (state, payload) => [...state, payload.wallet],
+    [SUCCESS]: (state, wallet) => [...state, wallet],
   },
   [GENERATE_ADDRESS]: {
-    [SUCCESS]: (state, payload) => {
-      const wallet = state.find(wallet => wallet.id === payload.id);
+    [SUCCESS]: (state, { address, walletId }) => {
+      const wallet = state.find(wallet => wallet.walletId === walletId);
 
-      return replaceInArray(state, wallet => wallet.id === payload.id, {
+      return replaceInArray(state, wallet => wallet.walletId === walletId, {
         ...wallet,
-        address: payload.address,
+        address,
       });
     },
   },
 });
 
-const activeWalletId = createReducer(initialState.activeWalletId, {
-  [LOAD_WALLET]: (state, payload) => payload,
-});
-
 export default combineReducers({
-  wallets,
   activeWalletId,
+  wallets,
 });
 
 /**
@@ -72,61 +70,127 @@ export default combineReducers({
  */
 export const selectWallet = state => state.wallet;
 
-export const selectWallets = state => selectWallet(state).wallets;
 export const selectActiveWalletId = state => selectWallet(state).activeWalletId;
+export const selectWallets = state => selectWallet(state).wallets;
 
 export const selectActiveWallet = createSelector(
   selectActiveWalletId,
   selectWallets,
   (activeWalletId, wallets) =>
-    activeWalletId ? wallets.find(wallet => wallet.id === activeWalletId) : null
+    activeWalletId ? wallets.find(wallet => wallet.walletId === activeWalletId) : null
 );
 
 /**
  * SAGAS
  */
-function* fetchWallets({ payload }) {
-  const resp = yield call(api.fetchWallets);
+function* createWallet({ payload }) {
+  yield put(
+    startApiCall({
+      apiCallId: apiCallIds.CREATE_WALLET,
+    })
+  );
 
-  if (resp.ok) {
-    yield put(fetchWalletsActions.success(resp.data));
+  try {
+    const wallet = yield call(
+      bitcoreUtils.createWallet,
+      payload.walletName,
+      payload.coin,
+      payload.network
+    );
+
+    yield put(createWalletActions.success(wallet));
+
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.CREATE_WALLET,
+      })
+    );
+  } catch (error) {
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.CREATE_WALLET,
+        error: error.message,
+      })
+    );
+
+    AlertService.error(error.message);
   }
 }
 
-function* createWallet({ payload }) {
-  const resp = yield call(api.createWallet, payload);
+function* generateAddress() {
+  yield put(
+    startApiCall({
+      apiCallId: apiCallIds.GENERATE_ADDRESS,
+    })
+  );
 
-  if (resp.ok) {
-    yield put(createWalletActions.success(resp.data));
+  try {
+    const activeWallet = yield select(selectActiveWallet);
+
+    const address = yield call(bitcoreUtils.generateAddress, activeWallet);
+
+    yield put(
+      generateAddressActions.success({
+        walletId: activeWallet.walletId,
+        address,
+      })
+    );
+
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GENERATE_ADDRESS,
+      })
+    );
+  } catch (error) {
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GENERATE_ADDRESS,
+        error: error.message,
+      })
+    );
+
+    AlertService.error(error.message);
   }
 }
 
 function* sendTransaction({ payload }) {
-  const resp = yield call(api.sendTransaction, payload.id, payload.transactionData);
+  yield put(
+    startApiCall({
+      apiCallId: apiCallIds.SEND_TRANSACTION,
+    })
+  );
 
-  if (resp.ok) {
-    yield put(sendTransactionActions.success(resp.data));
-  }
-}
+  try {
+    const activeWallet = yield select(selectActiveWallet);
 
-function* generateAddress({ payload }) {
-  const resp = yield call(api.generateAddress, payload.id, payload.password);
+    yield call(
+      bitcoreUtils.sendTransaction,
+      activeWallet,
+      payload.address,
+      payload.amount,
+      payload.feePerKb,
+      payload.note
+    );
 
-  const activeWalletId = yield select(selectActiveWalletId);
-
-  if (resp.ok) {
     yield put(
-      generateAddressActions.success({
-        id: activeWalletId,
-        address: resp.data.address,
+      finishApiCall({
+        apiCallId: apiCallIds.SEND_TRANSACTION,
       })
     );
+  } catch (error) {
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.SEND_TRANSACTION,
+        error: error.message,
+      })
+    );
+
+    AlertService.error(error.message);
   }
 }
 
 export function* walletSaga() {
-  yield takeLatest(createActionType(FETCH_WALLETS, REQUEST), fetchWallets);
   yield takeLatest(createActionType(CREATE_WALLET, REQUEST), createWallet);
-  yield takeLatest(createActionType(SEND_TRANSACTION, REQUEST), sendTransaction);
   yield takeLatest(createActionType(GENERATE_ADDRESS, REQUEST), generateAddress);
+  yield takeLatest(SEND_TRANSACTION, sendTransaction);
 }

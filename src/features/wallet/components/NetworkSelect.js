@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import RadioForm from 'react-native-simple-radio-button';
 
-import { networkOptions } from '../walletUtils.js';
+import { networkOptions } from '../constants';
 
 const NetworkSelect = ({ onChange }) => (
   <RadioForm radio_props={networkOptions} initial={0} onPress={onChange} formHorizontal />

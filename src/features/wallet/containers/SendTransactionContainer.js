@@ -5,19 +5,19 @@ import { bindActionCreators } from 'redux';
 
 import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
-import { apiCallIds } from '../api';
-import { sendTransactionActions, selectActiveWallet } from '../ducks';
+import { apiCallIds } from '../constants';
+import { sendTransactionAction, selectActiveWalletId } from '../ducks';
 import SendTransaction from '../components/SendTransaction';
 
 const mapStateToProps = state => ({
-  activeWallet: selectActiveWallet(state),
+  activeWalletId: selectActiveWalletId(state),
   isLoading: selectIsInProgress(state, apiCallIds.SEND_TRANSACTION),
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      sendTransaction: sendTransactionActions.request,
+      sendTransaction: sendTransactionAction,
     },
     dispatch
   ),
@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class SendTransactionContainer extends Component {
   static propTypes = {
-    activeWallet: PropTypes.object,
+    activeWalletId: PropTypes.string,
     isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
@@ -36,20 +36,17 @@ export default class SendTransactionContainer extends Component {
   };
 
   onSubmit = transactionData => {
-    const { actions, activeWallet } = this.props;
+    const { actions } = this.props;
 
-    actions.sendTransaction({
-      id: activeWallet.id,
-      transactionData,
-    });
+    actions.sendTransaction(transactionData);
   };
 
   render() {
-    const { isLoading, activeWallet } = this.props;
+    const { isLoading, activeWalletId } = this.props;
 
     return (
       <Spinner show={isLoading}>
-        <SendTransaction onSubmit={this.onSubmit} disabled={!activeWallet} />
+        <SendTransaction onSubmit={this.onSubmit} disabled={!activeWalletId} />
       </Spinner>
     );
   }

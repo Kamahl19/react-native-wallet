@@ -5,7 +5,7 @@ import { bindActionCreators } from 'redux';
 
 import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
-import { apiCallIds } from '../api';
+import { apiCallIds } from '../constants';
 import { createWalletActions } from '../ducks';
 import CreateWallet from '../components/CreateWallet';
 

@@ -30,11 +30,10 @@ export default class CreateWallet extends Component {
     const { form, onSubmit } = this.props;
     const { coin, network } = this.state;
 
-    form.validateFields((err, { name, password }) => {
+    form.validateFields((err, values) => {
       if (!err) {
         onSubmit({
-          name,
-          password,
+          ...values,
           coin,
           network,
         });
@@ -50,19 +49,17 @@ export default class CreateWallet extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Text>Create Wallet</Text>
+
           <CoinSelect onChange={coin => this.setState({ coin })} />
+
           <NetworkSelect onChange={network => this.setState({ network })} />
+
           <FormItem>
-            {getFieldDecorator('name', { rules: [rules.required] })(
+            {getFieldDecorator('walletName', { rules: [rules.required] })(
               <TextInput label="Wallet Name" autoFocus autoCorrect={false} />
             )}
           </FormItem>
 
-          <FormItem>
-            {getFieldDecorator('password', { rules: [rules.required] })(
-              <TextInput label="Password" secureTextEntry />
-            )}
-          </FormItem>
           <Button
             onPress={this.handleCreateWallet}
             title="Create Wallet"

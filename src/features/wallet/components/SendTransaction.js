@@ -27,9 +27,9 @@ export default class SendTransaction extends Component {
   handleSendTransaction = () => {
     const { form, onSubmit } = this.props;
 
-    form.validateFields((err, { address, amount, feePerKb, note, password }) => {
+    form.validateFields((err, values) => {
       if (!err) {
-        onSubmit({ address, amount, feePerKb, note, password });
+        onSubmit(values);
       }
     });
   };
@@ -42,6 +42,7 @@ export default class SendTransaction extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Text>Send Transaction</Text>
+
           <FormItem>
             {getFieldDecorator('address', { rules: [rules.required] })(
               <TextInput label="Address" autoFocus autoCorrect={false} />
@@ -59,12 +60,6 @@ export default class SendTransaction extends Component {
           </FormItem>
 
           <FormItem>{getFieldDecorator('note')(<TextInput label="note" multiline />)}</FormItem>
-
-          <FormItem>
-            {getFieldDecorator('password', { rules: [rules.required] })(
-              <TextInput label="Password" secureTextEntry />
-            )}
-          </FormItem>
 
           <Button
             onPress={this.handleSendTransaction}

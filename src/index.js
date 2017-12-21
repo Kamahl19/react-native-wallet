@@ -1,4 +1,4 @@
-import { AppRegistry, Platform } from 'react-native';
+import { AppRegistry, Platform, AsyncStorage } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 
 import Root from './app/containers/Root';
@@ -10,3 +10,7 @@ if (Platform.OS === 'ios') {
   KeyboardManager.setEnable(true);
   KeyboardManager.setEnableAutoToolbar(false);
 }
+
+// setTimeout(() => {
+//   AsyncStorage.clear();
+// }, 3000);
