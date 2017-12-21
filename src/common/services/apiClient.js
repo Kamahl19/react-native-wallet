@@ -1,6 +1,5 @@
 import axios from 'axios';
 
-import { logout, selectToken } from '../../features/auth/ducks';
 import { finishApiCall, startApiCall } from '../../features/spinner/ducks';
 import config from '../../config';
 import AlertService from './alert';
@@ -14,13 +13,6 @@ export default apiClient;
 
 export function prepareRequestInterceptor(store) {
   apiClient.interceptors.request.use(config => {
-    const token = selectToken(store.getState());
-
-    if (token) {
-      config.headers.common = config.headers.common || {};
-      config.headers.common['Authorization'] = `Bearer ${token}`;
-    }
-
     store.dispatch(
       startApiCall({
         apiCallId: config.apiCallId,
@@ -49,10 +41,6 @@ export function handleResponsesInterceptor(store) {
           error,
         })
       );
-
-      if (error.response && error.response.status === 401) {
-        store.dispatch(logout());
-      }
 
       showErrorMessage(error);
 

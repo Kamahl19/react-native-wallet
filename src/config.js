@@ -1,4 +1,4 @@
 export default {
-  apiUrl: 'http://localhost:3001/api',
+  apiUrl: '',
   bwsUrl: 'https://bws.bitpay.com/bws/api',
 };

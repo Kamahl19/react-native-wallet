@@ -6,7 +6,6 @@ import {
   prepareRequestInterceptor,
   handleResponsesInterceptor,
 } from '../../common/services/apiClient';
-import { reloginRequest } from '../../features/auth/ducks';
 import Spinner from '../../features/spinner';
 import configureStore from '../store/configureStore';
 import App from './App';
@@ -16,17 +15,9 @@ const { store, persistor } = configureStore();
 prepareRequestInterceptor(store);
 handleResponsesInterceptor(store);
 
-function relogin() {
-  const state = store.getState();
-
-  if (state && state.auth && state.auth.token) {
-    store.dispatch(reloginRequest());
-  }
-}
-
 const Root = () => (
   <Provider store={store}>
-    <PersistGate loading={<Spinner large />} persistor={persistor} onBeforeLift={relogin}>
+    <PersistGate loading={<Spinner large />} persistor={persistor}>
       <App />
     </PersistGate>
   </Provider>

@@ -19,5 +19,4 @@ if (Platform.OS === 'ios') {
 // TODO
 // Test Send transaction
 // update deps
-// remove Auth
 // Add Labels to Selects
