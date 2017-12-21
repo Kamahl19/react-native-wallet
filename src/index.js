@@ -17,7 +17,7 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// Fix Generate address
 // Test Send transaction
 // update deps
 // remove Auth
+// Add Labels to Selects
