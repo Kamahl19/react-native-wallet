@@ -18,4 +18,11 @@ if (Platform.OS === 'ios') {
 
 // TODO
 // Test Send transaction
-// Add Labels to Selects
+// Add Balance
+// Add History
+// Add status
+// Add recreate
+// Add import
+// Add export
+// Add mnemonic
+// Add addresses
