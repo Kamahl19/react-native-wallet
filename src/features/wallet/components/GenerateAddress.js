@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode';
 
 import { createForm } from '../../../common/services/Form';
-import { ScrollView, Text, ScreenWrapper, Button, TextInput } from '../../../common/components';
+import {
+  ScrollView,
+  ScreenWrapper,
+  CenterView,
+  Button,
+  TextInput,
+  Heading,
+} from '../../../common/components';
 
 @createForm()
 export default class GenerateAddress extends Component {
@@ -19,7 +26,7 @@ export default class GenerateAddress extends Component {
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Text>Generate Address</Text>
+          <Heading>Generate Address</Heading>
 
           <Button onPress={() => onSubmit()} title="Generate Address" type="primary" size="md" />
 
@@ -29,7 +36,11 @@ export default class GenerateAddress extends Component {
             <Button onPress={onCopy} title="Copy to Clipboard" type="default" size="md" />
           )}
 
-          {address && <QRCode value={address} />}
+          {address && (
+            <CenterView style={{ marginTop: 20 }}>
+              <QRCode value={address} />
+            </CenterView>
+          )}
         </ScreenWrapper>
       </ScrollView>
     );

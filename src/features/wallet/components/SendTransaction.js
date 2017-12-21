@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import { Text, ScreenWrapper, Button, FormItem, TextInput } from '../../../common/components';
+import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
 
@@ -41,7 +41,7 @@ export default class SendTransaction extends Component {
 
     return (
       <ScreenWrapper>
-        <Text>Send Transaction</Text>
+        <Heading>Send Transaction</Heading>
 
         <FormItem>
           {form.getFieldDecorator('address', { rules: [rules.required] })(

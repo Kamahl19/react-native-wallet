@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import { Text, ScreenWrapper, Button, FormItem, TextInput } from '../../../common/components';
+import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
 import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
@@ -41,7 +41,7 @@ export default class CreateWallet extends Component {
 
     return (
       <ScreenWrapper>
-        <Text>Create Wallet</Text>
+        <Heading>Create Wallet</Heading>
 
         <CoinSelect onChange={coin => this.setState({ coin })} value={coin} />
 

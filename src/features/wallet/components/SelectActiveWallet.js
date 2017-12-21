@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { Text, ScreenWrapper, TouchableItem } from '../../../common/components';
+import { Text, ScreenWrapper, TouchableItem, Heading } from '../../../common/components';
 import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
@@ -30,7 +30,7 @@ export default class SelectActiveWallet extends Component {
 
     return (
       <ScreenWrapper>
-        <Text>Select Active Wallet</Text>
+        <Heading>Select Active Wallet</Heading>
 
         <CoinSelect onChange={coin => this.setState({ coin })} value={coin} />
 

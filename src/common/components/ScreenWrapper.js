@@ -16,5 +16,7 @@ const styles = StyleSheet.create({
   component: {
     flexGrow: 1,
     marginTop: Platform.OS === 'ios' ? 20 : 0,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
   },
 });

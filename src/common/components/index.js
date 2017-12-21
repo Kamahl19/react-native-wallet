@@ -15,3 +15,4 @@ export { default as ScreenWrapper } from './ScreenWrapper';
 export { default as TextInput } from './TextInput';
 export { default as OnePicker } from './OnePicker';
 export { default as TouchableItem } from './TouchableItem';
+export { default as Heading } from './Heading';

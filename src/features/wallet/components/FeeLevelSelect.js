@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { OnePicker, Picker } from '../../../common/components';
+import { OnePicker, Picker, View, Text } from '../../../common/components';
 import { feeLevelOptions } from '../constants';
 import { selectActiveWallet } from '../ducks';
 
@@ -11,11 +11,14 @@ const mapStateToProps = state => ({
 });
 
 const FeeLevelSelect = ({ value, onChange, activeWallet }) => (
-  <OnePicker selectedValue={value} onValueChange={onChange}>
-    {feeLevelOptions[activeWallet.coin].map(feeLevel => (
-      <Picker.Item label={feeLevel.label} value={feeLevel.value} key={feeLevel.value} />
-    ))}
-  </OnePicker>
+  <View>
+    <Text>Select a Coin</Text>
+    <OnePicker selectedValue={value} onValueChange={onChange}>
+      {feeLevelOptions[activeWallet.coin].map(feeLevel => (
+        <Picker.Item label={feeLevel.label} value={feeLevel.value} key={feeLevel.value} />
+      ))}
+    </OnePicker>
+  </View>
 );
 
 FeeLevelSelect.propTypes = {
