@@ -1766,6 +1766,10 @@ crypto-random-string@^1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/crypto-random-string/-/crypto-random-string-1.0.0.tgz#a230f64f568310e1498009940790ec99545bca7e"
 
+cryptocompare@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/cryptocompare/-/cryptocompare-0.3.0.tgz#5bd2cfa5ea81fa9194abf5c6209cc3bc96cd8d1a"
+
 csrf@~3.0.0:
   version "3.0.6"
   resolved "https://registry.yarnpkg.com/csrf/-/csrf-3.0.6.tgz#b61120ddceeafc91e76ed5313bb5c0b2667b710a"

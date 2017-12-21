@@ -40,6 +40,7 @@
     "axios": "^0.17.1",
     "bitcore-wallet-client": "^6.4.0",
     "bs58check": "^2.1.1",
+    "cryptocompare": "^0.3.0",
     "lodash.flattendeep": "^4.4.0",
     "lodash.memoize": "^4.1.2",
     "lodash.reduce": "^4.6.0",
