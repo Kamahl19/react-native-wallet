@@ -14,7 +14,7 @@ function getClient(wallet) {
     return Promise.resolve(client);
   }
 
-  client.import(wallet);
+  client.import(JSON.stringify(wallet));
 
   return new Promise((resolve, reject) => {
     client.openWallet(err => {
