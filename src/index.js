@@ -15,3 +15,9 @@ if (Platform.OS === 'ios') {
 // setTimeout(() => {
 //   AsyncStorage.clear();
 // }, 3000);
+
+// TODO
+// Fix Generate address
+// Test Send transaction
+// update deps
+// remove Auth
