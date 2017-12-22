@@ -143,6 +143,18 @@ function getBalanceAsync(client, coin) {
   });
 }
 
+function getTxHistoryAsync(client) {
+  return new Promise((resolve, reject) => {
+    client.getTxHistory(undefined, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
+    });
+  });
+}
+
 function getAddressesAsync(client) {
   return new Promise((resolve, reject) => {
     client.getMainAddresses(undefined, (err, res) => {
@@ -279,6 +291,18 @@ export async function getBalance(wallet) {
   const balance = await getBalanceAsync(client, wallet.coin);
 
   return balance;
+}
+
+export async function getTxHistory(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet);
+
+  const txs = await getTxHistoryAsync(client);
+
+  return txs;
 }
 
 export async function getAddresses(wallet) {

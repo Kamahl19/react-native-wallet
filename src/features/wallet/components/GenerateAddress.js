@@ -26,7 +26,12 @@ export default class GenerateAddress extends Component {
         <ScreenWrapper>
           <Heading>Generate Address</Heading>
 
-          <Button onPress={() => onSubmit()} title="Generate Address" type="primary" size="md" />
+          <Button
+            onPress={() => onSubmit()}
+            title="Generate New Address"
+            type="primary"
+            size="md"
+          />
 
           {address && <TextInput label="Address" value={address.address} />}
 

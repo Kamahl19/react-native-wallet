@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
+import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
-import { ScrollView, ScreenWrapper, Button, Heading, Text } from '../../../common/components';
+import { ScrollView, ScreenWrapper, Button, Heading, Text, View } from '../../../common/components';
 import { formatAmount } from '../bitcoreUtils';
 
 export default class WalletSettings extends Component {
@@ -12,7 +14,7 @@ export default class WalletSettings extends Component {
 
   render() {
     const { activeWallet, onCopy } = this.props;
-    const { mnemonic, balance, addresses, coin } = activeWallet;
+    const { mnemonic, balance, addresses, coin, txs } = activeWallet;
 
     return (
       <ScrollView>
@@ -25,16 +27,40 @@ export default class WalletSettings extends Component {
             title="Copy to Clipboard"
             type="default"
             size="md"
+            style={styles.copyButton}
           />
 
-          <Heading>Balance</Heading>
+          <Heading notFirst>Balance</Heading>
           {balance && <Text>{formatAmount(balance.totalAmount, coin)}</Text>}
 
-          <Heading>Addresses</Heading>
+          <Heading notFirst>Addresses</Heading>
           {addresses &&
             addresses.map(address => <Text key={address.address}>{address.address}</Text>)}
+
+          <Heading notFirst>Transactions History</Heading>
+          {txs &&
+            txs.map(tx => (
+              <View key={tx.txid} style={styles.transaction}>
+                <Text>Type: {tx.action}</Text>
+                <Text>Amount: {formatAmount(tx.amount, coin)}</Text>
+                <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
+                <Text>Confirmations: {tx.confirmations || 0}</Text>
+                <Text>Fee: {formatAmount(tx.fees, coin)}</Text>
+                {tx.message && <Text>Message: {tx.message}</Text>}
+              </View>
+            ))}
         </ScreenWrapper>
       </ScrollView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  transaction: {
+    paddingVertical: 10,
+    borderBottomWidth: 1,
+  },
+  copyButton: {
+    marginTop: 20,
+  },
+});

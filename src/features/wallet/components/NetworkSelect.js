@@ -1,18 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import { OnePicker, Picker, View, Text } from '../../../common/components';
+import { OnePicker, Picker } from '../../../common/components';
 import { networkOptions } from '../constants';
 
 const NetworkSelect = ({ value, onChange }) => (
-  <View>
-    <Text>Select a Network</Text>
-    <OnePicker selectedValue={value} onValueChange={onChange}>
-      {networkOptions.map(network => (
-        <Picker.Item label={network.label} value={network.value} key={network.value} />
-      ))}
-    </OnePicker>
-  </View>
+  <OnePicker selectedValue={value} onValueChange={onChange} label="Select a Network">
+    {networkOptions.map(network => (
+      <Picker.Item label={network.label} value={network.value} key={network.value} />
+    ))}
+  </OnePicker>
 );
 
 NetworkSelect.propTypes = {

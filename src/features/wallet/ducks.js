@@ -25,6 +25,7 @@ export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
 export const GET_BALANCE = 'wallet/GET_BALANCE';
 export const GET_ADDRESSES = 'wallet/GET_ADDRESSES';
+export const GET_TX_HISTORY = 'wallet/GET_TX_HISTORY';
 
 /**
  * ACTIONS
@@ -35,6 +36,7 @@ export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
 export const getBalanceActions = createApiActionCreators(GET_BALANCE);
 export const getAddressesActions = createApiActionCreators(GET_ADDRESSES);
+export const getTxHistoryActions = createApiActionCreators(GET_TX_HISTORY);
 
 /**
  * REDUCERS
@@ -79,6 +81,16 @@ const wallets = createReducer(initialState.wallets, {
       return updateActiveWallet(state, walletId, {
         ...wallet,
         addresses,
+      });
+    },
+  },
+  [GET_TX_HISTORY]: {
+    [SUCCESS]: (state, { txs, walletId }) => {
+      const wallet = findActiveWallet(state, walletId);
+
+      return updateActiveWallet(state, walletId, {
+        ...wallet,
+        txs,
       });
     },
   },
@@ -218,6 +230,27 @@ function* getAddresses() {
   }
 }
 
+function* getTxHistory() {
+  yield put(startApiCall({ apiCallId: apiCallIds.GET_TX_HISTORY }));
+
+  try {
+    const activeWallet = yield select(selectActiveWallet);
+
+    const txs = yield call(bitcoreUtils.getTxHistory, activeWallet);
+
+    yield put(
+      getTxHistoryActions.success({
+        walletId: activeWallet.walletId,
+        txs,
+      })
+    );
+
+    yield finishBitcoreCall(apiCallIds.GET_TX_HISTORY);
+  } catch (error) {
+    yield finishBitcoreCall(apiCallIds.GET_TX_HISTORY, error);
+  }
+}
+
 function* finishBitcoreCall(apiCallId, error) {
   yield put(
     finishApiCall({
@@ -237,4 +270,5 @@ export function* walletSaga() {
   yield takeLatest(SEND_TRANSACTION, sendTransaction);
   yield takeLatest(createActionType(GET_BALANCE, REQUEST), getBalance);
   yield takeLatest(createActionType(GET_ADDRESSES, REQUEST), getAddresses);
+  yield takeLatest(createActionType(GET_TX_HISTORY, REQUEST), getTxHistory);
 }

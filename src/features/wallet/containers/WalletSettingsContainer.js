@@ -7,7 +7,12 @@ import { bindActionCreators } from 'redux';
 import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import { getBalanceActions, getAddressesActions, selectActiveWallet } from '../ducks';
+import {
+  getBalanceActions,
+  getAddressesActions,
+  getTxHistoryActions,
+  selectActiveWallet,
+} from '../ducks';
 import WalletSettings from '../components/WalletSettings';
 import NoActiveWallet from '../components/NoActiveWallet';
 
@@ -15,6 +20,7 @@ const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
   isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
   isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
+  isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -22,6 +28,7 @@ const mapDispatchToProps = dispatch => ({
     {
       getBalance: getBalanceActions.request,
       getAddresses: getAddressesActions.request,
+      getTxHistory: getTxHistoryActions.request,
     },
     dispatch
   ),
@@ -33,6 +40,7 @@ export default class WalletSettingsContainer extends Component {
     activeWallet: PropTypes.object,
     isGettingBalance: PropTypes.bool.isRequired,
     isGettingAddresses: PropTypes.bool.isRequired,
+    isGettingTxHistory: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -43,6 +51,7 @@ export default class WalletSettingsContainer extends Component {
   componentWillMount() {
     this.props.actions.getBalance();
     this.props.actions.getAddresses();
+    this.props.actions.getTxHistory();
   }
 
   onCopy = text => {
@@ -50,14 +59,14 @@ export default class WalletSettingsContainer extends Component {
   };
 
   render() {
-    const { activeWallet, isGettingBalance, isGettingAddresses } = this.props;
+    const { activeWallet, isGettingBalance, isGettingAddresses, isGettingTxHistory } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
     return (
-      <Spinner show={isGettingBalance || isGettingAddresses}>
+      <Spinner show={isGettingBalance || isGettingAddresses || isGettingTxHistory}>
         <WalletSettings onCopy={this.onCopy} activeWallet={activeWallet} />
       </Spinner>
     );
