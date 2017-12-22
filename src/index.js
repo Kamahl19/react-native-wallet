@@ -17,12 +17,9 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// Test Send transaction
-// Add Balance
 // Add History
 // Add status
 // Add recreate
 // Add import
 // Add export
-// Add mnemonic
 // Add addresses

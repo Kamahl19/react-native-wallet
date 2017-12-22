@@ -131,6 +131,18 @@ function createAddressAsync(client) {
   });
 }
 
+function getBalanceAsync(client, coin) {
+  return new Promise((resolve, reject) => {
+    client.getBalance({ coin }, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res.totalAmount);
+    });
+  });
+}
+
 function createTxProposalAsync(client, address, amount, feeLevel, note) {
   return new Promise((resolve, reject) => {
     client.createTxProposal(
@@ -245,15 +257,27 @@ export async function sendTransaction(wallet, address, amount, feeLevel, note) {
   return txp;
 }
 
-// function formatAmount(satoshis, coin) {
-//   const u = COINS[coin];
+export async function getBalance(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
 
-//   let amount = satoshis / u.toSatoshis;
+  const client = await getClient(wallet);
 
-//   const parts = amount.toString().split('.');
-//   const decimal = (parts[1] || '0').substring(0, u.maxDecimals);
+  const balance = await getBalanceAsync(client, wallet.coin);
 
-//   amount = parseFloat(parts[0] + '.' + decimal).toFixed(u.maxDecimals);
+  return balance;
+}
 
-//   return `${amount} ${u.name}`;
-// }
+export function formatAmount(satoshis, coin) {
+  const unit = COINS[coin];
+
+  let amount = satoshis / unit.toSatoshis;
+
+  const parts = amount.toString().split('.');
+  const decimal = (parts[1] || '0').substring(0, unit.maxDecimals);
+
+  amount = parseFloat(parts[0] + '.' + decimal).toFixed(unit.maxDecimals);
+
+  return `${amount} ${unit.name}`;
+}

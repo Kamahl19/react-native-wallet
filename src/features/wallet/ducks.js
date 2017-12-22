@@ -23,6 +23,7 @@ export const SELECT_ACTIVE_WALLET = 'wallet/SELECT_ACTIVE_WALLET';
 export const CREATE_WALLET = 'wallet/CREATE_WALLET';
 export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
+export const GET_BALANCE = 'wallet/GET_BALANCE';
 
 /**
  * ACTIONS
@@ -31,6 +32,7 @@ export const selectActiveWalletAction = createActionCreator(SELECT_ACTIVE_WALLET
 export const createWalletActions = createApiActionCreators(CREATE_WALLET);
 export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
+export const getBalanceActions = createApiActionCreators(GET_BALANCE);
 
 /**
  * REDUCERS
@@ -55,6 +57,16 @@ const wallets = createReducer(initialState.wallets, {
       return replaceInArray(state, wallet => wallet.walletId === walletId, {
         ...wallet,
         address,
+      });
+    },
+  },
+  [GET_BALANCE]: {
+    [SUCCESS]: (state, { balance, walletId }) => {
+      const wallet = state.find(wallet => wallet.walletId === walletId);
+
+      return replaceInArray(state, wallet => wallet.walletId === walletId, {
+        ...wallet,
+        balance,
       });
     },
   },
@@ -189,8 +201,45 @@ function* sendTransaction({ payload }) {
   }
 }
 
+function* getBalance() {
+  yield put(
+    startApiCall({
+      apiCallId: apiCallIds.GET_BALANCE,
+    })
+  );
+
+  try {
+    const activeWallet = yield select(selectActiveWallet);
+
+    const balance = yield call(bitcoreUtils.getBalance, activeWallet);
+
+    yield put(
+      getBalanceActions.success({
+        walletId: activeWallet.walletId,
+        balance,
+      })
+    );
+
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GET_BALANCE,
+      })
+    );
+  } catch (error) {
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GET_BALANCE,
+        error: error.message,
+      })
+    );
+
+    AlertService.error(error.message);
+  }
+}
+
 export function* walletSaga() {
   yield takeLatest(createActionType(CREATE_WALLET, REQUEST), createWallet);
   yield takeLatest(createActionType(GENERATE_ADDRESS, REQUEST), generateAddress);
   yield takeLatest(SEND_TRANSACTION, sendTransaction);
+  yield takeLatest(createActionType(GET_BALANCE, REQUEST), getBalance);
 }

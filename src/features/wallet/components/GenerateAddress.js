@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode';
 
-import { createForm } from '../../../common/services/Form';
 import {
   ScrollView,
   ScreenWrapper,
@@ -12,7 +11,6 @@ import {
   Heading,
 } from '../../../common/components';
 
-@createForm()
 export default class GenerateAddress extends Component {
   static propTypes = {
     address: PropTypes.string,

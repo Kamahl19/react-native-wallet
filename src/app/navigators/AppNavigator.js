@@ -7,6 +7,7 @@ import {
   SelectActiveWalletContainer,
   SendTransactionContainer,
   GenerateAddressContainer,
+  WalletSettingsContainer,
 } from '../../features/wallet/containers';
 
 const AppNavigator = DrawerNavigator(
@@ -23,9 +24,12 @@ const AppNavigator = DrawerNavigator(
     GenerateAddress: {
       screen: GenerateAddressContainer,
     },
+    WalletSettings: {
+      screen: WalletSettingsContainer,
+    },
   },
   {
-    initialRouteName: 'SelectActiveWallet',
+    initialRouteName: 'WalletSettings',
     contentComponent: CustomDrawer,
     // TODO fixing bug in react-navigation, possibly remove later
     drawerOpenRoute: 'DrawerOpen',
