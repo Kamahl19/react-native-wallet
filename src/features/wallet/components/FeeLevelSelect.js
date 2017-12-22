@@ -12,7 +12,7 @@ const mapStateToProps = state => ({
 
 const FeeLevelSelect = ({ value, onChange, activeWallet }) => (
   <View>
-    <Text>Select a Coin</Text>
+    <Text>Select a Fee Level</Text>
     <OnePicker selectedValue={value} onValueChange={onChange}>
       {feeLevelOptions[activeWallet.coin].map(feeLevel => (
         <Picker.Item label={feeLevel.label} value={feeLevel.value} key={feeLevel.value} />

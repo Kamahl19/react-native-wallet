@@ -6,7 +6,7 @@ import { networkOptions } from '../constants';
 
 const NetworkSelect = ({ value, onChange }) => (
   <View>
-    <Text>Select a Coin</Text>
+    <Text>Select a Network</Text>
     <OnePicker selectedValue={value} onValueChange={onChange}>
       {networkOptions.map(network => (
         <Picker.Item label={network.label} value={network.value} key={network.value} />
