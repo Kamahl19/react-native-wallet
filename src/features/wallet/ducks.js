@@ -116,11 +116,7 @@ export const selectActiveWallet = createSelector(
  * SAGAS
  */
 function* createWallet({ payload }) {
-  yield put(
-    startApiCall({
-      apiCallId: apiCallIds.CREATE_WALLET,
-    })
-  );
+  yield put(startApiCall({ apiCallId: apiCallIds.CREATE_WALLET }));
 
   try {
     const wallet = yield call(
@@ -132,29 +128,14 @@ function* createWallet({ payload }) {
 
     yield put(createWalletActions.success(wallet));
 
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.CREATE_WALLET,
-      })
-    );
+    yield finishBitcoreCall(apiCallIds.CREATE_WALLET);
   } catch (error) {
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.CREATE_WALLET,
-        error: error.message,
-      })
-    );
-
-    AlertService.error(error.message);
+    yield finishBitcoreCall(apiCallIds.CREATE_WALLET, error);
   }
 }
 
 function* generateAddress() {
-  yield put(
-    startApiCall({
-      apiCallId: apiCallIds.GENERATE_ADDRESS,
-    })
-  );
+  yield put(startApiCall({ apiCallId: apiCallIds.GENERATE_ADDRESS }));
 
   try {
     const activeWallet = yield select(selectActiveWallet);
@@ -168,29 +149,14 @@ function* generateAddress() {
       })
     );
 
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.GENERATE_ADDRESS,
-      })
-    );
+    yield finishBitcoreCall(apiCallIds.GENERATE_ADDRESS);
   } catch (error) {
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.GENERATE_ADDRESS,
-        error: error.message,
-      })
-    );
-
-    AlertService.error(error.message);
+    yield finishBitcoreCall(apiCallIds.GENERATE_ADDRESS, error);
   }
 }
 
 function* sendTransaction({ payload }) {
-  yield put(
-    startApiCall({
-      apiCallId: apiCallIds.SEND_TRANSACTION,
-    })
-  );
+  yield put(startApiCall({ apiCallId: apiCallIds.SEND_TRANSACTION }));
 
   try {
     const activeWallet = yield select(selectActiveWallet);
@@ -204,29 +170,14 @@ function* sendTransaction({ payload }) {
       payload.note
     );
 
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.SEND_TRANSACTION,
-      })
-    );
+    yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION);
   } catch (error) {
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.SEND_TRANSACTION,
-        error: error.message,
-      })
-    );
-
-    AlertService.error(error.message);
+    yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, error);
   }
 }
 
 function* getBalance() {
-  yield put(
-    startApiCall({
-      apiCallId: apiCallIds.GET_BALANCE,
-    })
-  );
+  yield put(startApiCall({ apiCallId: apiCallIds.GET_BALANCE }));
 
   try {
     const activeWallet = yield select(selectActiveWallet);
@@ -240,29 +191,14 @@ function* getBalance() {
       })
     );
 
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.GET_BALANCE,
-      })
-    );
+    yield finishBitcoreCall(apiCallIds.GET_BALANCE);
   } catch (error) {
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.GET_BALANCE,
-        error: error.message,
-      })
-    );
-
-    AlertService.error(error.message);
+    yield finishBitcoreCall(apiCallIds.GET_BALANCE, error);
   }
 }
 
 function* getAddresses() {
-  yield put(
-    startApiCall({
-      apiCallId: apiCallIds.GET_ADDRESSES,
-    })
-  );
+  yield put(startApiCall({ apiCallId: apiCallIds.GET_ADDRESSES }));
 
   try {
     const activeWallet = yield select(selectActiveWallet);
@@ -276,19 +212,21 @@ function* getAddresses() {
       })
     );
 
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.GET_ADDRESSES,
-      })
-    );
+    yield finishBitcoreCall(apiCallIds.GET_ADDRESSES);
   } catch (error) {
-    yield put(
-      finishApiCall({
-        apiCallId: apiCallIds.GET_ADDRESSES,
-        error: error.message,
-      })
-    );
+    yield finishBitcoreCall(apiCallIds.GET_ADDRESSES, error);
+  }
+}
 
+function* finishBitcoreCall(apiCallId, error) {
+  yield put(
+    finishApiCall({
+      apiCallId,
+      error: error ? error.message : undefined,
+    })
+  );
+
+  if (error) {
     AlertService.error(error.message);
   }
 }
