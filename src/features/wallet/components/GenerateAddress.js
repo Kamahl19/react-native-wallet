@@ -13,7 +13,7 @@ import {
 
 export default class GenerateAddress extends Component {
   static propTypes = {
-    address: PropTypes.string,
+    address: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
     onCopy: PropTypes.func.isRequired,
   };
@@ -28,7 +28,7 @@ export default class GenerateAddress extends Component {
 
           <Button onPress={() => onSubmit()} title="Generate Address" type="primary" size="md" />
 
-          {address && <TextInput label="Address" value={address} />}
+          {address && <TextInput label="Address" value={address.address} />}
 
           {address && (
             <Button onPress={onCopy} title="Copy to Clipboard" type="default" size="md" />
@@ -36,7 +36,7 @@ export default class GenerateAddress extends Component {
 
           {address && (
             <CenterView style={{ marginTop: 20 }}>
-              <QRCode value={address} />
+              <QRCode value={address.address} />
             </CenterView>
           )}
         </ScreenWrapper>

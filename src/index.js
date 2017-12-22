@@ -22,4 +22,3 @@ if (Platform.OS === 'ios') {
 // Add recreate
 // Add import
 // Add export
-// Add addresses

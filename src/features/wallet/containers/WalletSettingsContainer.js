@@ -4,21 +4,24 @@ import { Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import { getBalanceActions, selectActiveWallet } from '../ducks';
+import { getBalanceActions, getAddressesActions, selectActiveWallet } from '../ducks';
 import WalletSettings from '../components/WalletSettings';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
   isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
+  isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       getBalance: getBalanceActions.request,
+      getAddresses: getAddressesActions.request,
     },
     dispatch
   ),
@@ -29,6 +32,7 @@ export default class WalletSettingsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     isGettingBalance: PropTypes.bool.isRequired,
+    isGettingAddresses: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -38,6 +42,7 @@ export default class WalletSettingsContainer extends Component {
 
   componentWillMount() {
     this.props.actions.getBalance();
+    this.props.actions.getAddresses();
   }
 
   onCopy = text => {
@@ -45,18 +50,16 @@ export default class WalletSettingsContainer extends Component {
   };
 
   render() {
-    const { activeWallet, isGettingBalance } = this.props;
+    const { activeWallet, isGettingBalance, isGettingAddresses } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
     return (
-      <WalletSettings
-        onCopy={this.onCopy}
-        isGettingBalance={isGettingBalance}
-        activeWallet={activeWallet}
-      />
+      <Spinner show={isGettingBalance || isGettingAddresses}>
+        <WalletSettings onCopy={this.onCopy} activeWallet={activeWallet} />
+      </Spinner>
     );
   }
 }

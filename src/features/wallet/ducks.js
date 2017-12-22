@@ -24,6 +24,7 @@ export const CREATE_WALLET = 'wallet/CREATE_WALLET';
 export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
 export const GET_BALANCE = 'wallet/GET_BALANCE';
+export const GET_ADDRESSES = 'wallet/GET_ADDRESSES';
 
 /**
  * ACTIONS
@@ -33,6 +34,7 @@ export const createWalletActions = createApiActionCreators(CREATE_WALLET);
 export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
 export const getBalanceActions = createApiActionCreators(GET_BALANCE);
+export const getAddressesActions = createApiActionCreators(GET_ADDRESSES);
 
 /**
  * REDUCERS
@@ -52,9 +54,9 @@ const wallets = createReducer(initialState.wallets, {
   },
   [GENERATE_ADDRESS]: {
     [SUCCESS]: (state, { address, walletId }) => {
-      const wallet = state.find(wallet => wallet.walletId === walletId);
+      const wallet = findActiveWallet(state, walletId);
 
-      return replaceInArray(state, wallet => wallet.walletId === walletId, {
+      return updateActiveWallet(state, walletId, {
         ...wallet,
         address,
       });
@@ -62,15 +64,33 @@ const wallets = createReducer(initialState.wallets, {
   },
   [GET_BALANCE]: {
     [SUCCESS]: (state, { balance, walletId }) => {
-      const wallet = state.find(wallet => wallet.walletId === walletId);
+      const wallet = findActiveWallet(state, walletId);
 
-      return replaceInArray(state, wallet => wallet.walletId === walletId, {
+      return updateActiveWallet(state, walletId, {
         ...wallet,
         balance,
       });
     },
   },
+  [GET_ADDRESSES]: {
+    [SUCCESS]: (state, { addresses, walletId }) => {
+      const wallet = findActiveWallet(state, walletId);
+
+      return updateActiveWallet(state, walletId, {
+        ...wallet,
+        addresses,
+      });
+    },
+  },
 });
+
+function findActiveWallet(state, walletId) {
+  return state.find(wallet => wallet.walletId === walletId);
+}
+
+function updateActiveWallet(state, walletId, value) {
+  return replaceInArray(state, wallet => wallet.walletId === walletId, value);
+}
 
 export default combineReducers({
   activeWalletId,
@@ -237,9 +257,46 @@ function* getBalance() {
   }
 }
 
+function* getAddresses() {
+  yield put(
+    startApiCall({
+      apiCallId: apiCallIds.GET_ADDRESSES,
+    })
+  );
+
+  try {
+    const activeWallet = yield select(selectActiveWallet);
+
+    const addresses = yield call(bitcoreUtils.getAddresses, activeWallet);
+
+    yield put(
+      getAddressesActions.success({
+        walletId: activeWallet.walletId,
+        addresses,
+      })
+    );
+
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GET_ADDRESSES,
+      })
+    );
+  } catch (error) {
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GET_ADDRESSES,
+        error: error.message,
+      })
+    );
+
+    AlertService.error(error.message);
+  }
+}
+
 export function* walletSaga() {
   yield takeLatest(createActionType(CREATE_WALLET, REQUEST), createWallet);
   yield takeLatest(createActionType(GENERATE_ADDRESS, REQUEST), generateAddress);
   yield takeLatest(SEND_TRANSACTION, sendTransaction);
   yield takeLatest(createActionType(GET_BALANCE, REQUEST), getBalance);
+  yield takeLatest(createActionType(GET_ADDRESSES, REQUEST), getAddresses);
 }

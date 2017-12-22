@@ -126,7 +126,7 @@ function createAddressAsync(client) {
         return reject(err);
       }
 
-      return resolve(res.address);
+      return resolve(res);
     });
   });
 }
@@ -138,7 +138,19 @@ function getBalanceAsync(client, coin) {
         return reject(err);
       }
 
-      return resolve(res.totalAmount);
+      return resolve(res);
+    });
+  });
+}
+
+function getAddressesAsync(client) {
+  return new Promise((resolve, reject) => {
+    client.getMainAddresses(undefined, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
     });
   });
 }
@@ -267,6 +279,18 @@ export async function getBalance(wallet) {
   const balance = await getBalanceAsync(client, wallet.coin);
 
   return balance;
+}
+
+export async function getAddresses(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet);
+
+  const addresses = await getAddressesAsync(client);
+
+  return addresses;
 }
 
 export function formatAmount(satoshis, coin) {
