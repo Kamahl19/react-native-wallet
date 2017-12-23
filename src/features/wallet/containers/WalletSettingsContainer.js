@@ -13,11 +13,13 @@ import {
   getTxHistoryActions,
   selectActiveWallet,
 } from '../ducks';
+import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
 import WalletSettings from '../components/WalletSettings';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
+  price: selectPriceForActiveWallet(state),
   isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
   isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
   isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
@@ -29,6 +31,7 @@ const mapDispatchToProps = dispatch => ({
       getBalance: getBalanceActions.request,
       getAddresses: getAddressesActions.request,
       getTxHistory: getTxHistoryActions.request,
+      getPrices: getPricesActions.request,
     },
     dispatch
   ),
@@ -38,6 +41,7 @@ const mapDispatchToProps = dispatch => ({
 export default class WalletSettingsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
+    price: PropTypes.number,
     isGettingBalance: PropTypes.bool.isRequired,
     isGettingAddresses: PropTypes.bool.isRequired,
     isGettingTxHistory: PropTypes.bool.isRequired,
@@ -52,6 +56,7 @@ export default class WalletSettingsContainer extends Component {
     this.props.actions.getBalance();
     this.props.actions.getAddresses();
     this.props.actions.getTxHistory();
+    this.props.actions.getPrices();
   }
 
   onCopy = text => {
@@ -59,7 +64,13 @@ export default class WalletSettingsContainer extends Component {
   };
 
   render() {
-    const { activeWallet, isGettingBalance, isGettingAddresses, isGettingTxHistory } = this.props;
+    const {
+      activeWallet,
+      isGettingBalance,
+      isGettingAddresses,
+      isGettingTxHistory,
+      price,
+    } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
@@ -67,7 +78,7 @@ export default class WalletSettingsContainer extends Component {
 
     return (
       <Spinner show={isGettingBalance || isGettingAddresses || isGettingTxHistory}>
-        <WalletSettings onCopy={this.onCopy} activeWallet={activeWallet} />
+        <WalletSettings onCopy={this.onCopy} activeWallet={activeWallet} price={price} />
       </Spinner>
     );
   }

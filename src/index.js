@@ -18,7 +18,8 @@ if (Platform.OS === 'ios') {
 
 // TODO
 // rozdelit wallet na btc a wallet
-// show balance in USD
+// format USD with https://github.com/ExodusMovement/format-currency
+// format BTC with https://github.com/ExodusMovement/number-unit
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184
 // TEST https://github.com/tradle/rn-nodeify
 // Add import https://github.com/bitpay/bitcore-wallet/blob/master/bin/wallet-import

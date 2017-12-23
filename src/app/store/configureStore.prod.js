@@ -13,7 +13,7 @@ export default function configureStore() {
     {
       key: 'root',
       storage: AsyncStorage,
-      whitelist: ['wallet'],
+      whitelist: ['wallet', 'price'],
     },
     rootReducer
   );
