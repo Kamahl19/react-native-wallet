@@ -29,7 +29,7 @@ const AppNavigator = DrawerNavigator(
     },
   },
   {
-    initialRouteName: 'WalletSettings',
+    initialRouteName: 'SelectActiveWallet',
     contentComponent: CustomDrawer,
     // TODO fixing bug in react-navigation, possibly remove later
     drawerOpenRoute: 'DrawerOpen',
