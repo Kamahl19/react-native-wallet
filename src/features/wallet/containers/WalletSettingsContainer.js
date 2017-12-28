@@ -11,6 +11,8 @@ import {
   getBalanceActions,
   getAddressesActions,
   getTxHistoryActions,
+  exportWalletActions,
+  importWalletActions,
   selectActiveWallet,
 } from '../ducks';
 import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
@@ -23,6 +25,8 @@ const mapStateToProps = state => ({
   isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
   isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
   isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
+  isGettingExport: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
+  isImporting: selectIsInProgress(state, apiCallIds.IMPORT_WALLET),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,6 +35,8 @@ const mapDispatchToProps = dispatch => ({
       getBalance: getBalanceActions.request,
       getAddresses: getAddressesActions.request,
       getTxHistory: getTxHistoryActions.request,
+      exportWallet: exportWalletActions.request,
+      importWallet: importWalletActions.request,
       getPrices: getPricesActions.request,
     },
     dispatch
@@ -45,6 +51,8 @@ export default class WalletSettingsContainer extends Component {
     isGettingBalance: PropTypes.bool.isRequired,
     isGettingAddresses: PropTypes.bool.isRequired,
     isGettingTxHistory: PropTypes.bool.isRequired,
+    isGettingExport: PropTypes.bool.isRequired,
+    isImporting: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -69,7 +77,10 @@ export default class WalletSettingsContainer extends Component {
       isGettingBalance,
       isGettingAddresses,
       isGettingTxHistory,
+      isGettingExport,
+      isImporting,
       price,
+      actions,
     } = this.props;
 
     if (!activeWallet) {
@@ -77,8 +88,22 @@ export default class WalletSettingsContainer extends Component {
     }
 
     return (
-      <Spinner show={isGettingBalance || isGettingAddresses || isGettingTxHistory}>
-        <WalletSettings onCopy={this.onCopy} activeWallet={activeWallet} price={price} />
+      <Spinner
+        show={
+          isGettingBalance ||
+          isGettingAddresses ||
+          isGettingTxHistory ||
+          isGettingExport ||
+          isImporting
+        }
+      >
+        <WalletSettings
+          onCopy={this.onCopy}
+          activeWallet={activeWallet}
+          price={price}
+          exportWallet={actions.exportWallet}
+          importWallet={actions.importWallet}
+        />
       </Spinner>
     );
   }

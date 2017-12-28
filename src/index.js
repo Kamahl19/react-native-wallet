@@ -22,5 +22,3 @@ if (Platform.OS === 'ios') {
 // format BTC with https://github.com/ExodusMovement/number-unit
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184
 // TEST https://github.com/tradle/rn-nodeify
-// Add import https://github.com/bitpay/bitcore-wallet/blob/master/bin/wallet-import
-// Add export https://github.com/bitpay/bitcore-wallet/blob/master/bin/wallet-export

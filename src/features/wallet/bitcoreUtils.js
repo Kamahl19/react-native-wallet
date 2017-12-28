@@ -4,7 +4,7 @@ import bs58check from 'bs58check';
 import config from '../../config';
 import { COINS, coinOptions, networkOptions, feeLevelOptions } from './constants';
 
-function getClient(wallet) {
+function getClient(wallet, opts = {}) {
   const client = new BitcoreClient({
     baseUrl: config.bwsUrl,
     verbose: __DEV__,
@@ -15,6 +15,10 @@ function getClient(wallet) {
   }
 
   client.import(JSON.stringify(wallet));
+
+  if (opts.doNotOpen) {
+    return Promise.resolve(client);
+  }
 
   return new Promise((resolve, reject) => {
     client.openWallet(err => {
@@ -227,6 +231,18 @@ function broadcastTxProposalAsync(client, txp) {
   });
 }
 
+function importFromMnemonicAsync(client, mnemonic, coin, network) {
+  return new Promise((resolve, reject) => {
+    client.importFromMnemonic(mnemonic, { coin, network }, (err, res) => {
+      if (err) {
+        return reject(err);
+      }
+
+      return resolve(res);
+    });
+  });
+}
+
 export async function createWallet(walletName, coin, network) {
   validateWalletName(walletName);
   validateCoin(coin);
@@ -315,6 +331,54 @@ export async function getAddresses(wallet) {
   const addresses = await getAddressesAsync(client);
 
   return addresses;
+}
+
+export async function exportWallet(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet, { doNotOpen: true });
+
+  const walletData = client.export();
+
+  return walletData;
+}
+
+export async function importWallet(importData) {
+  if (!importData) {
+    throw new Error('Missing import data');
+  }
+
+  const client = await getClient();
+
+  client.import(importData);
+
+  const wallet = JSON.parse(client.export());
+
+  return wallet;
+}
+
+export async function importWalletFromMnemonic(mnemonic, coin, network) {
+  if (!mnemonic) {
+    throw new Error('Missing import data');
+  }
+
+  if (!coin) {
+    throw new Error('Coin is missing');
+  }
+
+  if (!network) {
+    throw new Error('Network is missing');
+  }
+
+  const client = await getClient();
+
+  await importFromMnemonicAsync(client, mnemonic, coin, network);
+
+  const wallet = JSON.parse(client.export());
+
+  return wallet;
 }
 
 export function formatAmount(satoshis, coin) {

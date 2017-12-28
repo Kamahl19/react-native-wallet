@@ -26,6 +26,8 @@ export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
 export const GET_BALANCE = 'wallet/GET_BALANCE';
 export const GET_ADDRESSES = 'wallet/GET_ADDRESSES';
 export const GET_TX_HISTORY = 'wallet/GET_TX_HISTORY';
+export const EXPORT_WALLET = 'wallet/EXPORT_WALLET';
+export const IMPORT_WALLET = 'wallet/IMPORT_WALLET';
 
 /**
  * ACTIONS
@@ -37,6 +39,8 @@ export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
 export const getBalanceActions = createApiActionCreators(GET_BALANCE);
 export const getAddressesActions = createApiActionCreators(GET_ADDRESSES);
 export const getTxHistoryActions = createApiActionCreators(GET_TX_HISTORY);
+export const exportWalletActions = createApiActionCreators(EXPORT_WALLET);
+export const importWalletActions = createApiActionCreators(IMPORT_WALLET);
 
 /**
  * REDUCERS
@@ -94,6 +98,19 @@ const wallets = createReducer(initialState.wallets, {
       });
     },
   },
+  [EXPORT_WALLET]: {
+    [SUCCESS]: (state, { exported, walletId }) => {
+      const wallet = findActiveWallet(state, walletId);
+
+      return updateActiveWallet(state, walletId, {
+        ...wallet,
+        exported,
+      });
+    },
+  },
+  [IMPORT_WALLET]: {
+    [SUCCESS]: (state, wallet) => [...state, wallet],
+  },
 });
 
 function findActiveWallet(state, walletId) {
@@ -122,6 +139,10 @@ export const selectActiveWallet = createSelector(
   selectWallets,
   (activeWalletId, wallets) =>
     activeWalletId ? wallets.find(wallet => wallet.walletId === activeWalletId) : null
+);
+
+export const selectWalletById = createSelector(selectWallets, (wallets, walletId) =>
+  wallets.find(wallet => wallet.walletId === walletId)
 );
 
 /**
@@ -251,6 +272,60 @@ function* getTxHistory() {
   }
 }
 
+function* exportWallet() {
+  yield put(startApiCall({ apiCallId: apiCallIds.EXPORT_WALLET }));
+
+  try {
+    const activeWallet = yield select(selectActiveWallet);
+
+    const exported = yield call(bitcoreUtils.exportWallet, activeWallet);
+
+    yield put(
+      exportWalletActions.success({
+        walletId: activeWallet.walletId,
+        exported,
+      })
+    );
+
+    yield finishBitcoreCall(apiCallIds.EXPORT_WALLET);
+  } catch (error) {
+    yield finishBitcoreCall(apiCallIds.EXPORT_WALLET, error);
+  }
+}
+
+function* importWallet({ payload }) {
+  yield put(startApiCall({ apiCallId: apiCallIds.IMPORT_WALLET }));
+
+  try {
+    let wallet;
+
+    if (payload.mnemonic) {
+      wallet = yield call(
+        bitcoreUtils.importWalletFromMnemonic,
+        payload.mnemonic,
+        payload.coin,
+        payload.network
+      );
+    } else {
+      wallet = yield call(bitcoreUtils.importWallet, payload.importData);
+    }
+
+    const alreadyExists = yield select(selectWalletById, wallet.walletId);
+
+    if (alreadyExists) {
+      yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, {
+        message: 'This wallet already exists in the device',
+      });
+    } else {
+      yield put(importWalletActions.success(wallet));
+
+      yield finishBitcoreCall(apiCallIds.IMPORT_WALLET);
+    }
+  } catch (error) {
+    yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, error);
+  }
+}
+
 function* finishBitcoreCall(apiCallId, error) {
   yield put(
     finishApiCall({
@@ -271,4 +346,6 @@ export function* walletSaga() {
   yield takeLatest(createActionType(GET_BALANCE, REQUEST), getBalance);
   yield takeLatest(createActionType(GET_ADDRESSES, REQUEST), getAddresses);
   yield takeLatest(createActionType(GET_TX_HISTORY, REQUEST), getTxHistory);
+  yield takeLatest(createActionType(EXPORT_WALLET, REQUEST), exportWallet);
+  yield takeLatest(createActionType(IMPORT_WALLET, REQUEST), importWallet);
 }

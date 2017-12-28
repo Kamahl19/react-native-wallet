@@ -57,7 +57,7 @@ export default class SendTransaction extends Component {
 
         <FeeLevelSelect onChange={feeLevel => this.setState({ feeLevel })} value={feeLevel} />
 
-        <FormItem>{form.getFieldDecorator('note')(<TextInput label="note" multiline />)}</FormItem>
+        <FormItem>{form.getFieldDecorator('note')(<TextInput label="Note" multiline />)}</FormItem>
 
         <Button onPress={this.handleSendTransaction} title="Send" type="primary" size="md" />
       </ScreenWrapper>
