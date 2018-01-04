@@ -11,7 +11,7 @@ import {
   TextInput,
 } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
-import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
+import { DEFAULT_NETWORK } from '../constants';
 
 @createForm()
 export default class ImportWallet extends Component {
@@ -32,7 +32,6 @@ export default class ImportWallet extends Component {
       if (!err) {
         importWallet({
           mnemonic,
-          coin: DEFAULT_COIN,
           network,
         });
       }

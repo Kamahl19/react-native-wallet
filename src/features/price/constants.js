@@ -1,4 +1,4 @@
-export const COINS = ['BTC' /*, 'BCH'*/];
+export const COINS = ['BTC'];
 
 export const FIATS = ['USD'];
 

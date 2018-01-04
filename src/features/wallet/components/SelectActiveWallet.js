@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 
 import { Text, ScreenWrapper, TouchableItem, Heading } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
-import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
+import { DEFAULT_NETWORK } from '../constants';
 
 export default class SelectActiveWallet extends Component {
   static propTypes = {
@@ -15,10 +15,7 @@ export default class SelectActiveWallet extends Component {
     network: DEFAULT_NETWORK,
   };
 
-  getWallets = () =>
-    this.props.wallets.filter(
-      ({ network, coin }) => network === this.state.network && coin === DEFAULT_COIN
-    );
+  getWallets = () => this.props.wallets.filter(({ network }) => network === this.state.network);
 
   render() {
     const { selectActiveWallet } = this.props;

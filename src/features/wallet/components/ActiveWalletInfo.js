@@ -14,7 +14,6 @@ const ActiveWalletInfo = ({ wallet }) =>
     <View>
       <Text>Wallet Name: {wallet.walletName}</Text>
       <Text>Network: {wallet.network}</Text>
-      <Text>Coin: {wallet.coin}</Text>
     </View>
   ) : (
     <View>

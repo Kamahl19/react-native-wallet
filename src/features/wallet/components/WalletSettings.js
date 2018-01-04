@@ -26,7 +26,7 @@ export default class WalletSettings extends Component {
 
   render() {
     const { activeWallet, onCopy, price, exportWallet } = this.props;
-    const { mnemonic, balance, addresses, coin, txs, exported } = activeWallet;
+    const { mnemonic, balance, addresses, txs, exported } = activeWallet;
 
     return (
       <ScrollView>
@@ -34,7 +34,7 @@ export default class WalletSettings extends Component {
           <Heading notFirst>Balance</Heading>
           {balance && (
             <View style={styles.balance}>
-              <Text>{formatAmount(balance.totalAmount, coin)}</Text>
+              <Text>{formatAmount(balance.totalAmount)}</Text>
               {price && <Text> (${(balance.totalAmount / 1e8 * price).toFixed(2)})</Text>}
             </View>
           )}
@@ -48,10 +48,10 @@ export default class WalletSettings extends Component {
             txs.map(tx => (
               <View key={tx.txid} style={styles.transaction}>
                 <Text>Type: {tx.action}</Text>
-                <Text>Amount: {formatAmount(tx.amount, coin)}</Text>
+                <Text>Amount: {formatAmount(tx.amount)}</Text>
                 <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
                 <Text>Confirmations: {tx.confirmations || 0}</Text>
-                <Text>Fee: {formatAmount(tx.fees, coin)}</Text>
+                <Text>Fee: {formatAmount(tx.fees)}</Text>
                 {tx.message && <Text>Message: {tx.message}</Text>}
               </View>
             ))}

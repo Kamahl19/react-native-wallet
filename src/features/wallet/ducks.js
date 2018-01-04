@@ -148,12 +148,7 @@ function* createWallet({ payload }) {
   yield put(startApiCall({ apiCallId: apiCallIds.CREATE_WALLET }));
 
   try {
-    const wallet = yield call(
-      bitcoreUtils.createWallet,
-      payload.walletName,
-      payload.coin,
-      payload.network
-    );
+    const wallet = yield call(bitcoreUtils.createWallet, payload.walletName, payload.network);
 
     yield put(createWalletActions.success(wallet));
 
@@ -296,12 +291,7 @@ function* importWallet({ payload }) {
     let wallet;
 
     if (payload.mnemonic) {
-      wallet = yield call(
-        bitcoreUtils.importWalletFromMnemonic,
-        payload.mnemonic,
-        payload.coin,
-        payload.network
-      );
+      wallet = yield call(bitcoreUtils.importWalletFromMnemonic, payload.mnemonic, payload.network);
     } else {
       wallet = yield call(bitcoreUtils.importWallet, payload.importData);
     }

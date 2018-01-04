@@ -5,7 +5,7 @@ import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
 import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
-import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
+import { DEFAULT_NETWORK } from '../constants';
 
 @createForm()
 export default class CreateWallet extends Component {
@@ -26,7 +26,6 @@ export default class CreateWallet extends Component {
       if (!err) {
         onSubmit({
           ...values,
-          coin: DEFAULT_COIN,
           network,
         });
       }

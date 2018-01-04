@@ -2,7 +2,7 @@ import BitcoreClient from 'bitcore-wallet-client';
 import bs58check from 'bs58check';
 
 import config from '../../config';
-import { COINS, coinOptions, networkOptions, feeLevelOptions } from './constants';
+import { UNITS, networkOptions, feeLevelOptions } from './constants';
 
 function getClient(wallet, opts = {}) {
   const client = new BitcoreClient({
@@ -40,7 +40,7 @@ function parseAmount(text) {
     text = text.toString();
   }
 
-  const regex = '^(\\d*(\\.\\d{0,8})?)\\s*(' + Object.keys(COINS).join('|') + ')?$';
+  const regex = '^(\\d*(\\.\\d{0,8})?)\\s*(' + Object.keys(UNITS).join('|') + ')?$';
   const match = new RegExp(regex, 'i').exec(text.trim());
 
   if (!match || match.length === 0) {
@@ -54,7 +54,7 @@ function parseAmount(text) {
   }
 
   const unit = match[3].toLowerCase();
-  const rate = COINS[unit];
+  const rate = UNITS[unit];
 
   if (!rate) {
     throw new Error('Invalid unit');
@@ -83,14 +83,8 @@ function validateWalletName(walletName) {
   }
 }
 
-function validateCoin(coin) {
-  if (coinOptions.filter(option => option.value === coin).length === 0) {
-    throw new Error('Invalid coin');
-  }
-}
-
-function validateFeeLevel(feeLevel, coin) {
-  if (feeLevelOptions[coin].filter(option => option.value === feeLevel).length === 0) {
+function validateFeeLevel(feeLevel) {
+  if (feeLevelOptions.filter(option => option.value === feeLevel).length === 0) {
     throw new Error('Invalid fee level');
   }
 }
@@ -101,7 +95,7 @@ function validateNetwork(network) {
   }
 }
 
-function createWalletAsync(client, walletName, coin, network) {
+function createWalletAsync(client, walletName, network) {
   return new Promise((resolve, reject) => {
     client.createWallet(
       walletName,
@@ -109,7 +103,6 @@ function createWalletAsync(client, walletName, coin, network) {
       1,
       1,
       {
-        coin,
         network,
       },
       err => {
@@ -135,9 +128,9 @@ function createAddressAsync(client) {
   });
 }
 
-function getBalanceAsync(client, coin) {
+function getBalanceAsync(client) {
   return new Promise((resolve, reject) => {
-    client.getBalance({ coin }, (err, res) => {
+    client.getBalance(undefined, (err, res) => {
       if (err) {
         return reject(err);
       }
@@ -231,9 +224,9 @@ function broadcastTxProposalAsync(client, txp) {
   });
 }
 
-function importFromMnemonicAsync(client, mnemonic, coin, network) {
+function importFromMnemonicAsync(client, mnemonic, network) {
   return new Promise((resolve, reject) => {
-    client.importFromMnemonic(mnemonic, { coin, network }, (err, res) => {
+    client.importFromMnemonic(mnemonic, { network }, (err, res) => {
       if (err) {
         return reject(err);
       }
@@ -243,19 +236,17 @@ function importFromMnemonicAsync(client, mnemonic, coin, network) {
   });
 }
 
-export async function createWallet(walletName, coin, network) {
+export async function createWallet(walletName, network) {
   validateWalletName(walletName);
-  validateCoin(coin);
   validateNetwork(network);
 
   const client = await getClient();
 
   client.seedFromRandomWithMnemonic({
     network,
-    coin,
   });
 
-  await createWalletAsync(client, walletName, coin, network);
+  await createWalletAsync(client, walletName, network);
 
   const wallet = JSON.parse(client.export());
 
@@ -280,7 +271,7 @@ export async function sendTransaction(wallet, address, amount, feeLevel, note) {
   }
 
   validateAddress(address);
-  validateFeeLevel(feeLevel, wallet.coin);
+  validateFeeLevel(feeLevel);
 
   amount = parseAmount(amount);
 
@@ -304,7 +295,7 @@ export async function getBalance(wallet) {
 
   const client = await getClient(wallet);
 
-  const balance = await getBalanceAsync(client, wallet.coin);
+  const balance = await getBalanceAsync(client);
 
   return balance;
 }
@@ -359,13 +350,9 @@ export async function importWallet(importData) {
   return wallet;
 }
 
-export async function importWalletFromMnemonic(mnemonic, coin, network) {
+export async function importWalletFromMnemonic(mnemonic, network) {
   if (!mnemonic) {
     throw new Error('Missing import data');
-  }
-
-  if (!coin) {
-    throw new Error('Coin is missing');
   }
 
   if (!network) {
@@ -374,15 +361,15 @@ export async function importWalletFromMnemonic(mnemonic, coin, network) {
 
   const client = await getClient();
 
-  await importFromMnemonicAsync(client, mnemonic, coin, network);
+  await importFromMnemonicAsync(client, mnemonic, network);
 
   const wallet = JSON.parse(client.export());
 
   return wallet;
 }
 
-export function formatAmount(satoshis, coin) {
-  const unit = COINS[coin];
+export function formatAmount(satoshis, unitShort = UNITS.btc) {
+  const unit = UNITS[unitShort];
 
   let amount = satoshis / unit.toSatoshis;
 
