@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
 import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
-import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
 
@@ -16,19 +15,18 @@ export default class CreateWallet extends Component {
   };
 
   state = {
-    coin: DEFAULT_COIN,
     network: DEFAULT_NETWORK,
   };
 
   handleCreateWallet = () => {
     const { form, onSubmit } = this.props;
-    const { coin, network } = this.state;
+    const { network } = this.state;
 
     form.validateFields((err, values) => {
       if (!err) {
         onSubmit({
           ...values,
-          coin,
+          coin: DEFAULT_COIN,
           network,
         });
       }
@@ -37,13 +35,11 @@ export default class CreateWallet extends Component {
 
   render() {
     const { form } = this.props;
-    const { coin, network } = this.state;
+    const { network } = this.state;
 
     return (
       <ScreenWrapper>
         <Heading>Create Wallet</Heading>
-
-        <CoinSelect onChange={coin => this.setState({ coin })} value={coin} />
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 

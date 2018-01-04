@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
 import { Text, ScreenWrapper, TouchableItem, Heading } from '../../../common/components';
-import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
 
@@ -13,26 +12,23 @@ export default class SelectActiveWallet extends Component {
   };
 
   state = {
-    coin: DEFAULT_COIN,
     network: DEFAULT_NETWORK,
   };
 
   getWallets = () =>
     this.props.wallets.filter(
-      ({ network, coin }) => network === this.state.network && coin === this.state.coin
+      ({ network, coin }) => network === this.state.network && coin === DEFAULT_COIN
     );
 
   render() {
     const { selectActiveWallet } = this.props;
-    const { coin, network } = this.state;
+    const { network } = this.state;
 
     const wallets = this.getWallets();
 
     return (
       <ScreenWrapper>
         <Heading>Select Active Wallet</Heading>
-
-        <CoinSelect onChange={coin => this.setState({ coin })} value={coin} />
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 

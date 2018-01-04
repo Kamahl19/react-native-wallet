@@ -10,7 +10,6 @@ import {
   FormItem,
   TextInput,
 } from '../../../common/components';
-import CoinSelect from './CoinSelect';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
 
@@ -22,20 +21,19 @@ export default class ImportWallet extends Component {
   };
 
   state = {
-    importCoin: DEFAULT_COIN,
-    importNetwork: DEFAULT_NETWORK,
+    network: DEFAULT_NETWORK,
   };
 
   importFromMnemonic = () => {
     const { form, importWallet } = this.props;
-    const { importCoin, importNetwork } = this.state;
+    const { network } = this.state;
 
     form.validateFields((err, { mnemonic }) => {
       if (!err) {
         importWallet({
           mnemonic,
-          coin: importCoin,
-          network: importNetwork,
+          coin: DEFAULT_COIN,
+          network,
         });
       }
     });
@@ -43,7 +41,7 @@ export default class ImportWallet extends Component {
 
   render() {
     const { form } = this.props;
-    const { importCoin, importNetwork } = this.state;
+    const { network } = this.state;
 
     return (
       <ScrollView>
@@ -54,11 +52,7 @@ export default class ImportWallet extends Component {
               <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" autoFocus />
             )}
           </FormItem>
-          <CoinSelect onChange={importCoin => this.setState({ importCoin })} value={importCoin} />
-          <NetworkSelect
-            onChange={importNetwork => this.setState({ importNetwork })}
-            value={importNetwork}
-          />
+          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
           <Button onPress={this.importFromMnemonic} title="Import" type="default" size="md" />
         </ScreenWrapper>
       </ScrollView>

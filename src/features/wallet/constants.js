@@ -5,12 +5,12 @@ export const COINS = {
     maxDecimals: 8,
     minDecimals: 8,
   },
-  bch: {
-    name: 'bch',
-    toSatoshis: 100000000,
-    maxDecimals: 8,
-    minDecimals: 8,
-  },
+  // bch: {
+  //   name: 'bch',
+  //   toSatoshis: 100000000,
+  //   maxDecimals: 8,
+  //   minDecimals: 8,
+  // },
   bit: {
     name: 'bit',
     toSatoshis: 100,
@@ -39,12 +39,12 @@ export const feeLevelOptions = {
     { label: 'Economy', value: 'economy' },
     { label: 'Super Economy', value: 'superEconomy' },
   ],
-  bch: [{ label: 'Normal', value: 'normal' }],
+  // bch: [{ label: 'Normal', value: 'normal' }],
 };
 
 export const coinOptions = [
   { label: 'Bitcoin', value: 'btc' },
-  { label: 'Bitcoin Cash', value: 'bch' },
+  // { label: 'Bitcoin Cash', value: 'bch' },
 ];
 
 export const networkOptions = [

@@ -17,7 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// zrusit BCH
 // rozdelit wallet na btc a wallet
 // import from QRCode
 // format USD with https://github.com/ExodusMovement/format-currency
