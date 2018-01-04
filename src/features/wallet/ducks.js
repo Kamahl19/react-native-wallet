@@ -141,10 +141,6 @@ export const selectActiveWallet = createSelector(
     activeWalletId ? wallets.find(wallet => wallet.walletId === activeWalletId) : null
 );
 
-export const selectWalletById = createSelector(selectWallets, (wallets, walletId) =>
-  wallets.find(wallet => wallet.walletId === walletId)
-);
-
 /**
  * SAGAS
  */
@@ -310,7 +306,8 @@ function* importWallet({ payload }) {
       wallet = yield call(bitcoreUtils.importWallet, payload.importData);
     }
 
-    const alreadyExists = yield select(selectWalletById, wallet.walletId);
+    const existingWallets = yield select(selectWallets);
+    const alreadyExists = !!existingWallets.filter(w => w.walletId === wallet.walletId).length;
 
     if (alreadyExists) {
       yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, {

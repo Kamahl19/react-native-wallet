@@ -4,7 +4,6 @@ import PropTypes from 'prop-types';
 import moment from 'moment';
 import QRCode from 'react-native-qrcode-svg';
 
-import { createForm } from '../../../common/services/Form';
 import {
   ScrollView,
   ScreenWrapper,
@@ -13,66 +12,25 @@ import {
   Text,
   View,
   CenterView,
-  FormItem,
   TextInput,
 } from '../../../common/components';
 import { formatAmount } from '../bitcoreUtils';
-import CoinSelect from './CoinSelect';
-import NetworkSelect from './NetworkSelect';
-import { DEFAULT_COIN, DEFAULT_NETWORK } from '../constants';
 
-@createForm()
 export default class WalletSettings extends Component {
   static propTypes = {
     activeWallet: PropTypes.object.isRequired,
     price: PropTypes.number,
     onCopy: PropTypes.func.isRequired,
     exportWallet: PropTypes.func.isRequired,
-    importWallet: PropTypes.func.isRequired,
-    form: PropTypes.object.isRequired,
-  };
-
-  state = {
-    importCoin: DEFAULT_COIN,
-    importNetwork: DEFAULT_NETWORK,
-  };
-
-  importFromMnemonic = () => {
-    const { form, importWallet } = this.props;
-    const { importCoin, importNetwork } = this.state;
-
-    form.validateFields((err, mnemonic) => {
-      if (!err) {
-        importWallet({
-          mnemonic,
-          coin: importCoin,
-          network: importNetwork,
-        });
-      }
-    });
   };
 
   render() {
-    const { activeWallet, onCopy, price, exportWallet, form } = this.props;
+    const { activeWallet, onCopy, price, exportWallet } = this.props;
     const { mnemonic, balance, addresses, coin, txs, exported } = activeWallet;
-    const { importCoin, importNetwork } = this.state;
-
-    // TODO import from QRCode
 
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Heading>Mnemonic</Heading>
-          <TextInput label="Mnemonic" value={mnemonic} />
-
-          <Button
-            onPress={() => onCopy(mnemonic)}
-            title="Copy to Clipboard"
-            type="default"
-            size="md"
-            style={styles.button}
-          />
-
           <Heading notFirst>Balance</Heading>
           {balance && (
             <View style={styles.balance}>
@@ -98,6 +56,17 @@ export default class WalletSettings extends Component {
               </View>
             ))}
 
+          <Heading>Mnemonic</Heading>
+          <TextInput label="Mnemonic" value={mnemonic} />
+
+          <Button
+            onPress={() => onCopy(mnemonic)}
+            title="Copy to Clipboard"
+            type="default"
+            size="md"
+            style={styles.button}
+          />
+
           <Heading notFirst>Export Wallet</Heading>
 
           <Button
@@ -110,18 +79,9 @@ export default class WalletSettings extends Component {
 
           {exported && (
             <CenterView style={{ marginTop: 20 }}>
-              <QRCode value={exported} />
+              <QRCode value={exported} size={200} />
             </CenterView>
           )}
-
-          <Heading notFirst>Import Wallet from Mnemonic</Heading>
-          <FormItem>{form.getFieldDecorator('mnemonic')(<TextInput label="Mnemonic" />)}</FormItem>
-          <CoinSelect onChange={importCoin => this.setState({ importCoin })} value={importCoin} />
-          <NetworkSelect
-            onChange={importNetwork => this.setState({ importNetwork })}
-            value={importNetwork}
-          />
-          <Button onPress={this.importFromMnemonic} title="Import" type="default" size="md" />
         </ScreenWrapper>
       </ScrollView>
     );

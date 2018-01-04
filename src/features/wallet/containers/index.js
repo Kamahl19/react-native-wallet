@@ -3,3 +3,4 @@ export { default as SelectActiveWalletContainer } from './SelectActiveWalletCont
 export { default as SendTransactionContainer } from './SendTransactionContainer';
 export { default as GenerateAddressContainer } from './GenerateAddressContainer';
 export { default as WalletSettingsContainer } from './WalletSettingsContainer';
+export { default as ImportWalletContainer } from './ImportWalletContainer';
