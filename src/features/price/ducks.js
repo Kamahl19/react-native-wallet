@@ -52,8 +52,7 @@ export const selectPrices = state => selectPrice(state).prices;
 export const selectPriceForActiveWallet = createSelector(
   selectPrices,
   selectActiveWallet,
-  (prices, activeWalllet, fiat) =>
-    activeWalllet ? prices[activeWalllet.coin.toUpperCase()].USD : null
+  (prices, activeWalllet, fiat) => (activeWalllet ? prices[activeWalllet.coin.toUpperCase()] : null)
 );
 
 /**

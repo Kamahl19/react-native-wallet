@@ -368,7 +368,7 @@ export async function importWalletFromMnemonic(mnemonic, network) {
   return wallet;
 }
 
-export function formatAmount(satoshis, unitShort = UNITS.btc) {
+export function formatAmount(satoshis, unitShort = UNITS.btc.name) {
   const unit = UNITS[unitShort];
 
   let amount = satoshis / unit.toSatoshis;

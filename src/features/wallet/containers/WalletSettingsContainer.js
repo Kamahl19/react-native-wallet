@@ -20,7 +20,7 @@ import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
-  price: selectPriceForActiveWallet(state),
+  prices: selectPriceForActiveWallet(state),
   isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
   isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
   isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
@@ -44,7 +44,7 @@ const mapDispatchToProps = dispatch => ({
 export default class WalletSettingsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
-    price: PropTypes.number,
+    prices: PropTypes.object,
     isGettingBalance: PropTypes.bool.isRequired,
     isGettingAddresses: PropTypes.bool.isRequired,
     isGettingTxHistory: PropTypes.bool.isRequired,
@@ -74,7 +74,7 @@ export default class WalletSettingsContainer extends Component {
       isGettingAddresses,
       isGettingTxHistory,
       isGettingExport,
-      price,
+      prices,
       actions,
     } = this.props;
 
@@ -89,7 +89,7 @@ export default class WalletSettingsContainer extends Component {
         <WalletSettings
           onCopy={this.onCopy}
           activeWallet={activeWallet}
-          price={price}
+          price={prices.USD}
           exportWallet={actions.exportWallet}
         />
       </Spinner>
