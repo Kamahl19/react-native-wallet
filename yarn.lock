@@ -5146,9 +5146,9 @@ react-native-material-textfield@^0.11.0:
   dependencies:
     prop-types "^15.5.9"
 
-react-native-qrcode-svg@^5.0.5:
-  version "5.0.5"
-  resolved "https://registry.yarnpkg.com/react-native-qrcode-svg/-/react-native-qrcode-svg-5.0.5.tgz#bbf72d1747517347cda2b87baeb1201bdb0f4738"
+react-native-qrcode-svg@^5.0.6:
+  version "5.0.6"
+  resolved "https://registry.yarnpkg.com/react-native-qrcode-svg/-/react-native-qrcode-svg-5.0.6.tgz#4e054788d1bf1bafe6a229056cde576644d059db"
   dependencies:
     prop-types "^15.5.10"
     qrcode "^0.9.0"
