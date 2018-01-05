@@ -31,40 +31,14 @@ function getClient(wallet, opts = {}) {
   });
 }
 
-function parseAmount(text) {
-  if (text === '' || typeof text === 'undefined') {
-    throw new Error('Missing amount');
-  }
+function parseBTCAmount(text) {
+  const amountBtc = parseFloat(parseFloat(text).toFixed(8));
 
-  if (typeof text !== 'string') {
-    text = text.toString();
-  }
-
-  const regex = '^(\\d*(\\.\\d{0,8})?)\\s*(' + Object.keys(UNITS).join('|') + ')?$';
-  const match = new RegExp(regex, 'i').exec(text.trim());
-
-  if (!match || match.length === 0) {
+  if (typeof amountBtc !== 'number' || Number.isNaN(amountBtc) || amountBtc <= 0) {
     throw new Error('Invalid amount');
   }
 
-  const amount = parseFloat(match[1]);
-
-  if (typeof amount !== 'number' || Number.isNaN(amount)) {
-    throw new Error('Invalid amount');
-  }
-
-  const unit = match[3].toLowerCase();
-  const rate = UNITS[unit];
-
-  if (!rate) {
-    throw new Error('Invalid unit');
-  }
-
-  const amountSat = parseFloat((amount * rate.toSatoshis).toPrecision(12));
-
-  if (amountSat !== Math.round(amountSat)) {
-    throw new Error('Invalid amount');
-  }
+  const amountSat = amountBtc * UNITS.btc.toSatoshis;
 
   return amountSat;
 }
@@ -73,7 +47,7 @@ function validateAddress(address) {
   try {
     bs58check.decode(address);
   } catch (err) {
-    throw new Error('Address is not valid');
+    throw new Error('Invalid address');
   }
 }
 
@@ -164,14 +138,14 @@ function getAddressesAsync(client) {
   });
 }
 
-function createTxProposalAsync(client, address, amount, feeLevel, note) {
+function createTxProposalAsync(client, address, amountSat, feeLevel, note) {
   return new Promise((resolve, reject) => {
     client.createTxProposal(
       {
         outputs: [
           {
             toAddress: address,
-            amount,
+            amount: amountSat,
           },
         ],
         message: note,
@@ -273,11 +247,11 @@ export async function sendTransaction(wallet, address, amount, feeLevel, note) {
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
-  amount = parseAmount(amount);
+  const amountSat = parseBTCAmount(amount);
 
   const client = await getClient(wallet);
 
-  let txp = await createTxProposalAsync(client, address, amount, feeLevel, note);
+  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel, note);
 
   txp = await publishTxProposalAsync(client, txp);
 

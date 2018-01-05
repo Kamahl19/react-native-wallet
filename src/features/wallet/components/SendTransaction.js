@@ -51,7 +51,7 @@ export default class SendTransaction extends Component {
 
         <FormItem>
           {form.getFieldDecorator('amount', { rules: [rules.required] })(
-            <TextInput label="Amount" />
+            <TextInput label="Amount BTC" keyboardType="numeric" />
           )}
         </FormItem>
 
