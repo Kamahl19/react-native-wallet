@@ -15,8 +15,7 @@
     "react-devtools": "react-devtools",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "postinstall":
-      "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js"
+    "postinstall": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js"
   },
   "devDependencies": {
     "babel-eslint": "8.1.2",
@@ -56,6 +55,7 @@
     "react-native-keyboard-manager": "^4.0.13-4",
     "react-native-material-textfield": "^0.11.0",
     "react-native-qrcode-svg": "^5.0.6",
+    "react-native-randombytes": "^3.0.0",
     "react-native-svg": "^5.5.1",
     "react-native-vector-icons": "^4.4.3",
     "react-navigation": "^1.0.0-beta.22",
