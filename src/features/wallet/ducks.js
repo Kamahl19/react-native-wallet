@@ -152,9 +152,11 @@ function* createWallet({ payload }) {
 
     yield put(createWalletActions.success(wallet));
 
-    yield finishBitcoreCall(apiCallIds.CREATE_WALLET);
+    yield finishBitcoreCall(apiCallIds.CREATE_WALLET, {
+      msg: 'Wallet was created successfully. You can select it now.',
+    });
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.CREATE_WALLET, error);
+    yield finishBitcoreCall(apiCallIds.CREATE_WALLET, { error });
   }
 }
 
@@ -175,7 +177,7 @@ function* generateAddress() {
 
     yield finishBitcoreCall(apiCallIds.GENERATE_ADDRESS);
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.GENERATE_ADDRESS, error);
+    yield finishBitcoreCall(apiCallIds.GENERATE_ADDRESS, { error });
   }
 }
 
@@ -194,9 +196,11 @@ function* sendTransaction({ payload }) {
       payload.note
     );
 
-    yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION);
+    yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, {
+      msg: 'Transaction was sent successfully. You can see it in History.',
+    });
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, error);
+    yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, { error });
   }
 }
 
@@ -217,7 +221,7 @@ function* getBalance() {
 
     yield finishBitcoreCall(apiCallIds.GET_BALANCE);
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.GET_BALANCE, error);
+    yield finishBitcoreCall(apiCallIds.GET_BALANCE, { error });
   }
 }
 
@@ -238,7 +242,7 @@ function* getAddresses() {
 
     yield finishBitcoreCall(apiCallIds.GET_ADDRESSES);
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.GET_ADDRESSES, error);
+    yield finishBitcoreCall(apiCallIds.GET_ADDRESSES, { error });
   }
 }
 
@@ -259,7 +263,7 @@ function* getTxHistory() {
 
     yield finishBitcoreCall(apiCallIds.GET_TX_HISTORY);
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.GET_TX_HISTORY, error);
+    yield finishBitcoreCall(apiCallIds.GET_TX_HISTORY, { error });
   }
 }
 
@@ -280,7 +284,7 @@ function* exportWallet() {
 
     yield finishBitcoreCall(apiCallIds.EXPORT_WALLET);
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.EXPORT_WALLET, error);
+    yield finishBitcoreCall(apiCallIds.EXPORT_WALLET, { error });
   }
 }
 
@@ -301,19 +305,23 @@ function* importWallet({ payload }) {
 
     if (alreadyExists) {
       yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, {
-        message: 'This wallet already exists in the device',
+        error: {
+          message: 'This wallet already exists in the device',
+        },
       });
     } else {
       yield put(importWalletActions.success(wallet));
 
-      yield finishBitcoreCall(apiCallIds.IMPORT_WALLET);
+      yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, {
+        msg: 'Wallet was imported successfully. You can select it now.',
+      });
     }
   } catch (error) {
-    yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, error);
+    yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, { error });
   }
 }
 
-function* finishBitcoreCall(apiCallId, error) {
+function* finishBitcoreCall(apiCallId, { error, msg } = {}) {
   yield put(
     finishApiCall({
       apiCallId,
@@ -323,6 +331,8 @@ function* finishBitcoreCall(apiCallId, error) {
 
   if (error) {
     AlertService.error(error.message);
+  } else if (msg) {
+    AlertService.success(msg);
   }
 }
 
