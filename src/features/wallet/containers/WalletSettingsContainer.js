@@ -89,7 +89,7 @@ export default class WalletSettingsContainer extends Component {
         <WalletSettings
           onCopy={this.onCopy}
           activeWallet={activeWallet}
-          price={prices.USD}
+          price={prices ? prices.USD : undefined}
           exportWallet={actions.exportWallet}
         />
       </Spinner>
