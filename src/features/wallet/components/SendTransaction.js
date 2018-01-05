@@ -7,8 +7,6 @@ import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../co
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
 
-// TODO validate address, amount
-
 @createForm()
 export default class SendTransaction extends Component {
   static propTypes = {

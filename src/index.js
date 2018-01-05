@@ -17,8 +17,10 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// rozdelit wallet na btc a wallet
+// scan QRcode in Send
 // import from QRCode
+
+// rozdelit wallet na btc a wallet
 // format USD with https://github.com/ExodusMovement/format-currency
 // format BTC with https://github.com/ExodusMovement/number-unit
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184
