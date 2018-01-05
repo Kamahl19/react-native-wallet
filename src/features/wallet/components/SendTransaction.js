@@ -8,7 +8,6 @@ import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
 
 // TODO validate address, amount
-// accept amount in btc, bits, satoshi
 
 @createForm()
 export default class SendTransaction extends Component {

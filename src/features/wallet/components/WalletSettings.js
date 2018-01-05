@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 import QRCode from 'react-native-qrcode-svg';
@@ -22,6 +22,16 @@ export default class WalletSettings extends Component {
     price: PropTypes.number,
     onCopy: PropTypes.func.isRequired,
     exportWallet: PropTypes.func.isRequired,
+  };
+
+  exploreTransaction = tx => {
+    const { activeWallet } = this.props;
+
+    Linking.openURL(
+      `https://live.blockcypher.com/${
+        activeWallet.network === 'testnet' ? 'btc-testnet' : 'btc'
+      }/tx/${tx.txid}/`
+    ).catch(err => console.error('An error occurred', err));
   };
 
   render() {
@@ -53,6 +63,13 @@ export default class WalletSettings extends Component {
                 <Text>Confirmations: {tx.confirmations || 0}</Text>
                 <Text>Fee: {formatAmount(tx.fees)}</Text>
                 {tx.message && <Text>Message: {tx.message}</Text>}
+                <Button
+                  onPress={() => this.exploreTransaction(tx)}
+                  title="Explore Transaction"
+                  type="default"
+                  size="sm"
+                  style={styles.exploreBtn}
+                />
               </View>
             ))}
 
@@ -95,6 +112,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
+  },
+  exploreBtn: {
+    marginTop: 10,
   },
   balance: {
     flexDirection: 'row',
