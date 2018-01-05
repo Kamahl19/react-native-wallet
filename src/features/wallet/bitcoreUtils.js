@@ -1,5 +1,6 @@
 import BitcoreClient from 'bitcore-wallet-client';
 import bs58check from 'bs58check';
+import Big from 'big.js';
 
 import config from '../../config';
 import { UNITS, networkOptions, feeLevelOptions } from './constants';
@@ -31,14 +32,18 @@ function getClient(wallet, opts = {}) {
   });
 }
 
-function parseBTCAmount(text) {
-  const amountBtc = parseFloat(parseFloat(text).toFixed(8));
-
-  if (typeof amountBtc !== 'number' || Number.isNaN(amountBtc) || amountBtc <= 0) {
+function parseBTCAmount(amount) {
+  if (!amount) {
     throw new Error('Invalid amount');
   }
 
-  const amountSat = amountBtc * UNITS.btc.toSatoshis;
+  const amountSat = Big(amount)
+    .times(UNITS.btc.toSatoshis)
+    .toFixed(0);
+
+  if (amountSat <= 0) {
+    throw new Error('Invalid amount');
+  }
 
   return amountSat;
 }
