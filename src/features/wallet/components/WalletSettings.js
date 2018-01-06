@@ -41,7 +41,7 @@ export default class WalletSettings extends Component {
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Heading notFirst>Balance</Heading>
+          <Heading>Balance</Heading>
           {balance && (
             <View style={styles.balance}>
               <Text>{formatAmount(balance.totalAmount)}</Text>
@@ -73,7 +73,7 @@ export default class WalletSettings extends Component {
               </View>
             ))}
 
-          <Heading>Mnemonic</Heading>
+          <Heading notFirst>Mnemonic</Heading>
           <TextInput label="Mnemonic" value={mnemonic} />
 
           <Button

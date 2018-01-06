@@ -45,7 +45,7 @@ export default class ImportWallet extends Component {
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Heading notFirst>Import Wallet from Mnemonic</Heading>
+          <Heading>Import Wallet from Mnemonic</Heading>
           <FormItem>
             {form.getFieldDecorator('mnemonic')(
               <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" autoFocus />
