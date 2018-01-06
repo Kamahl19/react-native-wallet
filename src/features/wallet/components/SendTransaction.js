@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
@@ -54,10 +55,20 @@ export default class SendTransaction extends Component {
 
         <FeeLevelSelect onChange={feeLevel => this.setState({ feeLevel })} value={feeLevel} />
 
-        <FormItem>{form.getFieldDecorator('note')(<TextInput label="Note" multiline />)}</FormItem>
-
-        <Button onPress={this.handleSendTransaction} title="Send" type="primary" size="md" />
+        <Button
+          onPress={this.handleSendTransaction}
+          title="Send"
+          type="primary"
+          size="md"
+          style={styles.button}
+        />
       </ScreenWrapper>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  button: {
+    marginTop: 12,
+  },
+});

@@ -5157,6 +5157,10 @@ react-native-qrcode-svg@^5.0.6:
     prop-types "^15.5.10"
     qrcode "^0.9.0"
 
+react-native-radio-buttons@^1.0.0:
+  version "1.0.0"
+  resolved "https://registry.yarnpkg.com/react-native-radio-buttons/-/react-native-radio-buttons-1.0.0.tgz#be828b85897f80ca66ad66ad7adedb6b1890ab9d"
+
 react-native-randombytes@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/react-native-randombytes/-/react-native-randombytes-3.0.0.tgz#8327464f227a2c42d6ef013b7586b0ad4385ae61"

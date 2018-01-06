@@ -7,7 +7,7 @@ import { getColor } from '../utils/color';
 
 const OnePicker = ({ children, label, ...rest }) => (
   <View style={styles.container}>
-    {label && <Text style={styles.label}>{label}</Text>}
+    {label && <Text style={styles.label}>{label}: </Text>}
     <Picker style={styles.picker} itemStyle={styles.pickerItem} {...rest}>
       {children}
     </Picker>
@@ -24,13 +24,16 @@ export default OnePicker;
 const styles = StyleSheet.create({
   container: {
     paddingTop: 16,
+    flexDirection: 'row',
   },
   label: {
-    fontSize: 12,
-    paddingBottom: 8,
+    alignSelf: 'center',
+    fontSize: 18,
+    marginRight: 12,
     color: getColor('darkGray'),
   },
   picker: {
+    flexGrow: 1,
     height: 44,
   },
   pickerItem: {

@@ -1,20 +1,34 @@
-import React from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { OnePicker, Picker } from '../../../common/components';
+import { SegmentedControl } from '../../../common/components';
 import { networkOptions } from '../constants';
 
-const NetworkSelect = ({ value, onChange }) => (
-  <OnePicker selectedValue={value} onValueChange={onChange} label="Select a Network">
-    {networkOptions.map(network => (
-      <Picker.Item label={network.label} value={network.value} key={network.value} />
-    ))}
-  </OnePicker>
-);
+const values = networkOptions.map(n => n.label);
 
-NetworkSelect.propTypes = {
-  value: PropTypes.string.isRequired,
-  onChange: PropTypes.func.isRequired,
-};
+export default class NetworkSelect extends Component {
+  static propTypes = {
+    value: PropTypes.string.isRequired,
+    onChange: PropTypes.func.isRequired,
+    style: PropTypes.any,
+  };
 
-export default NetworkSelect;
+  onChange = e => {
+    const selectedIndex = e.nativeEvent.selectedSegmentIndex;
+
+    this.props.onChange(networkOptions[selectedIndex].value);
+  };
+
+  render() {
+    const { value, style } = this.props;
+
+    return (
+      <SegmentedControl
+        values={values}
+        onChange={this.onChange}
+        selectedIndex={networkOptions.findIndex(n => n.value === value)}
+        style={style}
+      />
+    );
+  }
+}

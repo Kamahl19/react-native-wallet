@@ -1,5 +1,5 @@
 import { AppRegistry, Platform } from 'react-native';
-// import {AsyncStorage } from 'react-native';
+// import { AsyncStorage } from 'react-native';
 import KeyboardManager from 'react-native-keyboard-manager';
 
 import Root from './app/containers/Root';

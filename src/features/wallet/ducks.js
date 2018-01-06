@@ -192,8 +192,7 @@ function* sendTransaction({ payload }) {
       activeWallet,
       payload.address,
       payload.amount,
-      payload.feeLevel,
-      payload.note
+      payload.feeLevel
     );
 
     yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, {
