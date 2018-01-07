@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
-import { apiCallIds } from '../constants';
+import { apiCallIds, FETCH_BALANCE_INTERVAL_MS, FETCH_PRICES_INTERVAL_MS } from '../constants';
 import { selectActiveWallet, getBalanceActions } from '../ducks';
 import ActiveWalletInfo from '../components/ActiveWalletInfo';
 
@@ -36,17 +36,18 @@ export default class ActiveWalletInfoContainer extends Component {
   };
 
   componentWillMount() {
-    this.props.actions.getBalance();
-    this.props.actions.getPrices();
+    const { actions } = this.props;
 
-    this.interval = setInterval(() => {
-      this.props.actions.getBalance();
-      this.props.actions.getPrices();
-    }, 10000);
+    actions.getBalance();
+    actions.getPrices();
+
+    this.balanceInterval = setInterval(actions.getBalance, FETCH_BALANCE_INTERVAL_MS);
+    this.pricesInterval = setInterval(actions.getPrices, FETCH_PRICES_INTERVAL_MS);
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.balanceInterval);
+    clearInterval(this.pricesInterval);
   }
 
   render() {
