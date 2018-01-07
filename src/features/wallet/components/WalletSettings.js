@@ -19,7 +19,6 @@ import { formatAmount } from '../bitcoreUtils';
 export default class WalletSettings extends Component {
   static propTypes = {
     activeWallet: PropTypes.object.isRequired,
-    price: PropTypes.number,
     onCopy: PropTypes.func.isRequired,
     exportWallet: PropTypes.func.isRequired,
   };
@@ -35,21 +34,13 @@ export default class WalletSettings extends Component {
   };
 
   render() {
-    const { activeWallet, onCopy, price, exportWallet } = this.props;
-    const { mnemonic, balance, addresses, txs, exported } = activeWallet;
+    const { activeWallet, onCopy, exportWallet } = this.props;
+    const { mnemonic, addresses, txs, exported } = activeWallet;
 
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Heading>Balance</Heading>
-          {balance && (
-            <View style={styles.balance}>
-              <Text>{formatAmount(balance.totalAmount)}</Text>
-              {price && <Text> (${(balance.totalAmount / 1e8 * price).toFixed(2)})</Text>}
-            </View>
-          )}
-
-          <Heading notFirst>Addresses</Heading>
+          <Heading>Addresses</Heading>
           {addresses &&
             addresses.map(address => <Text key={address.address}>{address.address}</Text>)}
 
@@ -115,8 +106,5 @@ const styles = StyleSheet.create({
   },
   exploreBtn: {
     marginTop: 10,
-  },
-  balance: {
-    flexDirection: 'row',
   },
 });

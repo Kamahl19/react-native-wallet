@@ -17,6 +17,7 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
+// oddelit export
 // scan QRcode in Send
 // import from QRCode
 

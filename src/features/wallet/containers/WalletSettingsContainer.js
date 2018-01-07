@@ -8,20 +8,16 @@ import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import {
-  getBalanceActions,
   getAddressesActions,
   getTxHistoryActions,
   exportWalletActions,
   selectActiveWallet,
 } from '../ducks';
-import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
 import WalletSettings from '../components/WalletSettings';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
-  prices: selectPriceForActiveWallet(state),
-  isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
   isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
   isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
   isGettingExport: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
@@ -30,11 +26,9 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      getBalance: getBalanceActions.request,
       getAddresses: getAddressesActions.request,
       getTxHistory: getTxHistoryActions.request,
       exportWallet: exportWalletActions.request,
-      getPrices: getPricesActions.request,
     },
     dispatch
   ),
@@ -44,8 +38,6 @@ const mapDispatchToProps = dispatch => ({
 export default class WalletSettingsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
-    prices: PropTypes.object,
-    isGettingBalance: PropTypes.bool.isRequired,
     isGettingAddresses: PropTypes.bool.isRequired,
     isGettingTxHistory: PropTypes.bool.isRequired,
     isGettingExport: PropTypes.bool.isRequired,
@@ -57,10 +49,8 @@ export default class WalletSettingsContainer extends Component {
   };
 
   componentWillMount() {
-    this.props.actions.getBalance();
     this.props.actions.getAddresses();
     this.props.actions.getTxHistory();
-    this.props.actions.getPrices();
   }
 
   onCopy = text => {
@@ -70,11 +60,9 @@ export default class WalletSettingsContainer extends Component {
   render() {
     const {
       activeWallet,
-      isGettingBalance,
       isGettingAddresses,
       isGettingTxHistory,
       isGettingExport,
-      prices,
       actions,
     } = this.props;
 
@@ -83,13 +71,10 @@ export default class WalletSettingsContainer extends Component {
     }
 
     return (
-      <Spinner
-        show={isGettingBalance || isGettingAddresses || isGettingTxHistory || isGettingExport}
-      >
+      <Spinner show={isGettingAddresses || isGettingTxHistory || isGettingExport}>
         <WalletSettings
           onCopy={this.onCopy}
           activeWallet={activeWallet}
-          price={prices ? prices.USD : undefined}
           exportWallet={actions.exportWallet}
         />
       </Spinner>
