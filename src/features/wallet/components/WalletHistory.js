@@ -3,7 +3,16 @@ import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { ScrollView, ScreenWrapper, Button, Heading, Text, View } from '../../../common/components';
+import {
+  ScrollView,
+  ScreenWrapper,
+  Button,
+  Heading,
+  Text,
+  View,
+  List,
+  ListItem,
+} from '../../../common/components';
 import { formatAmount } from '../bitcoreUtils';
 
 export default class WalletHistory extends Component {
@@ -11,15 +20,29 @@ export default class WalletHistory extends Component {
     activeWallet: PropTypes.object.isRequired,
   };
 
-  exploreTransaction = tx => {
-    const { activeWallet } = this.props;
+  addressKeyExtractor = address => address.address;
 
+  txKeyExtractor = tx => tx.txid;
+
+  exploreAddress = address => {
     Linking.openURL(
       `https://live.blockcypher.com/${
-        activeWallet.network === 'testnet' ? 'btc-testnet' : 'btc'
+        this.props.activeWallet.network === 'testnet' ? 'btc-testnet' : 'btc'
+      }/address/${address.address}/`
+    ).catch(err => console.error('An error occurred', err));
+  };
+
+  exploreTx = tx => {
+    Linking.openURL(
+      `https://live.blockcypher.com/${
+        this.props.activeWallet.network === 'testnet' ? 'btc-testnet' : 'btc'
       }/tx/${tx.txid}/`
     ).catch(err => console.error('An error occurred', err));
   };
+
+  renderAddress = ({ item }) => <AddressItem address={item} onExplorePress={this.exploreAddress} />;
+
+  renderTx = ({ item }) => <TxItem tx={item} onExplorePress={this.exploreTx} />;
 
   render() {
     const { activeWallet } = this.props;
@@ -28,42 +51,87 @@ export default class WalletHistory extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Heading>Addresses</Heading>
-          {activeWallet.addresses &&
-            activeWallet.addresses.map(address => (
-              <Text key={address.address}>{address.address}</Text>
-            ))}
+          {activeWallet.addresses.length > 0 && (
+            <List
+              data={activeWallet.addresses}
+              keyExtractor={this.addressKeyExtractor}
+              renderItem={this.renderAddress}
+            />
+          )}
+
+          {activeWallet.addresses.length === 0 && <Text>No addresses</Text>}
 
           <Heading notFirst>Transactions History</Heading>
-          {activeWallet.txs &&
-            activeWallet.txs.map(tx => (
-              <View key={tx.txid} style={styles.transaction}>
-                <Text>Type: {tx.action}</Text>
-                <Text>Amount: {formatAmount(tx.amount)}</Text>
-                <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
-                <Text>Confirmations: {tx.confirmations || 0}</Text>
-                <Text>Fee: {formatAmount(tx.fees)}</Text>
-                {tx.message && <Text>Message: {tx.message}</Text>}
-                <Button
-                  onPress={() => this.exploreTransaction(tx)}
-                  title="Explore Transaction"
-                  type="default"
-                  size="sm"
-                  style={styles.button}
-                />
-              </View>
-            ))}
+          {activeWallet.txs.length > 0 && (
+            <List
+              data={activeWallet.txs}
+              keyExtractor={this.txKeyExtractor}
+              renderItem={this.renderTx}
+            />
+          )}
+
+          {activeWallet.txs.length === 0 && <Text>No transactions</Text>}
         </ScreenWrapper>
       </ScrollView>
     );
   }
 }
 
+const AddressItem = ({ address, onExplorePress }) => (
+  <ListItem
+    content={
+      <View style={styles.item}>
+        <Text>{address.address}</Text>
+        <Button
+          onPress={() => onExplorePress(address)}
+          title="Explore"
+          type="default"
+          size="sm"
+          style={styles.button}
+        />
+      </View>
+    }
+  />
+);
+
+AddressItem.propTypes = {
+  address: PropTypes.object.isRequired,
+  onExplorePress: PropTypes.func.isRequired,
+};
+
+const TxItem = ({ tx, onExplorePress }) => (
+  <ListItem
+    content={
+      <View style={styles.item}>
+        <Text>Type: {tx.action}</Text>
+        <Text>Amount: {formatAmount(tx.amount)}</Text>
+        <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
+        <Text>Confirmations: {tx.confirmations || 0}</Text>
+        <Text>Fee: {formatAmount(tx.fees)}</Text>
+        {tx.message && <Text>Message: {tx.message}</Text>}
+        <Button
+          onPress={() => onExplorePress(tx)}
+          title="Explore"
+          type="default"
+          size="sm"
+          style={styles.button}
+        />
+      </View>
+    }
+  />
+);
+
+TxItem.propTypes = {
+  tx: PropTypes.object.isRequired,
+  onExplorePress: PropTypes.func.isRequired,
+};
+
 const styles = StyleSheet.create({
-  transaction: {
-    paddingVertical: 10,
-    borderBottomWidth: 1,
+  item: {
+    paddingVertical: 8,
   },
   button: {
-    marginTop: 12,
+    alignSelf: 'flex-start',
+    marginTop: 6,
   },
 });

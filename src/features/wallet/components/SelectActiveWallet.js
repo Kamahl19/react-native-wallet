@@ -47,7 +47,7 @@ export default class SelectActiveWallet extends Component {
         {wallets.length > 0 && (
           <List
             data={wallets}
-            extraData={this.state}
+            extraData={this.state.network}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />

@@ -18,8 +18,6 @@ if (Platform.OS === 'ios') {
 
 // TODO
 // Invalid amount when sending
-// Explore Address in Explorer + add hasActivity indicator
-// Style History
 // scan QRcode in Send Transaction
 // import wallet and mnemonic from QRCode
 
