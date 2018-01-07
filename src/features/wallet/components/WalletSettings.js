@@ -89,7 +89,7 @@ export default class WalletSettings extends Component {
           <Button
             onPress={() => exportWallet()}
             title="Export Wallet"
-            type="default"
+            type="primary"
             size="md"
             style={styles.button}
           />

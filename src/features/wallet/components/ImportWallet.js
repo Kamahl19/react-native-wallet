@@ -46,13 +46,13 @@ export default class ImportWallet extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Heading>Import Wallet from Mnemonic</Heading>
+          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
           <FormItem>
             {form.getFieldDecorator('mnemonic')(
-              <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" autoFocus />
+              <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" />
             )}
           </FormItem>
-          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
-          <Button onPress={this.importFromMnemonic} title="Import" type="default" size="md" />
+          <Button onPress={this.importFromMnemonic} title="Import" type="primary" size="md" />
         </ScreenWrapper>
       </ScrollView>
     );

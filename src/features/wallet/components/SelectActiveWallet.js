@@ -42,11 +42,7 @@ export default class SelectActiveWallet extends Component {
       <ScreenWrapper>
         <Heading>Select Active Wallet</Heading>
 
-        <NetworkSelect
-          onChange={network => this.setState({ network })}
-          value={network}
-          style={styles.select}
-        />
+        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
         {wallets.length > 0 && (
           <List
@@ -79,9 +75,6 @@ WalletItem.propTypes = {
 };
 
 const styles = StyleSheet.create({
-  select: {
-    marginBottom: 12,
-  },
   walletName: {
     fontSize: 16,
     paddingVertical: 12,

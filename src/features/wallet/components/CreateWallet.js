@@ -44,7 +44,7 @@ export default class CreateWallet extends Component {
 
         <FormItem>
           {form.getFieldDecorator('walletName', { rules: [rules.required] })(
-            <TextInput label="Wallet Name" autoFocus autoCorrect={false} />
+            <TextInput label="Wallet Name" autoCorrect={false} />
           )}
         </FormItem>
 

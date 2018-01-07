@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 
 import { SegmentedControl } from '../../../common/components';
 import { networkOptions } from '../constants';
@@ -27,8 +28,14 @@ export default class NetworkSelect extends Component {
         values={values}
         onChange={this.onChange}
         selectedIndex={networkOptions.findIndex(n => n.value === value)}
-        style={style}
+        style={styles.select}
       />
     );
   }
 }
+
+const styles = StyleSheet.create({
+  select: {
+    marginBottom: 12,
+  },
+});
