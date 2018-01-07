@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import {
-  getAddressesActions,
-  getTxHistoryActions,
-  exportWalletActions,
-  selectActiveWallet,
-} from '../ducks';
-import WalletSettings from '../components/WalletSettings';
+import { getAddressesActions, getTxHistoryActions, selectActiveWallet } from '../ducks';
+import WalletHistory from '../components/WalletHistory';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
   isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
   isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
-  isGettingExport: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,24 +21,22 @@ const mapDispatchToProps = dispatch => ({
     {
       getAddresses: getAddressesActions.request,
       getTxHistory: getTxHistoryActions.request,
-      exportWallet: exportWalletActions.request,
     },
     dispatch
   ),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class WalletSettingsContainer extends Component {
+export default class WalletHistoryContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     isGettingAddresses: PropTypes.bool.isRequired,
     isGettingTxHistory: PropTypes.bool.isRequired,
-    isGettingExport: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   static navigationOptions = {
-    title: 'Wallet Settings',
+    title: 'Wallet History',
   };
 
   componentWillMount() {
@@ -53,30 +44,16 @@ export default class WalletSettingsContainer extends Component {
     this.props.actions.getTxHistory();
   }
 
-  onCopy = text => {
-    Clipboard.setString(text);
-  };
-
   render() {
-    const {
-      activeWallet,
-      isGettingAddresses,
-      isGettingTxHistory,
-      isGettingExport,
-      actions,
-    } = this.props;
+    const { activeWallet, isGettingAddresses, isGettingTxHistory } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
     return (
-      <Spinner show={isGettingAddresses || isGettingTxHistory || isGettingExport}>
-        <WalletSettings
-          onCopy={this.onCopy}
-          activeWallet={activeWallet}
-          exportWallet={actions.exportWallet}
-        />
+      <Spinner show={isGettingAddresses || isGettingTxHistory}>
+        <WalletHistory activeWallet={activeWallet} />
       </Spinner>
     );
   }

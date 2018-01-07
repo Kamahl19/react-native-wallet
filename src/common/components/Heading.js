@@ -22,7 +22,6 @@ const styles = StyleSheet.create({
     fontSize: 26,
     marginBottom: 10,
   },
-
   notFirst: {
     marginTop: 20,
   },

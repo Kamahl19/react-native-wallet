@@ -17,9 +17,10 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// oddelit export
-// scan QRcode in Send
-// import from QRCode
+// Explore Address in Explorer + add hasActivity indicator
+// Style History
+// scan QRcode in Send Transaction
+// import wallet and mnemonic from QRCode
 
 // rozdelit wallet na btc a wallet
 // format USD with https://github.com/ExodusMovement/format-currency

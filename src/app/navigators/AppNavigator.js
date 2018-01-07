@@ -7,7 +7,8 @@ import {
   SelectActiveWalletContainer,
   SendTransactionContainer,
   GenerateAddressContainer,
-  WalletSettingsContainer,
+  WalletHistoryContainer,
+  ExportWalletContainer,
   ImportWalletContainer,
 } from '../../features/wallet/containers';
 
@@ -25,8 +26,11 @@ const AppNavigator = DrawerNavigator(
     GenerateAddress: {
       screen: GenerateAddressContainer,
     },
-    WalletSettings: {
-      screen: WalletSettingsContainer,
+    WalletHistory: {
+      screen: WalletHistoryContainer,
+    },
+    ExportWallet: {
+      screen: ExportWalletContainer,
     },
     ImportWallet: {
       screen: ImportWalletContainer,
