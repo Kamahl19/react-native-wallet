@@ -17,6 +17,7 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
+// Invalid amount when sending
 // Explore Address in Explorer + add hasActivity indicator
 // Style History
 // scan QRcode in Send Transaction

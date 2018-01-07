@@ -38,6 +38,15 @@ export default class ActiveWalletInfoContainer extends Component {
   componentWillMount() {
     this.props.actions.getBalance();
     this.props.actions.getPrices();
+
+    this.interval = setInterval(() => {
+      this.props.actions.getBalance();
+      this.props.actions.getPrices();
+    }, 10000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
   }
 
   render() {
