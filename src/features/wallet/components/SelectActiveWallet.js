@@ -8,7 +8,6 @@ import {
   TouchableItem,
   Heading,
   List,
-  ListItem,
   ScrollView,
 } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
@@ -77,16 +76,12 @@ export default class SelectActiveWallet extends Component {
 }
 
 const WalletItem = ({ wallet, onPress, onLongPress }) => (
-  <ListItem
-    content={
-      <TouchableItem
-        onPress={() => onPress(wallet.walletId)}
-        onLongPress={() => onLongPress(wallet.walletId)}
-      >
-        <Text style={styles.walletName}>{wallet.walletName}</Text>
-      </TouchableItem>
-    }
-  />
+  <TouchableItem
+    onPress={() => onPress(wallet.walletId)}
+    onLongPress={() => onLongPress(wallet.walletId)}
+  >
+    <Text style={styles.walletName}>{wallet.walletName}</Text>
+  </TouchableItem>
 );
 
 WalletItem.propTypes = {

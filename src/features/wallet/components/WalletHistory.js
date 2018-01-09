@@ -11,7 +11,6 @@ import {
   Text,
   View,
   List,
-  ListItem,
 } from '../../../common/components';
 import { formatAmount } from '../bitcoreUtils';
 
@@ -81,20 +80,16 @@ export default class WalletHistory extends Component {
 }
 
 const AddressItem = ({ address, onExplorePress }) => (
-  <ListItem
-    content={
-      <View style={styles.item}>
-        <Text>{address.address}</Text>
-        <Button
-          onPress={() => onExplorePress(address)}
-          title="Explore"
-          type="default"
-          size="sm"
-          style={styles.button}
-        />
-      </View>
-    }
-  />
+  <View style={styles.item}>
+    <Text>{address.address}</Text>
+    <Button
+      onPress={() => onExplorePress(address)}
+      title="Explore"
+      type="default"
+      size="sm"
+      style={styles.button}
+    />
+  </View>
 );
 
 AddressItem.propTypes = {
@@ -103,25 +98,21 @@ AddressItem.propTypes = {
 };
 
 const TxItem = ({ tx, onExplorePress }) => (
-  <ListItem
-    content={
-      <View style={styles.item}>
-        <Text>Type: {tx.action}</Text>
-        <Text>Amount: {formatAmount(tx.amount)}</Text>
-        <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
-        <Text>Confirmations: {tx.confirmations || 0}</Text>
-        <Text>Fee: {formatAmount(tx.fees)}</Text>
-        {tx.message && <Text>Message: {tx.message}</Text>}
-        <Button
-          onPress={() => onExplorePress(tx)}
-          title="Explore"
-          type="default"
-          size="sm"
-          style={styles.button}
-        />
-      </View>
-    }
-  />
+  <View style={styles.item}>
+    <Text>Type: {tx.action}</Text>
+    <Text>Amount: {formatAmount(tx.amount)}</Text>
+    <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
+    <Text>Confirmations: {tx.confirmations || 0}</Text>
+    <Text>Fee: {formatAmount(tx.fees)}</Text>
+    {tx.message && <Text>Message: {tx.message}</Text>}
+    <Button
+      onPress={() => onExplorePress(tx)}
+      title="Explore"
+      type="default"
+      size="sm"
+      style={styles.button}
+    />
+  </View>
 );
 
 TxItem.propTypes = {
