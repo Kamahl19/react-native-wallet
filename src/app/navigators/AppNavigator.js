@@ -39,10 +39,13 @@ const AppNavigator = DrawerNavigator(
   {
     initialRouteName: 'SelectActiveWallet',
     contentComponent: CustomDrawer,
-    // TODO fixing bug in react-navigation, possibly remove later
+    // https://github.com/react-navigation/react-navigation/issues/3149#issuecomment-352862563
     drawerOpenRoute: 'DrawerOpen',
     drawerCloseRoute: 'DrawerClose',
     drawerToggleRoute: 'DrawerToggle',
+    headerMode: 'none',
+    drawerWidth: 300,
+    drawerPosition: 'left',
   }
 );
 
