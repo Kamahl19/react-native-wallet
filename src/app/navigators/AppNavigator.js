@@ -37,7 +37,6 @@ const AppNavigator = DrawerNavigator(
     },
   },
   {
-    initialRouteName: 'SelectActiveWallet',
     contentComponent: CustomDrawer,
     // https://github.com/react-navigation/react-navigation/issues/3149#issuecomment-352862563
     drawerOpenRoute: 'DrawerOpen',
