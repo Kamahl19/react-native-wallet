@@ -51,15 +51,17 @@ export default class WalletHistory extends Component {
       <ScrollView>
         <ScreenWrapper>
           <Heading>Addresses</Heading>
-          {activeWallet.addresses.length > 0 && (
-            <List
-              data={activeWallet.addresses}
-              keyExtractor={this.addressKeyExtractor}
-              renderItem={this.renderAddress}
-            />
-          )}
+          {activeWallet.addresses &&
+            activeWallet.addresses.length > 0 && (
+              <List
+                data={activeWallet.addresses}
+                keyExtractor={this.addressKeyExtractor}
+                renderItem={this.renderAddress}
+              />
+            )}
 
-          {activeWallet.addresses.length === 0 && <Text>No addresses</Text>}
+          {activeWallet.addresses &&
+            activeWallet.addresses.length === 0 && <Text>No addresses</Text>}
 
           <Heading notFirst>Transactions History</Heading>
           {activeWallet.txs.length > 0 && (

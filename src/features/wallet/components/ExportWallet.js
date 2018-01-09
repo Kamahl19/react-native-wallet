@@ -25,7 +25,7 @@ export default class ExportWallet extends Component {
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Heading notFirst>Backup with Mnemonic</Heading>
+          <Heading notFirst>Backup Wallet</Heading>
 
           <TextInput label="Mnemonic" value={mnemonic} />
 

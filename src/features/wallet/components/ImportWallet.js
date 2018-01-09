@@ -57,7 +57,7 @@ export default class ImportWallet extends Component {
     return (
       <ScrollView>
         <ScreenWrapper>
-          <Heading>Import Wallet with Mnemonic</Heading>
+          <Heading>Import Wallet</Heading>
 
           <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
@@ -88,5 +88,6 @@ const styles = StyleSheet.create({
   scanButton: {
     alignSelf: 'flex-start',
     marginTop: 6,
+    marginbottom: 12,
   },
 });
