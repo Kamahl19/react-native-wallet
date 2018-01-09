@@ -9,6 +9,7 @@ import {
   createReducer,
   createActionType,
   replaceInArray,
+  removeFromArray,
   REQUEST,
   SUCCESS,
 } from '../../common/utils/reduxHelpers';
@@ -20,6 +21,7 @@ import { apiCallIds } from './constants';
  * ACTION TYPES
  */
 export const SELECT_ACTIVE_WALLET = 'wallet/SELECT_ACTIVE_WALLET';
+export const DELETE_WALLET = 'wallet/DELETE_WALLET';
 export const CREATE_WALLET = 'wallet/CREATE_WALLET';
 export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
@@ -33,6 +35,7 @@ export const IMPORT_WALLET = 'wallet/IMPORT_WALLET';
  * ACTIONS
  */
 export const selectActiveWalletAction = createActionCreator(SELECT_ACTIVE_WALLET);
+export const deleteWalletAction = createActionCreator(DELETE_WALLET);
 export const createWalletActions = createApiActionCreators(CREATE_WALLET);
 export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
@@ -52,12 +55,21 @@ const initialState = {
 
 const activeWalletId = createReducer(initialState.activeWalletId, {
   [SELECT_ACTIVE_WALLET]: (state, walletId) => walletId,
+  [DELETE_WALLET]: (state, walletId) => {
+    if (state === walletId) {
+      return null;
+    }
+
+    return state;
+  },
 });
 
 const wallets = createReducer(initialState.wallets, {
   [CREATE_WALLET]: {
     [SUCCESS]: (state, wallet) => [...state, wallet],
   },
+  [DELETE_WALLET]: (state, walletId) =>
+    removeFromArray(state, wallet => wallet.walletId === walletId),
   [GENERATE_ADDRESS]: {
     [SUCCESS]: (state, { address, walletId }) => {
       const wallet = findActiveWallet(state, walletId);

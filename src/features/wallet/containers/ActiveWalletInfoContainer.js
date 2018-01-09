@@ -57,6 +57,7 @@ export default class ActiveWalletInfoContainer extends Component {
   }
 
   startFetching = () => {
+    this.stopFetching();
     const { actions } = this.props;
 
     actions.getBalance();

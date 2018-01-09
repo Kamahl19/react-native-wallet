@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { selectActiveWalletAction, selectWallets } from '../ducks';
+import { selectActiveWalletAction, deleteWalletAction, selectWallets } from '../ducks';
 import SelectActiveWallet from '../components/SelectActiveWallet';
 
 const mapStateToProps = state => ({
@@ -14,6 +14,7 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       selectActiveWallet: selectActiveWalletAction,
+      deleteWallet: deleteWalletAction,
     },
     dispatch
   ),
@@ -33,6 +34,12 @@ export default class SelectActiveWalletContainer extends Component {
   render() {
     const { wallets, actions } = this.props;
 
-    return <SelectActiveWallet selectActiveWallet={actions.selectActiveWallet} wallets={wallets} />;
+    return (
+      <SelectActiveWallet
+        selectActiveWallet={actions.selectActiveWallet}
+        deleteWallet={actions.deleteWallet}
+        wallets={wallets}
+      />
+    );
   }
 }

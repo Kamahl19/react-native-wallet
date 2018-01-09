@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Alert } from 'react-native';
 
 import {
   Text,
@@ -17,6 +17,7 @@ import { DEFAULT_NETWORK } from '../constants';
 export default class SelectActiveWallet extends Component {
   static propTypes = {
     selectActiveWallet: PropTypes.func.isRequired,
+    deleteWallet: PropTypes.func.isRequired,
     wallets: PropTypes.array.isRequired,
   };
 
@@ -28,11 +29,24 @@ export default class SelectActiveWallet extends Component {
 
   keyExtractor = wallet => wallet.walletId;
 
-  onPressItem = walletId => {
+  onSelect = walletId => {
     this.props.selectActiveWallet(walletId);
   };
 
-  renderItem = ({ item }) => <WalletItem wallet={item} onPressItem={this.onPressItem} />;
+  onDelete = walletId => {
+    Alert.alert(
+      'Do you really want to delete this wallet?',
+      'Make sure you have a mnemonic or a backup of this wallet.',
+      [
+        { text: 'Cancel', style: 'cancel' },
+        { text: 'Delete', onPress: () => this.props.deleteWallet(walletId), style: 'destructive' },
+      ]
+    );
+  };
+
+  renderItem = ({ item }) => (
+    <WalletItem wallet={item} onPress={this.onSelect} onLongPress={this.onDelete} />
+  );
 
   render() {
     const { network } = this.state;
@@ -62,10 +76,13 @@ export default class SelectActiveWallet extends Component {
   }
 }
 
-const WalletItem = ({ wallet, onPressItem }) => (
+const WalletItem = ({ wallet, onPress, onLongPress }) => (
   <ListItem
     content={
-      <TouchableItem onPress={() => onPressItem(wallet.walletId)}>
+      <TouchableItem
+        onPress={() => onPress(wallet.walletId)}
+        onLongPress={() => onLongPress(wallet.walletId)}
+      >
         <Text style={styles.walletName}>{wallet.walletName}</Text>
       </TouchableItem>
     }
@@ -74,7 +91,8 @@ const WalletItem = ({ wallet, onPressItem }) => (
 
 WalletItem.propTypes = {
   wallet: PropTypes.object.isRequired,
-  onPressItem: PropTypes.func.isRequired,
+  onPress: PropTypes.func.isRequired,
+  onLongPress: PropTypes.func.isRequired,
 };
 
 const styles = StyleSheet.create({
