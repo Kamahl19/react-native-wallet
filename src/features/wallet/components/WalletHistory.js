@@ -64,15 +64,16 @@ export default class WalletHistory extends Component {
             activeWallet.addresses.length === 0 && <Text>No addresses</Text>}
 
           <Heading notFirst>Transactions History</Heading>
-          {activeWallet.txs.length > 0 && (
-            <List
-              data={activeWallet.txs}
-              keyExtractor={this.txKeyExtractor}
-              renderItem={this.renderTx}
-            />
-          )}
+          {activeWallet.txs &&
+            activeWallet.txs.length > 0 && (
+              <List
+                data={activeWallet.txs}
+                keyExtractor={this.txKeyExtractor}
+                renderItem={this.renderTx}
+              />
+            )}
 
-          {activeWallet.txs.length === 0 && <Text>No transactions</Text>}
+          {activeWallet.txs && activeWallet.txs.length === 0 && <Text>No transactions</Text>}
         </ScreenWrapper>
       </ScrollView>
     );
