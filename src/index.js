@@ -17,7 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// Invalid amount when sending
 // scan QRcode in Send Transaction
 // import wallet and mnemonic from QRCode
 
@@ -25,4 +24,3 @@ if (Platform.OS === 'ios') {
 // format USD with https://github.com/ExodusMovement/format-currency
 // format BTC with https://github.com/ExodusMovement/number-unit
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184
-// TEST https://github.com/tradle/rn-nodeify
