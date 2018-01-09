@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 
 import { View, Text } from '../../../common/components';
-import { formatAmount } from '../bitcoreUtils';
+import { formatSat, formatUsd, convertSatToUsd } from '../btcUtils';
 
 const ActiveWalletInfo = ({ wallet, price }) =>
   wallet ? (
@@ -12,8 +12,8 @@ const ActiveWalletInfo = ({ wallet, price }) =>
       <Text>Network: {wallet.network}</Text>
       {wallet.balance && (
         <View style={styles.balance}>
-          <Text>Balance: {formatAmount(wallet.balance.totalAmount)}</Text>
-          {price && <Text> (${(wallet.balance.totalAmount / 1e8 * price).toFixed(2)})</Text>}
+          <Text>Balance: {formatSat(wallet.balance.totalAmount)}</Text>
+          {price && <Text> ({formatUsd(convertSatToUsd(wallet.balance.totalAmount, price))})</Text>}
         </View>
       )}
     </View>

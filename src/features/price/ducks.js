@@ -12,7 +12,7 @@ import {
 } from '../../common/utils/reduxHelpers';
 import { finishApiCall, startApiCall } from '../spinner/ducks';
 import { selectActiveWallet } from '../wallet/ducks';
-import * as utils from './utils';
+import * as priceUtils from './priceUtils';
 import { apiCallIds } from './constants';
 
 /**
@@ -62,7 +62,7 @@ function* getPrices() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
 
   try {
-    const prices = yield call(utils.getPrices);
+    const prices = yield call(priceUtils.getPrices);
 
     yield put(getPricesActions.success(prices));
 

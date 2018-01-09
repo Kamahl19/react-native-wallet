@@ -5,6 +5,7 @@
 	};
 	objectVersion = 46;
 	objects = {
+
 /* Begin PBXBuildFile section */
 		00C302E51ABCBA2D00DB3ED1 /* libRCTActionSheet.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302AC1ABCB8CE00DB3ED1 /* libRCTActionSheet.a */; };
 		00C302E71ABCBA2D00DB3ED1 /* libRCTGeolocation.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 00C302BA1ABCB90400DB3ED1 /* libRCTGeolocation.a */; };
@@ -47,11 +48,11 @@
 		8FF664FC1E2B4B32925AC414 /* Foundation.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 35FFE99D40734C0EB77EBA46 /* Foundation.ttf */; };
 		9AAE01DFC55541F5B1F7208C /* MaterialIcons.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D27D573BC490494D81C3C4D1 /* MaterialIcons.ttf */; };
 		ADBDB9381DFEBF1600ED6528 /* libRCTBlob.a in Frameworks */ = {isa = PBXBuildFile; fileRef = ADBDB9271DFEBF0700ED6528 /* libRCTBlob.a */; };
+		B34DA9372E1E431EB9C82B3C /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E16BD5F23B4C2CA328E499 /* libRCTCamera.a */; };
 		B7237D3E051B4287A88F8E9A /* Zocial.ttf in Resources */ = {isa = PBXBuildFile; fileRef = B35A580ADE49487CBB986A60 /* Zocial.ttf */; };
 		C78C869A2CFA459BAF79846E /* FontAwesome.ttf in Resources */ = {isa = PBXBuildFile; fileRef = DE1C1975B3564AC5A7D7B808 /* FontAwesome.ttf */; };
 		DA7442B306E243829FB77FED /* libRNVectorIcons.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 02A6C93255D841748ED17990 /* libRNVectorIcons.a */; };
 		ED2A9F1999C542C5BBA5420F /* Entypo.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 83A6B417A0924EF999498D15 /* Entypo.ttf */; };
-		B34DA9372E1E431EB9C82B3C /* libRCTCamera.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 95E16BD5F23B4C2CA328E499 /* libRCTCamera.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -300,6 +301,13 @@
 			remoteGlobalIDString = 5DBEB1501B18CEA900B34395;
 			remoteInfo = RNVectorIcons;
 		};
+		ECBCB41F20055AFE0045DE11 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = F05D6F4704524163B3769457 /* RCTCamera.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 4107012F1ACB723B00C6AA39;
+			remoteInfo = RCTCamera;
+		};
 		ECD9CC451FFFB83A00842D73 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 146833FF1AC3E56700842450 /* React.xcodeproj */;
@@ -389,15 +397,15 @@
 		7E32F29E61B74048A70F4E13 /* libRNSVG.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRNSVG.a; sourceTree = "<group>"; };
 		832341B01AAA6A8300B99B32 /* RCTText.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTText.xcodeproj; path = "../node_modules/react-native/Libraries/Text/RCTText.xcodeproj"; sourceTree = "<group>"; };
 		83A6B417A0924EF999498D15 /* Entypo.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Entypo.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Entypo.ttf"; sourceTree = "<group>"; };
+		95E16BD5F23B4C2CA328E499 /* libRCTCamera.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libRCTCamera.a; sourceTree = "<group>"; };
 		ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = RCTBlob.xcodeproj; path = "../node_modules/react-native/Libraries/Blob/RCTBlob.xcodeproj"; sourceTree = "<group>"; };
 		B35A580ADE49487CBB986A60 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
 		B92FCFF8D55140F182C4FC7F /* ReactNativeKeyboardManager.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = ReactNativeKeyboardManager.xcodeproj; path = "../node_modules/react-native-keyboard-manager/ios/ReactNativeKeyboardManager.xcodeproj"; sourceTree = "<group>"; };
 		D27D573BC490494D81C3C4D1 /* MaterialIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialIcons.ttf"; sourceTree = "<group>"; };
 		DE1C1975B3564AC5A7D7B808 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
 		DEF54C654DFC4D07BB407739 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
+		F05D6F4704524163B3769457 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = "wrapper.pb-project"; name = RCTCamera.xcodeproj; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; };
 		FE641E37349241948967CC4C /* libReactNativeKeyboardManager.a */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = archive.ar; path = libReactNativeKeyboardManager.a; sourceTree = "<group>"; };
-		F05D6F4704524163B3769457 /* RCTCamera.xcodeproj */ = {isa = PBXFileReference; name = "RCTCamera.xcodeproj"; path = "../node_modules/react-native-camera/ios/RCTCamera.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
-		95E16BD5F23B4C2CA328E499 /* libRCTCamera.a */ = {isa = PBXFileReference; name = "libRCTCamera.a"; path = "libRCTCamera.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -684,6 +692,7 @@
 				02A6C93255D841748ED17990 /* libRNVectorIcons.a */,
 				7E32F29E61B74048A70F4E13 /* libRNSVG.a */,
 				072E1F36F4854DB9BF86C855 /* libRNRandomBytes.a */,
+				95E16BD5F23B4C2CA328E499 /* libRCTCamera.a */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -709,6 +718,14 @@
 			isa = PBXGroup;
 			children = (
 				EC2023B21FFF9AE800C15B47 /* libRNVectorIcons.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		ECBCB41C20055AFE0045DE11 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				ECBCB42020055AFE0045DE11 /* libRCTCamera.a */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -846,6 +863,10 @@
 				{
 					ProductGroup = ADBDB9201DFEBF0600ED6528 /* Products */;
 					ProjectRef = ADBDB91F1DFEBF0600ED6528 /* RCTBlob.xcodeproj */;
+				},
+				{
+					ProductGroup = ECBCB41C20055AFE0045DE11 /* Products */;
+					ProjectRef = F05D6F4704524163B3769457 /* RCTCamera.xcodeproj */;
 				},
 				{
 					ProductGroup = 00C302B61ABCB90400DB3ED1 /* Products */;
@@ -1140,6 +1161,13 @@
 			fileType = archive.ar;
 			path = libRNVectorIcons.a;
 			remoteRef = EC2023B11FFF9AE800C15B47 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		ECBCB42020055AFE0045DE11 /* libRCTCamera.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = libRCTCamera.a;
+			remoteRef = ECBCB41F20055AFE0045DE11 /* PBXContainerItemProxy */;
 			sourceTree = BUILT_PRODUCTS_DIR;
 		};
 		ECD9CC461FFFB83A00842D73 /* libprivatedata.a */ = {

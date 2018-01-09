@@ -1,39 +1,20 @@
-export const UNITS = {
-  btc: {
-    name: 'btc',
-    toSatoshis: 100000000,
-    maxDecimals: 8,
-    minDecimals: 8,
-  },
-  bit: {
-    name: 'bit',
-    toSatoshis: 100,
-    maxDecimals: 2,
-    minDecimals: 2,
-  },
-  sat: {
-    name: 'sat',
-    toSatoshis: 1,
-    maxDecimals: 0,
-    minDecimals: 0,
-  },
-};
+import { FEE_LEVELS, BTC_NETWORKS } from './btcUtils';
 
-export const DEFAULT_FEE_LEVEL = 'normal';
+export const DEFAULT_FEE_LEVEL = FEE_LEVELS.NORMAL;
 
-export const DEFAULT_NETWORK = __DEV__ ? 'testnet' : 'livenet';
+export const DEFAULT_NETWORK = __DEV__ ? BTC_NETWORKS.TEST_NET : BTC_NETWORKS.LIVE_NET;
 
 export const feeLevelOptions = [
-  { label: 'Urgent', value: 'urgent' },
-  { label: 'Priority', value: 'priority' },
-  { label: 'Normal', value: 'normal' },
-  { label: 'Economy', value: 'economy' },
-  { label: 'Super Economy', value: 'superEconomy' },
+  { label: 'Urgent', value: FEE_LEVELS.URGENT },
+  { label: 'Priority', value: FEE_LEVELS.PRIORITY },
+  { label: 'Normal', value: FEE_LEVELS.NORMAL },
+  { label: 'Economy', value: FEE_LEVELS.ECONOMY },
+  { label: 'Super Economy', value: FEE_LEVELS.SUPER_ECONOMY },
 ];
 
 export const networkOptions = [
-  { label: 'Testnet', value: 'testnet' },
-  { label: 'Livenet', value: 'livenet' },
+  { label: 'Testnet', value: BTC_NETWORKS.TEST_NET },
+  { label: 'Livenet', value: BTC_NETWORKS.LIVE_NET },
 ];
 
 export const apiCallIds = {

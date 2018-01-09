@@ -1,9 +1,145 @@
 import BitcoreClient from 'bitcore-wallet-client';
-import bs58check from 'bs58check';
-import Big from 'big.js';
 
 import config from '../../config';
-import { UNITS, networkOptions, feeLevelOptions } from './constants';
+import {
+  parseSatFromBtc,
+  validateAddress,
+  validateWalletName,
+  validateFeeLevel,
+  validateNetwork,
+} from './btcUtils';
+
+export async function createWallet(walletName, network) {
+  validateWalletName(walletName);
+  validateNetwork(network);
+
+  const client = await getClient();
+
+  client.seedFromRandomWithMnemonic({
+    network,
+  });
+
+  await createWalletAsync(client, walletName, network);
+
+  const wallet = JSON.parse(client.export());
+
+  return wallet;
+}
+
+export async function generateAddress(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet);
+
+  const address = await createAddressAsync(client);
+
+  return address;
+}
+
+export async function sendTransaction(wallet, address, amount, feeLevel, note) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  validateAddress(address);
+  validateFeeLevel(feeLevel);
+
+  const amountSat = parseSatFromBtc(amount);
+
+  const client = await getClient(wallet);
+
+  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel, note);
+
+  txp = await publishTxProposalAsync(client, txp);
+
+  txp = await signTxProposalAsync(client, txp);
+
+  txp = await broadcastTxProposalAsync(client, txp);
+
+  return txp;
+}
+
+export async function getBalance(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet);
+
+  const balance = await getBalanceAsync(client);
+
+  return balance;
+}
+
+export async function getTxHistory(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet);
+
+  const txs = await getTxHistoryAsync(client);
+
+  return txs;
+}
+
+export async function getAddresses(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet);
+
+  const addresses = await getAddressesAsync(client);
+
+  return addresses;
+}
+
+export async function exportWallet(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  const client = await getClient(wallet, { doNotOpen: true });
+
+  const walletData = client.export();
+
+  return walletData;
+}
+
+export async function importWallet(importData) {
+  if (!importData) {
+    throw new Error('Missing import data');
+  }
+
+  const client = await getClient();
+
+  client.import(importData);
+
+  const wallet = JSON.parse(client.export());
+
+  return wallet;
+}
+
+export async function importWalletFromMnemonic(mnemonic, network) {
+  if (!mnemonic) {
+    throw new Error('Missing import data');
+  }
+
+  if (!network) {
+    throw new Error('Network is missing');
+  }
+
+  const client = await getClient();
+
+  await importFromMnemonicAsync(client, mnemonic, network);
+
+  const wallet = JSON.parse(client.export());
+
+  return wallet;
+}
 
 function getClient(wallet, opts = {}) {
   const client = new BitcoreClient({
@@ -30,48 +166,6 @@ function getClient(wallet, opts = {}) {
       return resolve(client);
     });
   });
-}
-
-function parseBTCAmount(amount) {
-  if (!amount) {
-    throw new Error('Invalid amount');
-  }
-
-  const amountSat = Big(amount)
-    .times(UNITS.btc.toSatoshis)
-    .toFixed(0);
-
-  if (amountSat <= 0) {
-    throw new Error('Invalid amount');
-  }
-
-  return parseInt(amountSat, 10);
-}
-
-function validateAddress(address) {
-  try {
-    bs58check.decode(address);
-  } catch (err) {
-    throw new Error('Invalid address');
-  }
-}
-
-function validateWalletName(walletName) {
-  if (walletName === '' || typeof walletName === 'undefined') {
-    throw new Error('Invalid wallet name');
-  }
-}
-
-function validateFeeLevel(feeLevel) {
-  if (feeLevelOptions.filter(option => option.value === feeLevel).length === 0) {
-    throw new Error('Invalid fee level');
-  }
-}
-
-function validateNetwork(network) {
-  if (networkOptions.filter(option => option.value === network).length === 0) {
-    throw new Error('Invalid network');
-  }
 }
 
 function createWalletAsync(client, walletName, network) {
@@ -213,149 +307,4 @@ function importFromMnemonicAsync(client, mnemonic, network) {
       return resolve(res);
     });
   });
-}
-
-export async function createWallet(walletName, network) {
-  validateWalletName(walletName);
-  validateNetwork(network);
-
-  const client = await getClient();
-
-  client.seedFromRandomWithMnemonic({
-    network,
-  });
-
-  await createWalletAsync(client, walletName, network);
-
-  const wallet = JSON.parse(client.export());
-
-  return wallet;
-}
-
-export async function generateAddress(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
-  const client = await getClient(wallet);
-
-  const address = await createAddressAsync(client);
-
-  return address;
-}
-
-export async function sendTransaction(wallet, address, amount, feeLevel, note) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
-  validateAddress(address);
-  validateFeeLevel(feeLevel);
-
-  const amountSat = parseBTCAmount(amount);
-
-  const client = await getClient(wallet);
-
-  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel, note);
-
-  txp = await publishTxProposalAsync(client, txp);
-
-  txp = await signTxProposalAsync(client, txp);
-
-  txp = await broadcastTxProposalAsync(client, txp);
-
-  return txp;
-}
-
-export async function getBalance(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
-  const client = await getClient(wallet);
-
-  const balance = await getBalanceAsync(client);
-
-  return balance;
-}
-
-export async function getTxHistory(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
-  const client = await getClient(wallet);
-
-  const txs = await getTxHistoryAsync(client);
-
-  return txs;
-}
-
-export async function getAddresses(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
-  const client = await getClient(wallet);
-
-  const addresses = await getAddressesAsync(client);
-
-  return addresses;
-}
-
-export async function exportWallet(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
-  const client = await getClient(wallet, { doNotOpen: true });
-
-  const walletData = client.export();
-
-  return walletData;
-}
-
-export async function importWallet(importData) {
-  if (!importData) {
-    throw new Error('Missing import data');
-  }
-
-  const client = await getClient();
-
-  client.import(importData);
-
-  const wallet = JSON.parse(client.export());
-
-  return wallet;
-}
-
-export async function importWalletFromMnemonic(mnemonic, network) {
-  if (!mnemonic) {
-    throw new Error('Missing import data');
-  }
-
-  if (!network) {
-    throw new Error('Network is missing');
-  }
-
-  const client = await getClient();
-
-  await importFromMnemonicAsync(client, mnemonic, network);
-
-  const wallet = JSON.parse(client.export());
-
-  return wallet;
-}
-
-export function formatAmount(satoshis, unitShort = UNITS.btc.name) {
-  const unit = UNITS[unitShort];
-
-  let amount = satoshis / unit.toSatoshis;
-
-  const parts = amount.toString().split('.');
-  const decimal = (parts[1] || '0').substring(0, unit.maxDecimals);
-
-  amount = parseFloat(parts[0] + '.' + decimal).toFixed(unit.maxDecimals);
-
-  return `${amount} ${unit.name}`;
 }

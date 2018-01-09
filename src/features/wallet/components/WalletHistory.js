@@ -12,7 +12,7 @@ import {
   View,
   List,
 } from '../../../common/components';
-import { formatAmount } from '../bitcoreUtils';
+import { formatSat, getExploreAddressUrl, getExploreTxUrl } from '../btcUtils';
 
 export default class WalletHistory extends Component {
   static propTypes = {
@@ -24,19 +24,15 @@ export default class WalletHistory extends Component {
   txKeyExtractor = tx => tx.txid;
 
   exploreAddress = address => {
-    Linking.openURL(
-      `https://live.blockcypher.com/${
-        this.props.activeWallet.network === 'testnet' ? 'btc-testnet' : 'btc'
-      }/address/${address.address}/`
-    ).catch(err => console.error('An error occurred', err));
+    Linking.openURL(getExploreAddressUrl(address.address, this.props.activeWallet.network)).catch(
+      err => console.error('An error occurred', err)
+    );
   };
 
   exploreTx = tx => {
-    Linking.openURL(
-      `https://live.blockcypher.com/${
-        this.props.activeWallet.network === 'testnet' ? 'btc-testnet' : 'btc'
-      }/tx/${tx.txid}/`
-    ).catch(err => console.error('An error occurred', err));
+    Linking.openURL(getExploreTxUrl(tx.txid, this.props.activeWallet.network)).catch(err =>
+      console.error('An error occurred', err)
+    );
   };
 
   renderAddress = ({ item }) => <AddressItem address={item} onExplorePress={this.exploreAddress} />;
@@ -100,10 +96,10 @@ AddressItem.propTypes = {
 const TxItem = ({ tx, onExplorePress }) => (
   <View style={styles.item}>
     <Text>Type: {tx.action}</Text>
-    <Text>Amount: {formatAmount(tx.amount)}</Text>
+    <Text>Amount: {formatSat(tx.amount)}</Text>
     <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
     <Text>Confirmations: {tx.confirmations || 0}</Text>
-    <Text>Fee: {formatAmount(tx.fees)}</Text>
+    <Text>Fee: {formatSat(tx.fees)}</Text>
     {tx.message && <Text>Message: {tx.message}</Text>}
     <Button
       onPress={() => onExplorePress(tx)}

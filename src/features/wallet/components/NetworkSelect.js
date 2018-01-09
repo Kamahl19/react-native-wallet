@@ -11,7 +11,6 @@ export default class NetworkSelect extends Component {
   static propTypes = {
     value: PropTypes.string.isRequired,
     onChange: PropTypes.func.isRequired,
-    style: PropTypes.any,
   };
 
   onChange = e => {
@@ -21,7 +20,7 @@ export default class NetworkSelect extends Component {
   };
 
   render() {
-    const { value, style } = this.props;
+    const { value } = this.props;
 
     return (
       <SegmentedControl
