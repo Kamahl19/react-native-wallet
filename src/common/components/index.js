@@ -20,3 +20,4 @@ export { default as Heading } from './Heading';
 export { default as SegmentedControl } from './SegmentedControl';
 export { default as List } from './list';
 export { default as ListItem } from './list/ListItem';
+export { default as Scanner } from './Scanner';

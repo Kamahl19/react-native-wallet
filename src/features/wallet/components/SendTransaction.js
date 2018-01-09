@@ -4,7 +4,15 @@ import { StyleSheet } from 'react-native';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
+import {
+  ScreenWrapper,
+  Button,
+  FormItem,
+  TextInput,
+  ScrollView,
+  Heading,
+  Scanner,
+} from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
 
@@ -17,6 +25,16 @@ export default class SendTransaction extends Component {
 
   state = {
     feeLevel: DEFAULT_FEE_LEVEL,
+    showScanner: false,
+  };
+
+  toggleQRCodeScanner = () => {
+    this.setState({ showScanner: !this.state.showScanner });
+  };
+
+  onQRCodeRead = e => {
+    this.props.form.setFieldsValue({ address: e.data });
+    this.toggleQRCodeScanner();
   };
 
   handleSendTransaction = () => {
@@ -35,34 +53,46 @@ export default class SendTransaction extends Component {
 
   render() {
     const { form } = this.props;
-    const { feeLevel } = this.state;
+    const { feeLevel, showScanner } = this.state;
 
     return (
-      <ScreenWrapper>
-        <Heading>Send Transaction</Heading>
+      <ScrollView>
+        <ScreenWrapper>
+          <Heading>Send Transaction</Heading>
 
-        <FormItem>
-          {form.getFieldDecorator('address', { rules: [rules.required] })(
-            <TextInput label="Address" autoCorrect={false} />
-          )}
-        </FormItem>
+          <FormItem>
+            {form.getFieldDecorator('address', { rules: [rules.required] })(
+              <TextInput label="Address" autoCorrect={false} />
+            )}
+          </FormItem>
 
-        <FormItem>
-          {form.getFieldDecorator('amount', { rules: [rules.required] })(
-            <TextInput label="Amount BTC" keyboardType="numeric" />
-          )}
-        </FormItem>
+          <Button
+            onPress={this.toggleQRCodeScanner}
+            title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
+            type="default"
+            size="sm"
+            style={styles.scanButton}
+          />
 
-        <FeeLevelSelect onChange={feeLevel => this.setState({ feeLevel })} value={feeLevel} />
+          {showScanner && <Scanner onRead={this.onQRCodeRead} />}
 
-        <Button
-          onPress={this.handleSendTransaction}
-          title="Send"
-          type="primary"
-          size="md"
-          style={styles.button}
-        />
-      </ScreenWrapper>
+          <FormItem>
+            {form.getFieldDecorator('amount', { rules: [rules.required] })(
+              <TextInput label="Amount BTC" keyboardType="numeric" />
+            )}
+          </FormItem>
+
+          <FeeLevelSelect onChange={feeLevel => this.setState({ feeLevel })} value={feeLevel} />
+
+          <Button
+            onPress={this.handleSendTransaction}
+            title="Send"
+            type="primary"
+            size="md"
+            style={styles.button}
+          />
+        </ScreenWrapper>
+      </ScrollView>
     );
   }
 }
@@ -70,5 +100,9 @@ export default class SendTransaction extends Component {
 const styles = StyleSheet.create({
   button: {
     marginTop: 12,
+  },
+  scanButton: {
+    alignSelf: 'flex-start',
+    marginTop: 6,
   },
 });

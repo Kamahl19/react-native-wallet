@@ -5118,6 +5118,12 @@ react-devtools@^3.0.0:
     react-devtools-core "^3.0.0"
     update-notifier "^2.1.0"
 
+react-native-camera@^0.12.0:
+  version "0.12.0"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-0.12.0.tgz#51afa8acf1696d9d973074b6454c5ba2cce6ac18"
+  dependencies:
+    prop-types "^15.5.10"
+
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
   resolved "https://registry.yarnpkg.com/react-native-dismiss-keyboard/-/react-native-dismiss-keyboard-1.0.0.tgz#32886242b3f2317e121f3aeb9b0a585e2b879b49"
@@ -5149,6 +5155,12 @@ react-native-material-textfield@^0.11.0:
   resolved "https://registry.yarnpkg.com/react-native-material-textfield/-/react-native-material-textfield-0.11.0.tgz#a45720c8ee8d2be6c96968a3fec830e2f12ba815"
   dependencies:
     prop-types "^15.5.9"
+
+react-native-qrcode-scanner@^0.0.29:
+  version "0.0.29"
+  resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-0.0.29.tgz#ad396dd1dc5728b596f1660bb21748119f4d86ef"
+  dependencies:
+    prop-types "^15.5.10"
 
 react-native-qrcode-svg@^5.0.6:
   version "5.0.6"

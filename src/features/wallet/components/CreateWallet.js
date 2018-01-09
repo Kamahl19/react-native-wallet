@@ -3,7 +3,14 @@ import PropTypes from 'prop-types';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
+import {
+  ScreenWrapper,
+  Button,
+  FormItem,
+  TextInput,
+  Heading,
+  ScrollView,
+} from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
 
@@ -37,19 +44,26 @@ export default class CreateWallet extends Component {
     const { network } = this.state;
 
     return (
-      <ScreenWrapper>
-        <Heading>Create Wallet</Heading>
+      <ScrollView>
+        <ScreenWrapper>
+          <Heading>Create Wallet</Heading>
 
-        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-        <FormItem>
-          {form.getFieldDecorator('walletName', { rules: [rules.required] })(
-            <TextInput label="Wallet Name" autoCorrect={false} />
-          )}
-        </FormItem>
+          <FormItem>
+            {form.getFieldDecorator('walletName', { rules: [rules.required] })(
+              <TextInput label="Wallet Name" autoCorrect={false} />
+            )}
+          </FormItem>
 
-        <Button onPress={this.handleCreateWallet} title="Create Wallet" type="primary" size="md" />
-      </ScreenWrapper>
+          <Button
+            onPress={this.handleCreateWallet}
+            title="Create Wallet"
+            type="primary"
+            size="md"
+          />
+        </ScreenWrapper>
+      </ScrollView>
     );
   }
 }

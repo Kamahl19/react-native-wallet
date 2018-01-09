@@ -17,9 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// scan QRcode in Send Transaction
-// import wallet and mnemonic from QRCode
-
 // rozdelit wallet na btc a wallet
 // format USD with https://github.com/ExodusMovement/format-currency
 // format BTC with https://github.com/ExodusMovement/number-unit
