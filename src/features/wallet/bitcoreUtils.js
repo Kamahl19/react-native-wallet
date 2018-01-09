@@ -45,7 +45,7 @@ function parseBTCAmount(amount) {
     throw new Error('Invalid amount');
   }
 
-  return amountSat;
+  return parseInt(amountSat, 10);
 }
 
 function validateAddress(address) {
