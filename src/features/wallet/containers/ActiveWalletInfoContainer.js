@@ -36,6 +36,27 @@ export default class ActiveWalletInfoContainer extends Component {
   };
 
   componentWillMount() {
+    if (this.props.wallet) {
+      this.startFetching();
+    }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (
+      nextProps.wallet &&
+      (!this.props.wallet || nextProps.wallet.walletId !== this.props.wallet.walletId)
+    ) {
+      this.startFetching();
+    } else if (!nextProps.wallet) {
+      this.stopFetching();
+    }
+  }
+
+  componentWillUnmount() {
+    this.stopFetching();
+  }
+
+  startFetching = () => {
     const { actions } = this.props;
 
     actions.getBalance();
@@ -43,12 +64,12 @@ export default class ActiveWalletInfoContainer extends Component {
 
     this.balanceInterval = setInterval(actions.getBalance, FETCH_BALANCE_INTERVAL_MS);
     this.pricesInterval = setInterval(actions.getPrices, FETCH_PRICES_INTERVAL_MS);
-  }
+  };
 
-  componentWillUnmount() {
+  stopFetching = () => {
     clearInterval(this.balanceInterval);
     clearInterval(this.pricesInterval);
-  }
+  };
 
   render() {
     const { isGettingBalance, wallet, prices } = this.props;

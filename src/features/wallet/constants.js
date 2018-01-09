@@ -47,6 +47,6 @@ export const apiCallIds = {
   IMPORT_WALLET: 'IMPORT_WALLET',
 };
 
-export const FETCH_BALANCE_INTERVAL_MS = 10000;
+export const FETCH_BALANCE_INTERVAL_MS = __DEV__ ? 60000 : 10000;
 
-export const FETCH_PRICES_INTERVAL_MS = 10000;
+export const FETCH_PRICES_INTERVAL_MS = __DEV__ ? 60000 : 10000;
