@@ -16,11 +16,10 @@ export default class GenerateAddress extends Component {
   static propTypes = {
     address: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
-    onCopy: PropTypes.func.isRequired,
   };
 
   render() {
-    const { address, onSubmit, onCopy } = this.props;
+    const { address, onSubmit } = this.props;
 
     return (
       <ScrollView>
@@ -28,10 +27,6 @@ export default class GenerateAddress extends Component {
           <Heading>Generate Address</Heading>
 
           {address && <TextInput label="Address" value={address.address} />}
-
-          {address && (
-            <Button onPress={onCopy} title="Copy to Clipboard" type="default" size="md" />
-          )}
 
           {address && (
             <CenterView style={styles.qrCode}>

@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -37,10 +36,6 @@ export default class GenerateAddressContainer extends Component {
     title: 'Generate Address',
   };
 
-  onCopy = () => {
-    Clipboard.setString(this.props.address);
-  };
-
   render() {
     const { activeWallet, isLoading, actions } = this.props;
 
@@ -50,11 +45,7 @@ export default class GenerateAddressContainer extends Component {
 
     return (
       <Spinner show={isLoading}>
-        <GenerateAddress
-          onSubmit={actions.generateAddress}
-          onCopy={this.onCopy}
-          address={activeWallet.address}
-        />
+        <GenerateAddress onSubmit={actions.generateAddress} address={activeWallet.address} />
       </Spinner>
     );
   }

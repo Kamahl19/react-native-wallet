@@ -15,12 +15,11 @@ import {
 export default class ExportWallet extends Component {
   static propTypes = {
     activeWallet: PropTypes.object.isRequired,
-    onCopy: PropTypes.func.isRequired,
     exportWallet: PropTypes.func.isRequired,
   };
 
   render() {
-    const { activeWallet, onCopy, exportWallet } = this.props;
+    const { activeWallet, exportWallet } = this.props;
     const { mnemonic, exported } = activeWallet;
 
     return (
@@ -29,14 +28,6 @@ export default class ExportWallet extends Component {
           <Heading notFirst>Backup with Mnemonic</Heading>
 
           <TextInput label="Mnemonic" value={mnemonic} />
-
-          <Button
-            onPress={() => onCopy(mnemonic)}
-            title="Copy to Clipboard"
-            type="default"
-            size="md"
-            style={styles.button}
-          />
 
           <CenterView style={styles.qrCode}>
             <QRCode value={mnemonic} />

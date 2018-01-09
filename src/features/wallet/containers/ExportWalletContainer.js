@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { Clipboard } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -37,10 +36,6 @@ export default class ExportWalletContainer extends Component {
     title: 'Export Wallet',
   };
 
-  onCopy = text => {
-    Clipboard.setString(text);
-  };
-
   render() {
     const { activeWallet, isGettingExport, actions } = this.props;
 
@@ -50,11 +45,7 @@ export default class ExportWalletContainer extends Component {
 
     return (
       <Spinner show={isGettingExport}>
-        <ExportWallet
-          onCopy={this.onCopy}
-          activeWallet={activeWallet}
-          exportWallet={actions.exportWallet}
-        />
+        <ExportWallet activeWallet={activeWallet} exportWallet={actions.exportWallet} />
       </Spinner>
     );
   }
