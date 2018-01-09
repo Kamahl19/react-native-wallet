@@ -88,6 +88,6 @@ const styles = StyleSheet.create({
   scanButton: {
     alignSelf: 'flex-start',
     marginTop: 6,
-    marginbottom: 12,
+    marginBottom: 12,
   },
 });
