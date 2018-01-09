@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import DropdownAlert from 'react-native-dropdownalert';
 
-import Network from './Network';
 import { View } from '../../common/components';
 import AlertService from '../../common/services/alert';
 import Spinner from '../../features/spinner';
@@ -17,7 +16,6 @@ const mapStateToProps = state => ({
 
 const App = ({ showSpinner }) => (
   <View style={styles.component}>
-    <Network />
     <AppNavigator />
     {showSpinner && <Spinner large />}
     <DropdownAlert ref={ref => AlertService.setAlert(ref)} />
