@@ -208,7 +208,7 @@ function* sendTransaction({ payload }) {
     );
 
     yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, {
-      msg: 'Transaction was sent successfully. You can see it in History.',
+      msg: 'Transaction was sent successfully. You can see it in Transactions screen.',
     });
   } catch (error) {
     yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, { error });

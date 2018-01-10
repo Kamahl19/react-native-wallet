@@ -3,10 +3,18 @@ import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 import moment from 'moment';
 
-import { ScreenWrapper, Button, Heading, Text, View, List } from '../../../common/components';
+import {
+  ScreenWrapper,
+  Button,
+  Heading,
+  Text,
+  View,
+  List,
+  CenterView,
+} from '../../../common/components';
 import { formatSat, getExploreTxUrl } from '../btcUtils';
 
-export default class History extends Component {
+export default class Transactions extends Component {
   static propTypes = {
     network: PropTypes.string.isRequired,
     transactions: PropTypes.array,
@@ -27,7 +35,7 @@ export default class History extends Component {
 
     return (
       <ScreenWrapper scrollEnabled={false}>
-        <Heading>Transactions History</Heading>
+        <Heading>Transactions</Heading>
         {transactions &&
           transactions.length > 0 && (
             <List
@@ -37,7 +45,12 @@ export default class History extends Component {
             />
           )}
 
-        {transactions && transactions.length === 0 && <Text>No transactions</Text>}
+        {transactions &&
+          transactions.length === 0 && (
+            <CenterView>
+              <Text>No transactions</Text>
+            </CenterView>
+          )}
       </ScreenWrapper>
     );
   }

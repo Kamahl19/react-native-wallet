@@ -61,7 +61,7 @@ export default class SendTransaction extends Component {
 
         <FormItem>
           {form.getFieldDecorator('address', { rules: [rules.required] })(
-            <TextInput label="Address" autoCorrect={false} />
+            <TextInput label="Address" autoCorrect={false} autoCapitalize="none" />
           )}
         </FormItem>
 

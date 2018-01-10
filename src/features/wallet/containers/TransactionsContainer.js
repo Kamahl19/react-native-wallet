@@ -7,7 +7,7 @@ import { CenterView, ActivityIndicator } from '../../../common/components';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { getTxHistoryActions, selectActiveWallet } from '../ducks';
-import History from '../components/History';
+import Transactions from '../components/Transactions';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
@@ -25,7 +25,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class HistoryContainer extends Component {
+export default class TransactionsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
@@ -33,7 +33,7 @@ export default class HistoryContainer extends Component {
   };
 
   static navigationOptions = {
-    title: 'Transactions History',
+    title: 'Transactions',
   };
 
   componentWillMount() {
@@ -55,6 +55,6 @@ export default class HistoryContainer extends Component {
       );
     }
 
-    return <History network={activeWallet.network} transactions={activeWallet.txs} />;
+    return <Transactions network={activeWallet.network} transactions={activeWallet.txs} />;
   }
 }

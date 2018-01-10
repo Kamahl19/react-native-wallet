@@ -17,7 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// Transaction is received and accredited immediatelly
 // Transactions in Transaction History are shown from newest to oldest
 // User is able to refresh Transaction History by scrolling down
 // Transaction detail holds a transaction status

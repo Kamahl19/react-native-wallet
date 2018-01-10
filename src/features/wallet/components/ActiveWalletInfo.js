@@ -12,8 +12,13 @@ const ActiveWalletInfo = ({ wallet, price }) =>
       <Text>Network: {wallet.network}</Text>
       {wallet.balance && (
         <View style={styles.balance}>
-          <Text>Balance: {formatSat(wallet.balance.totalAmount)}</Text>
-          {price && <Text> ({formatUsd(convertSatToUsd(wallet.balance.totalAmount, price))})</Text>}
+          <Text>Balance: {formatSat(wallet.balance.availableConfirmedAmount)}</Text>
+          {price && (
+            <Text>
+              {' '}
+              ({formatUsd(convertSatToUsd(wallet.balance.availableConfirmedAmount, price))})
+            </Text>
+          )}
         </View>
       )}
     </View>

@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { ScreenWrapper, Button, Heading, Text, View, List } from '../../../common/components';
+import {
+  ScreenWrapper,
+  Button,
+  Heading,
+  Text,
+  View,
+  List,
+  CenterView,
+} from '../../../common/components';
 import { getExploreAddressUrl } from '../btcUtils';
 
 export default class Addresses extends Component {
@@ -32,7 +40,12 @@ export default class Addresses extends Component {
             <List data={addresses} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
           )}
 
-        {addresses && addresses.length === 0 && <Text>No addresses</Text>}
+        {addresses &&
+          addresses.length === 0 && (
+            <CenterView>
+              <Text>No addresses</Text>
+            </CenterView>
+          )}
       </ScreenWrapper>
     );
   }
