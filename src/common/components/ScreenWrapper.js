@@ -1,21 +1,57 @@
-import React from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
+import { StyleSheet } from 'react-native';
 
-import { View } from './';
+import { View, ScrollView } from './';
 
-const ScreenWrapper = ({ children }) => <View style={styles.component}>{children}</View>;
+export default class ScreenWrapper extends Component {
+  static propTypes = {
+    children: PropTypes.node.isRequired,
+    scrollEnabled: PropTypes.bool,
+    fill: PropTypes.bool,
+    keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled']),
+    containerStyle: PropTypes.any,
+    style: PropTypes.any,
+  };
 
-ScreenWrapper.propTypes = {
-  children: PropTypes.node.isRequired,
-};
+  static defaultProps = {
+    scrollEnabled: true,
+  };
 
-export default ScreenWrapper;
+  render() {
+    const {
+      children,
+      scrollEnabled,
+      fill,
+      keyboardShouldPersistTaps,
+      containerStyle,
+      style,
+    } = this.props;
+
+    const C = scrollEnabled ? ScrollView : View;
+    const passProps = {};
+
+    if (scrollEnabled) {
+      passProps.keyboardShouldPersistTaps = keyboardShouldPersistTaps || 'never';
+      passProps.alwaysBounceVertical = false;
+      passProps.overScrollMode = 'auto';
+      passProps.contentContainerStyle = [containerStyle, fill ? styles.fillContentView : undefined];
+    }
+
+    return (
+      <C {...passProps} style={[styles.component, style]}>
+        {children}
+      </C>
+    );
+  }
+}
 
 const styles = StyleSheet.create({
   component: {
-    flexGrow: 1,
-    marginTop: Platform.OS === 'ios' ? 20 : 0,
+    flex: 1,
     paddingHorizontal: 10,
+  },
+  fillContentView: {
+    minHeight: '100%',
   },
 });

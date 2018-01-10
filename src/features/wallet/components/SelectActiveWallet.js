@@ -2,14 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Alert } from 'react-native';
 
-import {
-  Text,
-  ScreenWrapper,
-  TouchableItem,
-  Heading,
-  List,
-  ScrollView,
-} from '../../../common/components';
+import { Text, ScreenWrapper, TouchableItem, Heading, List } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
 
@@ -53,24 +46,22 @@ export default class SelectActiveWallet extends Component {
     const wallets = this.getWallets();
 
     return (
-      <ScrollView>
-        <ScreenWrapper>
-          <Heading>Select Active Wallet</Heading>
+      <ScreenWrapper scrollEnabled={false}>
+        <Heading>Select Active Wallet</Heading>
 
-          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-          {wallets.length > 0 && (
-            <List
-              data={wallets}
-              extraData={this.state.network}
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderItem}
-            />
-          )}
+        {wallets.length > 0 && (
+          <List
+            data={wallets}
+            extraData={this.state.network}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+          />
+        )}
 
-          {wallets.length === 0 && <Text>No wallets</Text>}
-        </ScreenWrapper>
-      </ScrollView>
+        {wallets.length === 0 && <Text>No wallets</Text>}
+      </ScreenWrapper>
     );
   }
 }

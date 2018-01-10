@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { createWalletActions } from '../ducks';
@@ -36,10 +35,6 @@ export default class CreateWalletContainer extends Component {
   render() {
     const { isLoading, actions } = this.props;
 
-    return (
-      <Spinner show={isLoading}>
-        <CreateWallet onSubmit={actions.createWallet} />
-      </Spinner>
-    );
+    return <CreateWallet onSubmit={actions.createWallet} isLoading={isLoading} />;
   }
 }

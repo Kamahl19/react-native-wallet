@@ -3,11 +3,14 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { View } from './';
-import { css } from '../utils/style';
 
 const CenterView = ({ direction, style, ...rest }) => (
   <View
-    style={[styles.component, css('flexDirection', direction === 'row' ? 'row' : 'column'), style]}
+    style={[
+      styles.component,
+      direction === 'row' ? styles.rowDirection : styles.columnDirection,
+      style,
+    ]}
     {...rest}
   />
 );
@@ -24,5 +27,11 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
+  },
+  columnDirection: {
+    flexDirection: 'column',
+  },
+  rowDirection: {
+    flexDirection: 'row',
   },
 });

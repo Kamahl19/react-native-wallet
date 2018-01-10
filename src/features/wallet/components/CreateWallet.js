@@ -3,14 +3,7 @@ import PropTypes from 'prop-types';
 
 import { createForm } from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import {
-  ScreenWrapper,
-  Button,
-  FormItem,
-  TextInput,
-  Heading,
-  ScrollView,
-} from '../../../common/components';
+import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
 
@@ -19,6 +12,7 @@ export default class CreateWallet extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -40,30 +34,29 @@ export default class CreateWallet extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, isLoading } = this.props;
     const { network } = this.state;
 
     return (
-      <ScrollView>
-        <ScreenWrapper>
-          <Heading>Create Wallet</Heading>
+      <ScreenWrapper>
+        <Heading>Create Wallet</Heading>
 
-          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-          <FormItem>
-            {form.getFieldDecorator('walletName', { rules: [rules.required] })(
-              <TextInput label="Wallet Name" autoCorrect={false} />
-            )}
-          </FormItem>
+        <FormItem>
+          {form.getFieldDecorator('walletName', { rules: [rules.required] })(
+            <TextInput label="Wallet Name" autoCorrect={false} />
+          )}
+        </FormItem>
 
-          <Button
-            onPress={this.handleCreateWallet}
-            title="Create Wallet"
-            type="primary"
-            size="md"
-          />
-        </ScreenWrapper>
-      </ScrollView>
+        <Button
+          onPress={this.handleCreateWallet}
+          title="Create Wallet"
+          type="primary"
+          size="lg"
+          disabled={isLoading}
+        />
+      </ScreenWrapper>
     );
   }
 }

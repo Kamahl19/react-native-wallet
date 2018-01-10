@@ -18,18 +18,8 @@ export const finishApiCall = createActionCreator(FINISH_API_CALL);
  * REDUCERS
  */
 const initialState = {
-  globalCounter: 0,
   apiCalls: {},
 };
-
-const globalCounter = createReducer(initialState.globalCounter, {
-  [START_API_CALL]: (state, payload) => {
-    return payload.apiCallId ? state : state + 1;
-  },
-  [FINISH_API_CALL]: (state, payload) => {
-    return payload.apiCallId ? state : state - 1;
-  },
-});
 
 const apiCalls = createReducer(initialState.apiCalls, {
   [START_API_CALL]: (state, payload) => {
@@ -55,7 +45,6 @@ const apiCalls = createReducer(initialState.apiCalls, {
 });
 
 export default combineReducers({
-  globalCounter,
   apiCalls,
 });
 
@@ -63,7 +52,6 @@ export default combineReducers({
  * SELECTORS
  */
 export const selectSpinner = state => state.spinner;
-export const selectShowSpinner = state => !!selectSpinner(state).globalCounter;
 export const selectApiCalls = state => selectSpinner(state).apiCalls;
 export const selectApiCallById = (state, apiCallId) => selectApiCalls(state)[apiCallId];
 export const selectIsInProgress = (state, apiCallId) => !!selectApiCallById(state, apiCallId);

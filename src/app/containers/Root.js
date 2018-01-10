@@ -6,7 +6,7 @@ import {
   prepareRequestInterceptor,
   handleResponsesInterceptor,
 } from '../../common/services/apiClient';
-import Spinner from '../../features/spinner';
+import { CenterView, ActivityIndicator } from '../../common/components';
 import configureStore from '../store/configureStore';
 import App from './App';
 
@@ -17,7 +17,14 @@ handleResponsesInterceptor(store);
 
 const Root = () => (
   <Provider store={store}>
-    <PersistGate loading={<Spinner large />} persistor={persistor}>
+    <PersistGate
+      loading={
+        <CenterView>
+          <ActivityIndicator size="large" />
+        </CenterView>
+      }
+      persistor={persistor}
+    >
       <App />
     </PersistGate>
   </Provider>

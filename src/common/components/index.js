@@ -18,5 +18,5 @@ export { default as OnePicker } from './OnePicker';
 export { default as TouchableItem } from './TouchableItem';
 export { default as Heading } from './Heading';
 export { default as SegmentedControl } from './SegmentedControl';
-export { default as List } from './list';
+export { default as List } from './list/List';
 export { default as Scanner } from './Scanner';

@@ -3,58 +3,60 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Spinner from '../../spinner';
+import { CenterView, ActivityIndicator } from '../../../common/components';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import { getAddressesActions, getTxHistoryActions, selectActiveWallet } from '../ducks';
-import WalletHistory from '../components/WalletHistory';
+import { getAddressesActions, selectActiveWallet } from '../ducks';
+import Addresses from '../components/Addresses';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
-  isGettingAddresses: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
-  isGettingTxHistory: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
+  isLoading: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
 });
 
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       getAddresses: getAddressesActions.request,
-      getTxHistory: getTxHistoryActions.request,
     },
     dispatch
   ),
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class WalletHistoryContainer extends Component {
+export default class AddressesContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
-    isGettingAddresses: PropTypes.bool.isRequired,
-    isGettingTxHistory: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
   static navigationOptions = {
-    title: 'Wallet History',
+    title: 'Addresses',
   };
 
   componentWillMount() {
     this.props.actions.getAddresses();
-    this.props.actions.getTxHistory();
   }
 
   render() {
-    const { activeWallet, isGettingAddresses, isGettingTxHistory } = this.props;
+    const { activeWallet, isLoading } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
-    return (
-      <Spinner show={isGettingAddresses || isGettingTxHistory}>
-        <WalletHistory activeWallet={activeWallet} />
-      </Spinner>
-    );
+    if (isLoading) {
+      return (
+        <CenterView>
+          <ActivityIndicator />
+        </CenterView>
+      );
+    }
+
+    console.log(activeWallet);
+
+    return <Addresses network={activeWallet.network} addresses={activeWallet.addresses} />;
   }
 }

@@ -26,7 +26,6 @@ if (Platform.OS === 'ios') {
 // Transaction detail holds address sent TO & address received FROM
 // If current address has been used, a new one is automatically generated
 // User can set amount to send in BTC, the amount is also displayed in USD
-// balance and price is being fetched nonstop - loading wheel keeps spinning without ever disappearing
 // parse btc amount (,.)
 // limit number of decimal places in btc amount to 8
 

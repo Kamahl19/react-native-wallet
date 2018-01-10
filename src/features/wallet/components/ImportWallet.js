@@ -4,7 +4,6 @@ import { StyleSheet } from 'react-native';
 
 import { createForm } from '../../../common/services/Form';
 import {
-  ScrollView,
   ScreenWrapper,
   Button,
   Heading,
@@ -20,6 +19,7 @@ export default class ImportWallet extends Component {
   static propTypes = {
     importWallet: PropTypes.func.isRequired,
     form: PropTypes.object.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -51,35 +51,39 @@ export default class ImportWallet extends Component {
   };
 
   render() {
-    const { form } = this.props;
+    const { form, isLoading } = this.props;
     const { network, showScanner } = this.state;
 
     return (
-      <ScrollView>
-        <ScreenWrapper>
-          <Heading>Import Wallet</Heading>
+      <ScreenWrapper>
+        <Heading>Import Wallet</Heading>
 
-          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-          <FormItem>
-            {form.getFieldDecorator('mnemonic')(
-              <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" />
-            )}
-          </FormItem>
+        <FormItem>
+          {form.getFieldDecorator('mnemonic')(
+            <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" />
+          )}
+        </FormItem>
 
-          <Button
-            onPress={this.toggleQRCodeScanner}
-            title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
-            type="default"
-            size="sm"
-            style={styles.scanButton}
-          />
+        <Button
+          onPress={this.toggleQRCodeScanner}
+          title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
+          type="default"
+          size="sm"
+          style={styles.scanButton}
+        />
 
-          {showScanner && <Scanner onRead={this.onQRCodeRead} />}
+        {showScanner && <Scanner onRead={this.onQRCodeRead} />}
 
-          <Button onPress={this.importFromMnemonic} title="Import" type="primary" size="md" />
-        </ScreenWrapper>
-      </ScrollView>
+        <Button
+          onPress={this.importFromMnemonic}
+          title="Import"
+          type="primary"
+          size="lg"
+          disabled={isLoading}
+        />
+      </ScreenWrapper>
     );
   }
 }

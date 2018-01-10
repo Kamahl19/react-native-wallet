@@ -3,46 +3,39 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
-import {
-  ScrollView,
-  ScreenWrapper,
-  CenterView,
-  Button,
-  TextInput,
-  Heading,
-} from '../../../common/components';
+import { ScreenWrapper, CenterView, Button, TextInput, Heading } from '../../../common/components';
 
 export default class GenerateAddress extends Component {
   static propTypes = {
     address: PropTypes.object,
     onSubmit: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { address, onSubmit } = this.props;
+    const { address, onSubmit, isLoading } = this.props;
 
     return (
-      <ScrollView>
-        <ScreenWrapper>
-          <Heading>Generate Address</Heading>
+      <ScreenWrapper>
+        <Heading>Generate Address</Heading>
 
-          {address && <TextInput label="Address" value={address.address} />}
+        {address && <TextInput label="Address" value={address.address} />}
 
-          {address && (
-            <CenterView style={styles.qrCode}>
-              <QRCode value={address.address} />
-            </CenterView>
-          )}
+        {address && (
+          <CenterView style={styles.qrCode}>
+            <QRCode value={address.address} />
+          </CenterView>
+        )}
 
-          <Button
-            onPress={() => onSubmit()}
-            title="Generate New Address"
-            type="primary"
-            size="md"
-            style={styles.button}
-          />
-        </ScreenWrapper>
-      </ScrollView>
+        <Button
+          onPress={() => onSubmit()}
+          title="Generate New Address"
+          type="primary"
+          size="lg"
+          style={styles.button}
+          disabled={isLoading}
+        />
+      </ScreenWrapper>
     );
   }
 }

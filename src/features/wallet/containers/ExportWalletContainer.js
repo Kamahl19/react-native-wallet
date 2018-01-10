@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { exportWalletActions, selectActiveWallet } from '../ducks';
@@ -12,7 +11,7 @@ import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
-  isGettingExport: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
+  isLoading: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -28,7 +27,7 @@ const mapDispatchToProps = dispatch => ({
 export default class ExportWalletContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
-    isGettingExport: PropTypes.bool.isRequired,
+    isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -37,16 +36,18 @@ export default class ExportWalletContainer extends Component {
   };
 
   render() {
-    const { activeWallet, isGettingExport, actions } = this.props;
+    const { activeWallet, isLoading, actions } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
     return (
-      <Spinner show={isGettingExport}>
-        <ExportWallet activeWallet={activeWallet} exportWallet={actions.exportWallet} />
-      </Spinner>
+      <ExportWallet
+        activeWallet={activeWallet}
+        exportWallet={actions.exportWallet}
+        isLoading={isLoading}
+      />
     );
   }
 }

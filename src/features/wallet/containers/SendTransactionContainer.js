@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Spinner from '../../spinner';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { sendTransactionAction, selectActiveWalletId } from '../ducks';
@@ -49,10 +48,6 @@ export default class SendTransactionContainer extends Component {
       return <NoActiveWallet />;
     }
 
-    return (
-      <Spinner show={isLoading}>
-        <SendTransaction onSubmit={this.onSubmit} />
-      </Spinner>
-    );
+    return <SendTransaction onSubmit={this.onSubmit} isLoading={isLoading} />;
   }
 }
