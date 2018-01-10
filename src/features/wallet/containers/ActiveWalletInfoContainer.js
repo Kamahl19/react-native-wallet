@@ -3,17 +3,14 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import Spinner from '../../spinner';
-import { selectIsInProgress } from '../../spinner/ducks';
 import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
-import { apiCallIds, FETCH_BALANCE_INTERVAL_MS, FETCH_PRICES_INTERVAL_MS } from '../constants';
+import { FETCH_BALANCE_INTERVAL_MS, FETCH_PRICES_INTERVAL_MS } from '../constants';
 import { selectActiveWallet, getBalanceActions } from '../ducks';
 import ActiveWalletInfo from '../components/ActiveWalletInfo';
 
 const mapStateToProps = state => ({
   wallet: selectActiveWallet(state),
   prices: selectPriceForActiveWallet(state),
-  isGettingBalance: selectIsInProgress(state, apiCallIds.GET_BALANCE),
 });
 
 const mapDispatchToProps = dispatch => ({
@@ -31,7 +28,6 @@ export default class ActiveWalletInfoContainer extends Component {
   static propTypes = {
     wallet: PropTypes.object,
     prices: PropTypes.object,
-    isGettingBalance: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
 
@@ -73,12 +69,8 @@ export default class ActiveWalletInfoContainer extends Component {
   };
 
   render() {
-    const { isGettingBalance, wallet, prices } = this.props;
+    const { wallet, prices } = this.props;
 
-    return (
-      <Spinner show={isGettingBalance}>
-        <ActiveWalletInfo wallet={wallet} price={prices ? prices.USD : undefined} />
-      </Spinner>
-    );
+    return <ActiveWalletInfo wallet={wallet} price={prices ? prices.USD : undefined} />;
   }
 }
