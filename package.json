@@ -29,7 +29,7 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.5.1",
     "jest": "^22.0.4",
-    "prettier": "^1.9.2",
+    "prettier": "^1.10.1",
     "react-devtools": "^3.0.0",
     "react-test-renderer": "^16.2.0",
     "reactotron-react-native": "^1.14.0",
