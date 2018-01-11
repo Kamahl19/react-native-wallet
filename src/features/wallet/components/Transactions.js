@@ -11,6 +11,7 @@ import {
   View,
   List,
   CenterView,
+  RefreshControl,
 } from '../../../common/components';
 import { formatSat, getExploreTxUrl } from '../btcUtils';
 import TxActionSelect from './TxActionSelect';
@@ -20,6 +21,8 @@ export default class Transactions extends Component {
   static propTypes = {
     network: PropTypes.string.isRequired,
     transactions: PropTypes.array,
+    onRefresh: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   state = {
@@ -40,6 +43,7 @@ export default class Transactions extends Component {
   renderItem = ({ item }) => <TxItem tx={item} onExplorePress={this.openExplorer} />;
 
   render() {
+    const { isLoading, onRefresh } = this.props;
     const { txAction } = this.state;
 
     const transactions = this.getTransactions();
@@ -57,6 +61,7 @@ export default class Transactions extends Component {
               extraData={txAction}
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
+              refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
             />
           )}
 

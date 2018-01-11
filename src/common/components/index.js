@@ -7,6 +7,7 @@ export {
   View,
   Picker,
   FlatList,
+  RefreshControl,
 } from 'react-native';
 
 export { default as Button } from './Button';

@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { CenterView, ActivityIndicator } from '../../../common/components';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { getTxHistoryActions, selectActiveWallet } from '../ducks';
@@ -41,20 +40,19 @@ export default class TransactionsContainer extends Component {
   }
 
   render() {
-    const { activeWallet, isLoading } = this.props;
+    const { activeWallet, isLoading, actions } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
-    if (isLoading) {
-      return (
-        <CenterView>
-          <ActivityIndicator />
-        </CenterView>
-      );
-    }
-
-    return <Transactions network={activeWallet.network} transactions={activeWallet.txs} />;
+    return (
+      <Transactions
+        network={activeWallet.network}
+        transactions={activeWallet.txs}
+        onRefresh={actions.getTxHistory}
+        isLoading={isLoading}
+      />
+    );
   }
 }

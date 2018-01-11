@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
-import { CenterView, ActivityIndicator } from '../../../common/components';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
 import { getAddressesActions, selectActiveWallet } from '../ducks';
@@ -41,22 +40,19 @@ export default class AddressesContainer extends Component {
   }
 
   render() {
-    const { activeWallet, isLoading } = this.props;
+    const { activeWallet, isLoading, actions } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
-    if (isLoading) {
-      return (
-        <CenterView>
-          <ActivityIndicator />
-        </CenterView>
-      );
-    }
-
-    console.log(activeWallet);
-
-    return <Addresses network={activeWallet.network} addresses={activeWallet.addresses} />;
+    return (
+      <Addresses
+        network={activeWallet.network}
+        addresses={activeWallet.addresses}
+        onRefresh={actions.getAddresses}
+        isLoading={isLoading}
+      />
+    );
   }
 }

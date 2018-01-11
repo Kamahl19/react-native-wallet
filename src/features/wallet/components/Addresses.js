@@ -10,6 +10,7 @@ import {
   View,
   List,
   CenterView,
+  RefreshControl,
 } from '../../../common/components';
 import { getExploreAddressUrl } from '../btcUtils';
 
@@ -17,6 +18,8 @@ export default class Addresses extends Component {
   static propTypes = {
     network: PropTypes.string.isRequired,
     addresses: PropTypes.array,
+    onRefresh: PropTypes.func.isRequired,
+    isLoading: PropTypes.bool.isRequired,
   };
 
   keyExtractor = address => address.address;
@@ -30,6 +33,7 @@ export default class Addresses extends Component {
   renderItem = ({ item }) => <AddressItem address={item} onExplorePress={this.openExplorer} />;
 
   render() {
+    const { isLoading, onRefresh } = this.props;
     const { addresses } = this.props;
 
     return (
@@ -37,7 +41,12 @@ export default class Addresses extends Component {
         <Heading>Addresses</Heading>
         {addresses &&
           addresses.length > 0 && (
-            <List data={addresses} keyExtractor={this.keyExtractor} renderItem={this.renderItem} />
+            <List
+              data={addresses}
+              keyExtractor={this.keyExtractor}
+              renderItem={this.renderItem}
+              refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
+            />
           )}
 
         {addresses &&
