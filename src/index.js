@@ -17,13 +17,9 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// scan blockchain
-// show informative transaction fee
-// parse btc amount (,.)
-// limit number of decimal places in btc amount to 8
-// use bitcore fiat prices
 // research backup wallet and mnemonic
 
+// parse btc amount (,.)
 // format USD with https://github.com/ExodusMovement/format-currency
 // format BTC with https://github.com/ExodusMovement/number-unit
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184
