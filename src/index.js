@@ -17,7 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// User is able to refresh Transactions and Addresses by scrolling down
 // User can set amount to send in BTC, the amount is also displayed in USD
 // parse btc amount (,.)
 // limit number of decimal places in btc amount to 8
