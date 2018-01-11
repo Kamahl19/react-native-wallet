@@ -2,7 +2,14 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, Alert } from 'react-native';
 
-import { Text, ScreenWrapper, TouchableItem, Heading, List } from '../../../common/components';
+import {
+  Text,
+  ScreenWrapper,
+  TouchableItem,
+  Heading,
+  List,
+  CenterView,
+} from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
 
@@ -54,13 +61,17 @@ export default class SelectActiveWallet extends Component {
         {wallets.length > 0 && (
           <List
             data={wallets}
-            extraData={this.state.network}
+            extraData={network}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />
         )}
 
-        {wallets.length === 0 && <Text>No wallets</Text>}
+        {wallets.length === 0 && (
+          <CenterView>
+            <Text>No wallets</Text>
+          </CenterView>
+        )}
       </ScreenWrapper>
     );
   }

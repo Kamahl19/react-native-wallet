@@ -13,12 +13,21 @@ import {
   CenterView,
 } from '../../../common/components';
 import { formatSat, getExploreTxUrl } from '../btcUtils';
+import TxActionSelect from './TxActionSelect';
+import { DEFAULT_TX_ACTION } from '../constants';
 
 export default class Transactions extends Component {
   static propTypes = {
     network: PropTypes.string.isRequired,
     transactions: PropTypes.array,
   };
+
+  state = {
+    txAction: DEFAULT_TX_ACTION,
+  };
+
+  getTransactions = () =>
+    this.props.transactions.filter(({ action }) => action === this.state.txAction);
 
   keyExtractor = tx => tx.txid;
 
@@ -31,15 +40,21 @@ export default class Transactions extends Component {
   renderItem = ({ item }) => <TxItem tx={item} onExplorePress={this.openExplorer} />;
 
   render() {
-    const { transactions } = this.props;
+    const { txAction } = this.state;
+
+    const transactions = this.getTransactions();
 
     return (
       <ScreenWrapper scrollEnabled={false}>
         <Heading>Transactions</Heading>
+
+        <TxActionSelect onChange={txAction => this.setState({ txAction })} value={txAction} />
+
         {transactions &&
           transactions.length > 0 && (
             <List
               data={transactions}
+              extraData={txAction}
               keyExtractor={this.keyExtractor}
               renderItem={this.renderItem}
             />
@@ -58,12 +73,16 @@ export default class Transactions extends Component {
 
 const TxItem = ({ tx, onExplorePress }) => (
   <View style={styles.item}>
-    <Text>Type: {tx.action}</Text>
+    {tx.addressTo && <Text>To address: {tx.addressTo}</Text>}
+    <Text>
+      Status: {tx.confirmations && tx.confirmations >= 6 ? 'Confirmed' : 'Unconfirmed'} ({tx.confirmations ||
+        0}{' '}
+      confirmations)
+    </Text>
     <Text>Amount: {formatSat(tx.amount)}</Text>
-    <Text>Date: {moment(tx.time * 1000).format('MM/DD/YYYY')}</Text>
-    <Text>Confirmations: {tx.confirmations || 0}</Text>
+    <Text>Date: {moment((tx.createdOn || tx.time) * 1000).format('MM/DD/YYYY hh:mm A')}</Text>
     <Text>Fee: {formatSat(tx.fees)}</Text>
-    {tx.message && <Text>Message: {tx.message}</Text>}
+    <Text>ID: {tx.txid}</Text>
     <Button
       onPress={() => onExplorePress(tx)}
       title="Explore"

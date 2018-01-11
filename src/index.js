@@ -17,13 +17,7 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// Transactions in Transaction History are shown from newest to oldest
-// User is able to refresh Transaction History by scrolling down
-// Transaction detail holds a transaction status
-// Transaction detail holds time and date of transaction
-// Transaction detail holds transaction ID
-// Transaction detail holds address sent TO & address received FROM
-// If current address has been used, a new one is automatically generated
+// User is able to refresh Transactions and Addresses by scrolling down
 // User can set amount to send in BTC, the amount is also displayed in USD
 // parse btc amount (,.)
 // limit number of decimal places in btc amount to 8

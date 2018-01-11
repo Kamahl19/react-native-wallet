@@ -81,7 +81,7 @@ function* finishPricesCall(apiCallId, error) {
   );
 
   if (error) {
-    AlertService.error(error);
+    AlertService.error(error.message || error);
   }
 }
 

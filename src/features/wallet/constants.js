@@ -1,8 +1,10 @@
-import { FEE_LEVELS, BTC_NETWORKS } from './btcUtils';
+import { FEE_LEVELS, BTC_NETWORKS, TX_ACTIONS } from './btcUtils';
 
 export const DEFAULT_FEE_LEVEL = FEE_LEVELS.NORMAL;
 
 export const DEFAULT_NETWORK = __DEV__ ? BTC_NETWORKS.TEST_NET : BTC_NETWORKS.LIVE_NET;
+
+export const DEFAULT_TX_ACTION = TX_ACTIONS.SENT;
 
 export const feeLevelOptions = [
   { label: 'Urgent', value: FEE_LEVELS.URGENT },
@@ -15,6 +17,11 @@ export const feeLevelOptions = [
 export const networkOptions = [
   { label: 'Testnet', value: BTC_NETWORKS.TEST_NET },
   { label: 'Livenet', value: BTC_NETWORKS.LIVE_NET },
+];
+
+export const txActionsOptions = [
+  { label: 'Sent', value: TX_ACTIONS.SENT },
+  { label: 'Received', value: TX_ACTIONS.RECEIVED },
 ];
 
 export const apiCallIds = {
