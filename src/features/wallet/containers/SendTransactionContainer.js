@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
+import { selectPriceForActiveWallet } from '../../price/ducks';
 import { apiCallIds } from '../constants';
 import { sendTransactionAction, selectActiveWalletId } from '../ducks';
 import SendTransaction from '../components/SendTransaction';
@@ -11,6 +12,7 @@ import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWalletId: selectActiveWalletId(state),
+  prices: selectPriceForActiveWallet(state),
   isLoading: selectIsInProgress(state, apiCallIds.SEND_TRANSACTION),
 });
 
@@ -27,6 +29,7 @@ const mapDispatchToProps = dispatch => ({
 export default class SendTransactionContainer extends Component {
   static propTypes = {
     activeWalletId: PropTypes.string,
+    prices: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
@@ -42,12 +45,18 @@ export default class SendTransactionContainer extends Component {
   };
 
   render() {
-    const { isLoading, activeWalletId } = this.props;
+    const { isLoading, activeWalletId, prices } = this.props;
 
     if (!activeWalletId) {
       return <NoActiveWallet />;
     }
 
-    return <SendTransaction onSubmit={this.onSubmit} isLoading={isLoading} />;
+    return (
+      <SendTransaction
+        onSubmit={this.onSubmit}
+        isLoading={isLoading}
+        price={prices ? prices.USD : undefined}
+      />
+    );
   }
 }

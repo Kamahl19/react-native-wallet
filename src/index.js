@@ -17,9 +17,12 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// User can set amount to send in BTC, the amount is also displayed in USD
+// scan blockchain
+// show informative transaction fee
 // parse btc amount (,.)
 // limit number of decimal places in btc amount to 8
+// use bitcore fiat prices
+// research backup wallet and mnemonic
 
 // format USD with https://github.com/ExodusMovement/format-currency
 // format BTC with https://github.com/ExodusMovement/number-unit
