@@ -13,7 +13,7 @@ import {
 import { finishApiCall, startApiCall } from '../spinner/ducks';
 import { selectActiveWallet } from '../wallet/ducks';
 import * as priceUtils from './priceUtils';
-import { apiCallIds } from './constants';
+import { COINS, FIATS, apiCallIds } from './constants';
 
 /**
  * ACTION TYPES
@@ -62,7 +62,7 @@ function* getPrices() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
 
   try {
-    const prices = yield call(priceUtils.getPrices);
+    const prices = yield call(priceUtils.getPrices, COINS, FIATS);
 
     yield put(getPricesActions.success(prices));
 
