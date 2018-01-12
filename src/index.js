@@ -18,6 +18,8 @@ if (Platform.OS === 'ios') {
 
 // TODO
 // research backup wallet and mnemonic
+// wallet helpers (get balance)
+// non-selectable fee (like exodus)
 // format USD with https://github.com/ExodusMovement/format-currency
 // format BTC with https://github.com/ExodusMovement/number-unit
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184
