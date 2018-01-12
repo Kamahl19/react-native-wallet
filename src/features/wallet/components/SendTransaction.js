@@ -14,15 +14,17 @@ import {
 } from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
-import { formatUsd, convertSatToUsd, parseSatFromBtc } from '../btcUtils';
+import { parseBitcoinInput, bitcoinToUsd } from '../../../btcService';
+
+// TODO format USD
 
 @createForm()
 export default class SendTransaction extends Component {
   static propTypes = {
-    form: PropTypes.object.isRequired,
+    price: PropTypes.number,
     onSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
-    price: PropTypes.number,
+    form: PropTypes.object.isRequired,
   };
 
   state = {
@@ -56,14 +58,13 @@ export default class SendTransaction extends Component {
   getAmountInUsd = () => {
     const { form, price } = this.props;
 
-    const amount = form.getFieldValue('amount');
-    let amountSat = 0;
+    let bitcoins = 0;
 
     try {
-      amountSat = parseSatFromBtc(amount);
+      bitcoins = parseBitcoinInput(form.getFieldValue('amount'));
     } catch (err) {}
 
-    return convertSatToUsd(amountSat, price);
+    return bitcoinToUsd(bitcoins, price);
   };
 
   render() {
@@ -97,7 +98,7 @@ export default class SendTransaction extends Component {
             <TextInput
               label="Amount BTC"
               keyboardType="numeric"
-              suffix={!!amountUsd ? formatUsd(amountUsd) : undefined}
+              suffix={!!amountUsd ? `$${amountUsd.toFixed(2)}` : undefined}
             />
           )}
         </FormItem>

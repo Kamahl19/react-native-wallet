@@ -12,7 +12,7 @@ import {
   CenterView,
   RefreshControl,
 } from '../../../common/components';
-import { getExploreAddressUrl } from '../btcUtils';
+import { getExploreAddressUrl } from '../../../btcService';
 
 export default class Addresses extends Component {
   static propTypes = {

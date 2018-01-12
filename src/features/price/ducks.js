@@ -12,8 +12,8 @@ import {
 } from '../../common/utils/reduxHelpers';
 import { finishApiCall, startApiCall } from '../spinner/ducks';
 import { selectActiveWallet } from '../wallet/ducks';
-import * as priceUtils from './priceUtils';
-import { COINS, FIATS, apiCallIds } from './constants';
+import * as btcService from '../../btcService';
+import { PRICES_FROM, PRICES_TO, apiCallIds } from './constants';
 
 /**
  * ACTION TYPES
@@ -62,7 +62,7 @@ function* getPrices() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
 
   try {
-    const prices = yield call(priceUtils.getPrices, COINS, FIATS);
+    const prices = yield call(btcService.getPrices, PRICES_FROM, PRICES_TO);
 
     yield put(getPricesActions.success(prices));
 

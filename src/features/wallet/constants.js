@@ -1,4 +1,4 @@
-import { FEE_LEVELS, BTC_NETWORKS, TX_ACTIONS } from './btcUtils';
+import { FEE_LEVELS, BTC_NETWORKS, TX_ACTIONS } from '../../btcService';
 
 export const DEFAULT_FEE_LEVEL = FEE_LEVELS.NORMAL;
 

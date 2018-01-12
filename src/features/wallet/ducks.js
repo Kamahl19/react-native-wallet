@@ -13,8 +13,8 @@ import {
   REQUEST,
   SUCCESS,
 } from '../../common/utils/reduxHelpers';
-import { finishApiCall, startApiCall } from '../spinner/ducks';
-import * as bitcoreUtils from './bitcoreUtils';
+import { startApiCall, finishApiCall } from '../spinner/ducks';
+import * as btcService from '../../btcService';
 import { apiCallIds } from './constants';
 
 /**
@@ -160,7 +160,7 @@ function* createWallet({ payload }) {
   yield put(startApiCall({ apiCallId: apiCallIds.CREATE_WALLET }));
 
   try {
-    const wallet = yield call(bitcoreUtils.createWallet, payload.walletName, payload.network);
+    const wallet = yield call(btcService.createWallet, payload.walletName, payload.network);
 
     yield put(createWalletActions.success(wallet));
 
@@ -178,7 +178,7 @@ function* generateAddress() {
   try {
     const activeWallet = yield select(selectActiveWallet);
 
-    const address = yield call(bitcoreUtils.generateAddress, activeWallet);
+    const address = yield call(btcService.generateAddress, activeWallet);
 
     yield put(
       generateAddressActions.success({
@@ -200,7 +200,7 @@ function* sendTransaction({ payload }) {
     const activeWallet = yield select(selectActiveWallet);
 
     yield call(
-      bitcoreUtils.sendTransaction,
+      btcService.sendTransaction,
       activeWallet,
       payload.address,
       payload.amount,
@@ -221,7 +221,7 @@ function* getBalance() {
   try {
     const activeWallet = yield select(selectActiveWallet);
 
-    const balance = yield call(bitcoreUtils.getBalance, activeWallet);
+    const balance = yield call(btcService.getBalance, activeWallet);
 
     yield put(
       getBalanceActions.success({
@@ -242,7 +242,7 @@ function* getAddresses() {
   try {
     const activeWallet = yield select(selectActiveWallet);
 
-    const addresses = yield call(bitcoreUtils.getAddresses, activeWallet);
+    const addresses = yield call(btcService.getAddresses, activeWallet);
 
     yield put(
       getAddressesActions.success({
@@ -263,7 +263,7 @@ function* getTxHistory() {
   try {
     const activeWallet = yield select(selectActiveWallet);
 
-    const txs = yield call(bitcoreUtils.getTxHistory, activeWallet);
+    const txs = yield call(btcService.getTxHistory, activeWallet);
 
     yield put(
       getTxHistoryActions.success({
@@ -284,7 +284,7 @@ function* exportWallet() {
   try {
     const activeWallet = yield select(selectActiveWallet);
 
-    const exported = yield call(bitcoreUtils.exportWallet, activeWallet);
+    const exported = yield call(btcService.exportWallet, activeWallet);
 
     yield put(
       exportWalletActions.success({
@@ -306,9 +306,9 @@ function* importWallet({ payload }) {
     let wallet;
 
     if (payload.mnemonic) {
-      wallet = yield call(bitcoreUtils.importWalletFromMnemonic, payload.mnemonic, payload.network);
+      wallet = yield call(btcService.importWalletFromMnemonic, payload.mnemonic, payload.network);
     } else {
-      wallet = yield call(bitcoreUtils.importWallet, payload.importData);
+      wallet = yield call(btcService.importWallet, payload.importData);
     }
 
     const existingWallets = yield select(selectWallets);

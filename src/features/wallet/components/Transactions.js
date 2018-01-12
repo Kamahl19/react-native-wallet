@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import {
   ScreenWrapper,
@@ -13,9 +12,16 @@ import {
   CenterView,
   RefreshControl,
 } from '../../../common/components';
-import { formatSat, getExploreTxUrl } from '../btcUtils';
 import TxActionSelect from './TxActionSelect';
 import { DEFAULT_TX_ACTION } from '../constants';
+import {
+  satoshiToBitcoin,
+  getExploreTxUrl,
+  getTxConfirmationStatus,
+  getTxDateTime,
+} from '../../../btcService';
+
+// TODO format BTC
 
 export default class Transactions extends Component {
   static propTypes = {
@@ -76,27 +82,30 @@ export default class Transactions extends Component {
   }
 }
 
-const TxItem = ({ tx, onExplorePress }) => (
-  <View style={styles.item}>
-    {tx.addressTo && <Text>To address: {tx.addressTo}</Text>}
-    <Text>
-      Status: {tx.confirmations && tx.confirmations >= 6 ? 'Confirmed' : 'Unconfirmed'} ({tx.confirmations ||
-        0}{' '}
-      confirmations)
-    </Text>
-    <Text>Amount: {formatSat(tx.amount)}</Text>
-    <Text>Date: {moment((tx.createdOn || tx.time) * 1000).format('MM/DD/YYYY hh:mm A')}</Text>
-    <Text>Fee: {formatSat(tx.fees)}</Text>
-    <Text>ID: {tx.txid}</Text>
-    <Button
-      onPress={() => onExplorePress(tx)}
-      title="Explore"
-      type="default"
-      size="sm"
-      style={styles.button}
-    />
-  </View>
-);
+const TxItem = ({ tx, onExplorePress }) => {
+  const { confirmations, status } = getTxConfirmationStatus(tx);
+  const txDateTime = getTxDateTime(tx);
+
+  return (
+    <View style={styles.item}>
+      {tx.addressTo && <Text>To address: {tx.addressTo}</Text>}
+      <Text>
+        Status: {status} ({confirmations} confirmations)
+      </Text>
+      <Text>Amount: {satoshiToBitcoin(tx.amount)} BTC</Text>
+      <Text>Date: {txDateTime}</Text>
+      <Text>Fee: {satoshiToBitcoin(tx.fees)} BTC</Text>
+      <Text>ID: {tx.txid}</Text>
+      <Button
+        onPress={() => onExplorePress(tx)}
+        title="Explore"
+        type="default"
+        size="sm"
+        style={styles.button}
+      />
+    </View>
+  );
+};
 
 TxItem.propTypes = {
   tx: PropTypes.object.isRequired,

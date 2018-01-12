@@ -3,7 +3,10 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 
 import { View, Text } from '../../../common/components';
-import { formatSat, formatUsd, convertSatToUsd } from '../btcUtils';
+import { satoshiToBitcoin, satoshiToUsd } from '../../../btcService';
+
+// TODO format BTC and USD
+// TODO get available amount from wallet function
 
 const ActiveWalletInfo = ({ wallet, price }) =>
   wallet ? (
@@ -12,13 +15,8 @@ const ActiveWalletInfo = ({ wallet, price }) =>
       <Text>Network: {wallet.network}</Text>
       {wallet.balance && (
         <View style={styles.balance}>
-          <Text>Balance: {formatSat(wallet.balance.availableConfirmedAmount)}</Text>
-          {price && (
-            <Text>
-              {' '}
-              ({formatUsd(convertSatToUsd(wallet.balance.availableConfirmedAmount, price))})
-            </Text>
-          )}
+          <Text>Balance: {satoshiToBitcoin(wallet.balance.availableConfirmedAmount)} BTC</Text>
+          {price && <Text> (${satoshiToUsd(wallet.balance.availableConfirmedAmount, price)})</Text>}
         </View>
       )}
     </View>
