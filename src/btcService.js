@@ -259,6 +259,19 @@ export function getTxDateTime(tx, format = 'MM/DD/YYYY hh:mm A') {
 }
 
 /**
+ * WALLET HELPERS
+ */
+
+/**
+ * Get current confirmed balance of the wallet
+ * @param {object} wallet Wallet
+ * @returns {number}
+ */
+export function getWalletBalance(wallet) {
+  return wallet.balance.availableConfirmedAmount;
+}
+
+/**
  * BITCORE
  */
 export async function createWallet(walletName, network) {
