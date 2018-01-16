@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
 import { ScreenWrapper, CenterView, Button, TextInput, Heading } from '../../../common/components';
+import { bip21Encode } from '../../../btcService';
 
 export default class GenerateAddress extends Component {
   static propTypes = {
@@ -23,7 +24,7 @@ export default class GenerateAddress extends Component {
 
         {address && (
           <CenterView style={styles.qrCode}>
-            <QRCode value={address.address} />
+            <QRCode value={bip21Encode(address.address)} />
           </CenterView>
         )}
 

@@ -2,6 +2,7 @@ import cryptocompare from 'cryptocompare';
 import bs58check from 'bs58check';
 import Big from 'big.js';
 import moment from 'moment';
+import bip21 from 'bip21';
 import BitcoreClient from 'bitcore-wallet-client';
 
 import config from './config';
@@ -251,6 +252,23 @@ export function getTxConfirmationStatus(tx) {
         ? 'confirmed'
         : 'unconfirmed',
   };
+}
+
+/**
+ * Encode BIP21 URI
+ * @param {string} address Bitcoin address
+ * @param {object} opts { amount, message, label }
+ */
+export function bip21Encode(address, opts) {
+  return bip21.encode(address, opts);
+}
+
+/**
+ * Decode BIP21 URI
+ * @param {string} uri BIP21 uri to be decoded
+ */
+export function bip21Decode(uri) {
+  return bip21.decode(uri);
 }
 
 /**

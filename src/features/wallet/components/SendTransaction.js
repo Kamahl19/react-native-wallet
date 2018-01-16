@@ -14,7 +14,7 @@ import {
 } from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
-import { parseBitcoinInput, bitcoinToUsd } from '../../../btcService';
+import { parseBitcoinInput, bitcoinToUsd, bip21Decode } from '../../../btcService';
 
 @createForm()
 export default class SendTransaction extends Component {
@@ -35,7 +35,9 @@ export default class SendTransaction extends Component {
   };
 
   onQRCodeRead = e => {
-    this.props.form.setFieldsValue({ address: e.data });
+    const { address } = bip21Decode(e.data);
+
+    this.props.form.setFieldsValue({ address });
     this.toggleQRCodeScanner();
   };
 
