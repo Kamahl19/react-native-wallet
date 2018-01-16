@@ -379,14 +379,14 @@ export async function exportWallet(wallet) {
   return walletData;
 }
 
-export async function importWallet(importData) {
-  if (!importData) {
+export async function importWalletFromData(walletData) {
+  if (!walletData) {
     throw new Error('Missing import data');
   }
 
   const client = await getClient();
 
-  client.import(importData);
+  client.import(walletData);
 
   const wallet = JSON.parse(client.export());
 

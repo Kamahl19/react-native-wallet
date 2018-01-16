@@ -311,18 +311,16 @@ function* importWallet({ payload }) {
   try {
     let wallet;
 
-    wallet = yield call(
-      btcService.importWalletFromMnemonic,
-      payload.mnemonic,
-      payload.network,
-      payload.from3rdParty
-    );
-
-    // TODO importing from Wallet.dat file is confusing and not needed
-    // if (payload.mnemonic) {
-    // } else {
-    //   wallet = yield call(btcService.importWallet, payload.importData);
-    // }
+    if (payload.mnemonic) {
+      wallet = yield call(
+        btcService.importWalletFromMnemonic,
+        payload.mnemonic,
+        payload.network,
+        payload.from3rdParty
+      );
+    } else {
+      wallet = yield call(btcService.importWalletFromData, payload.walletData);
+    }
 
     const existingWallets = yield select(selectWallets);
     const alreadyExists = !!existingWallets.filter(w => w.walletId === wallet.walletId).length;

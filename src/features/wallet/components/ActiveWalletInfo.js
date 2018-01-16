@@ -5,8 +5,6 @@ import { StyleSheet } from 'react-native';
 import { View, Text } from '../../../common/components';
 import { satoshiToBitcoin, satoshiToUsd, getWalletBalance } from '../../../btcService';
 
-// TODO format BTC and USD
-
 const ActiveWalletInfo = ({ wallet, price }) =>
   wallet ? (
     <View>

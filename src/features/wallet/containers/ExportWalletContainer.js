@@ -32,7 +32,7 @@ export default class ExportWalletContainer extends Component {
   };
 
   static navigationOptions = {
-    title: 'Export Wallet',
+    title: 'Backup Wallet',
   };
 
   render() {

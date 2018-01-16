@@ -29,7 +29,7 @@ export default class ImportWalletContainer extends Component {
   };
 
   static navigationOptions = {
-    title: 'Import Wallet',
+    title: 'Restore Wallet',
   };
 
   render() {

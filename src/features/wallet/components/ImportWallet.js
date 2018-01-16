@@ -37,16 +37,17 @@ export default class ImportWallet extends Component {
     this.toggleQRCodeScanner();
   };
 
-  importFromMnemonic = (from3rdParty = false) => {
+  doImport = (opts = { mnemonic: true, from3rdParty: false }) => {
     const { form, importWallet } = this.props;
     const { network } = this.state;
 
-    form.validateFields((err, { mnemonic }) => {
+    form.validateFields((err, { mnemonic, walletData }) => {
       if (!err) {
         importWallet({
-          mnemonic,
+          walletData: opts.mnemonic ? undefined : walletData,
+          mnemonic: opts.mnemonic ? mnemonic : undefined,
           network,
-          from3rdParty,
+          from3rdParty: opts.from3rdParty,
         });
       }
     });
@@ -58,7 +59,7 @@ export default class ImportWallet extends Component {
 
     return (
       <ScreenWrapper>
-        <Heading>Import Wallet</Heading>
+        <Heading>Restore Wallet</Heading>
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
@@ -79,8 +80,8 @@ export default class ImportWallet extends Component {
         {showScanner && <Scanner onRead={this.onQRCodeRead} />}
 
         <Button
-          onPress={() => this.importFromMnemonic()}
-          title="Import"
+          onPress={() => this.doImport({ mnemonic: true, from3rdParty: false })}
+          title="Restore"
           type="primary"
           size="lg"
           disabled={isLoading}
@@ -92,12 +93,30 @@ export default class ImportWallet extends Component {
         </Text>
 
         <Button
-          onPress={() => this.importFromMnemonic(true)}
+          onPress={() => this.doImport({ mnemonic: true, from3rdParty: true })}
           title="Import from 3rd party software"
           type="default"
           size="lg"
           disabled={isLoading}
           style={styles.spacing}
+        />
+
+        <Heading notFirst>Import Wallet</Heading>
+
+        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+
+        <FormItem>
+          {form.getFieldDecorator('walletData')(
+            <TextInput label="Wallet Data" autoCorrect={false} autoCapitalize="none" multiline />
+          )}
+        </FormItem>
+
+        <Button
+          onPress={() => this.doImport({ mnemonic: false, from3rdParty: false })}
+          title="Import"
+          type="primary"
+          size="lg"
+          disabled={isLoading}
         />
       </ScreenWrapper>
     );
