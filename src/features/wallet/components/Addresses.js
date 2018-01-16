@@ -17,7 +17,7 @@ import { getExploreAddressUrl } from '../../../btcService';
 export default class Addresses extends Component {
   static propTypes = {
     network: PropTypes.string.isRequired,
-    addresses: PropTypes.array,
+    addresses: PropTypes.array.isRequired,
     onRefresh: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
   };
@@ -39,22 +39,20 @@ export default class Addresses extends Component {
     return (
       <ScreenWrapper scrollEnabled={false}>
         <Heading>Addresses</Heading>
-        {addresses &&
-          addresses.length > 0 && (
-            <List
-              data={addresses}
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderItem}
-              refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
-            />
-          )}
+        {addresses.length > 0 && (
+          <List
+            data={addresses}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
+          />
+        )}
 
-        {addresses &&
-          addresses.length === 0 && (
-            <CenterView>
-              <Text>No addresses</Text>
-            </CenterView>
-          )}
+        {addresses.length === 0 && (
+          <CenterView>
+            <Text>No addresses</Text>
+          </CenterView>
+        )}
       </ScreenWrapper>
     );
   }

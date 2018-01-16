@@ -16,8 +16,6 @@ import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
 import { parseBitcoinInput, bitcoinToUsd } from '../../../btcService';
 
-// TODO format USD
-
 @createForm()
 export default class SendTransaction extends Component {
   static propTypes = {

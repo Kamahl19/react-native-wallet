@@ -10,6 +10,7 @@ import {
   FormItem,
   TextInput,
   Scanner,
+  Text,
 } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
@@ -36,7 +37,7 @@ export default class ImportWallet extends Component {
     this.toggleQRCodeScanner();
   };
 
-  importFromMnemonic = () => {
+  importFromMnemonic = (from3rdParty = false) => {
     const { form, importWallet } = this.props;
     const { network } = this.state;
 
@@ -45,6 +46,7 @@ export default class ImportWallet extends Component {
         importWallet({
           mnemonic,
           network,
+          from3rdParty,
         });
       }
     });
@@ -77,11 +79,25 @@ export default class ImportWallet extends Component {
         {showScanner && <Scanner onRead={this.onQRCodeRead} />}
 
         <Button
-          onPress={this.importFromMnemonic}
+          onPress={() => this.importFromMnemonic()}
           title="Import"
           type="primary"
           size="lg"
           disabled={isLoading}
+        />
+
+        <Text style={styles.spacing}>
+          NOTE: If mnemonic comes from the wallet not created via this software, please use the
+          button below
+        </Text>
+
+        <Button
+          onPress={() => this.importFromMnemonic(true)}
+          title="Import from 3rd party software"
+          type="default"
+          size="lg"
+          disabled={isLoading}
+          style={styles.spacing}
         />
       </ScreenWrapper>
     );
@@ -93,5 +109,8 @@ const styles = StyleSheet.create({
     alignSelf: 'flex-start',
     marginTop: 6,
     marginBottom: 12,
+  },
+  spacing: {
+    marginTop: 24,
   },
 });

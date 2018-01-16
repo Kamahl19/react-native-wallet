@@ -1,4 +1,4 @@
-# Crypto Mobile
+# Mobile BTC Wallet
 
 Simple mobile bitcoin wallet
 

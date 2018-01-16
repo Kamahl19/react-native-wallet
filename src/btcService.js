@@ -38,6 +38,8 @@ export const TX_ACTIONS = {
   RECEIVED: 'received',
 };
 
+export const numberOfNeededConfirmations = 1;
+
 /**
  * VALIDATORS
  */
@@ -244,7 +246,10 @@ export function getExploreTxUrl(txId, network) {
 export function getTxConfirmationStatus(tx) {
   return {
     confirmations: tx.confirmations || 0,
-    status: tx.confirmations && tx.confirmations >= 6 ? 'confirmed' : 'unconfirmed',
+    status:
+      tx.confirmations && tx.confirmations >= numberOfNeededConfirmations
+        ? 'confirmed'
+        : 'unconfirmed',
   };
 }
 
@@ -388,7 +393,7 @@ export async function importWallet(importData) {
   return wallet;
 }
 
-export async function importWalletFromMnemonic(mnemonic, network) {
+export async function importWalletFromMnemonic(mnemonic, network, from3rdParty) {
   if (!mnemonic) {
     throw new Error('Missing import data');
   }
@@ -399,7 +404,13 @@ export async function importWalletFromMnemonic(mnemonic, network) {
 
   const client = await getClient();
 
-  await importFromMnemonicAsync(client, mnemonic, network);
+  if (from3rdParty) {
+    client.seedFromMnemonic(mnemonic, { network });
+
+    await createWalletAsync(client, 'Imported wallet', network);
+  } else {
+    await importFromMnemonicAsync(client, mnemonic, network);
+  }
 
   const wallet = JSON.parse(client.export());
 
@@ -517,6 +528,7 @@ function createTxProposalAsync(client, address, amountSat, feeLevel, note) {
         ],
         message: note,
         feeLevel,
+        excludeUnconfirmedUtxos: true,
       },
       (err, txp) => {
         if (err) {

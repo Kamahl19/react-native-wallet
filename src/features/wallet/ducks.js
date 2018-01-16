@@ -53,6 +53,12 @@ const initialState = {
   wallets: [],
 };
 
+const enhanceNewWallet = wallet => ({
+  ...wallet,
+  addresses: [],
+  txs: [],
+});
+
 const activeWalletId = createReducer(initialState.activeWalletId, {
   [SELECT_ACTIVE_WALLET]: (state, walletId) => walletId,
   [DELETE_WALLET]: (state, walletId) => {
@@ -66,7 +72,10 @@ const activeWalletId = createReducer(initialState.activeWalletId, {
 
 const wallets = createReducer(initialState.wallets, {
   [CREATE_WALLET]: {
-    [SUCCESS]: (state, wallet) => [...state, wallet],
+    [SUCCESS]: (state, wallet) => [...state, enhanceNewWallet(wallet)],
+  },
+  [IMPORT_WALLET]: {
+    [SUCCESS]: (state, wallet) => [...state, enhanceNewWallet(wallet)],
   },
   [DELETE_WALLET]: (state, walletId) =>
     removeFromArray(state, wallet => wallet.walletId === walletId),
@@ -119,9 +128,6 @@ const wallets = createReducer(initialState.wallets, {
         exported,
       });
     },
-  },
-  [IMPORT_WALLET]: {
-    [SUCCESS]: (state, wallet) => [...state, wallet],
   },
 });
 
@@ -305,11 +311,18 @@ function* importWallet({ payload }) {
   try {
     let wallet;
 
-    if (payload.mnemonic) {
-      wallet = yield call(btcService.importWalletFromMnemonic, payload.mnemonic, payload.network);
-    } else {
-      wallet = yield call(btcService.importWallet, payload.importData);
-    }
+    wallet = yield call(
+      btcService.importWalletFromMnemonic,
+      payload.mnemonic,
+      payload.network,
+      payload.from3rdParty
+    );
+
+    // TODO importing from Wallet.dat file is confusing and not needed
+    // if (payload.mnemonic) {
+    // } else {
+    //   wallet = yield call(btcService.importWallet, payload.importData);
+    // }
 
     const existingWallets = yield select(selectWallets);
     const alreadyExists = !!existingWallets.filter(w => w.walletId === wallet.walletId).length;

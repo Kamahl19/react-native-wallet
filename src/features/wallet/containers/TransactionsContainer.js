@@ -49,7 +49,7 @@ export default class TransactionsContainer extends Component {
     return (
       <Transactions
         network={activeWallet.network}
-        transactions={activeWallet.txs}
+        txs={activeWallet.txs}
         onRefresh={actions.getTxHistory}
         isLoading={isLoading}
       />

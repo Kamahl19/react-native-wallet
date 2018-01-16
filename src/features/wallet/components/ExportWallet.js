@@ -1,9 +1,15 @@
 import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
-import { ScreenWrapper, Button, Heading, CenterView, TextInput } from '../../../common/components';
+import {
+  ScreenWrapper,
+  // Button,
+  Heading,
+  CenterView,
+  TextInput,
+  // Text,
+} from '../../../common/components';
 
 export default class ExportWallet extends Component {
   static propTypes = {
@@ -13,8 +19,10 @@ export default class ExportWallet extends Component {
   };
 
   render() {
-    const { activeWallet, exportWallet, isLoading } = this.props;
-    const { mnemonic, exported } = activeWallet;
+    const { activeWallet } = this.props;
+    // const {  exportWallet, isLoading } = this.props;
+    const { mnemonic } = activeWallet;
+    // const { exported } = activeWallet;
 
     return (
       <ScreenWrapper>
@@ -22,36 +30,27 @@ export default class ExportWallet extends Component {
 
         <TextInput label="Mnemonic" value={mnemonic} />
 
-        <CenterView style={styles.qrCode}>
+        <CenterView>
           <QRCode value={mnemonic} />
         </CenterView>
 
-        <Heading notFirst>Export Wallet</Heading>
+        {/* TODO exporting the whole Wallet.dat file is possible but confusing for user and not needed currently */}
+        {/* <Heading notFirst>Export Wallet</Heading>
 
         <Button
           onPress={() => exportWallet()}
           title="Export Wallet"
           type="primary"
           size="lg"
-          style={styles.button}
           disabled={isLoading}
         />
 
         {exported && (
-          <CenterView style={styles.qrCode}>
+          <CenterView>
             <QRCode value={exported} size={220} />
           </CenterView>
-        )}
+        )} */}
       </ScreenWrapper>
     );
   }
 }
-
-const styles = StyleSheet.create({
-  button: {
-    marginTop: 12,
-  },
-  qrCode: {
-    marginTop: 12,
-  },
-});

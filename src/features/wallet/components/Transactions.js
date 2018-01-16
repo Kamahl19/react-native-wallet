@@ -21,12 +21,10 @@ import {
   getTxDateTime,
 } from '../../../btcService';
 
-// TODO format BTC
-
 export default class Transactions extends Component {
   static propTypes = {
     network: PropTypes.string.isRequired,
-    transactions: PropTypes.array,
+    txs: PropTypes.array.isRequired,
     onRefresh: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
   };
@@ -35,8 +33,7 @@ export default class Transactions extends Component {
     txAction: DEFAULT_TX_ACTION,
   };
 
-  getTransactions = () =>
-    this.props.transactions.filter(({ action }) => action === this.state.txAction);
+  getTxs = () => this.props.txs.filter(({ action }) => action === this.state.txAction);
 
   keyExtractor = tx => tx.txid;
 
@@ -52,7 +49,7 @@ export default class Transactions extends Component {
     const { isLoading, onRefresh } = this.props;
     const { txAction } = this.state;
 
-    const transactions = this.getTransactions();
+    const txs = this.getTxs();
 
     return (
       <ScreenWrapper scrollEnabled={false}>
@@ -60,23 +57,21 @@ export default class Transactions extends Component {
 
         <TxActionSelect onChange={txAction => this.setState({ txAction })} value={txAction} />
 
-        {transactions &&
-          transactions.length > 0 && (
-            <List
-              data={transactions}
-              extraData={txAction}
-              keyExtractor={this.keyExtractor}
-              renderItem={this.renderItem}
-              refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
-            />
-          )}
+        {txs.length > 0 && (
+          <List
+            data={txs}
+            extraData={txAction}
+            keyExtractor={this.keyExtractor}
+            renderItem={this.renderItem}
+            refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
+          />
+        )}
 
-        {transactions &&
-          transactions.length === 0 && (
-            <CenterView>
-              <Text>No transactions</Text>
-            </CenterView>
-          )}
+        {txs.length === 0 && (
+          <CenterView>
+            <Text>No transactions</Text>
+          </CenterView>
+        )}
       </ScreenWrapper>
     );
   }
