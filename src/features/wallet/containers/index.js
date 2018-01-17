@@ -6,3 +6,4 @@ export { default as TransactionsContainer } from './TransactionsContainer';
 export { default as AddressesContainer } from './AddressesContainer';
 export { default as ImportWalletContainer } from './ImportWalletContainer';
 export { default as ExportWalletContainer } from './ExportWalletContainer';
+export { default as WalletInfoContainer } from './WalletInfoContainer';

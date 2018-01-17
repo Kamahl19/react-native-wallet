@@ -11,6 +11,7 @@ import {
   TransactionsContainer,
   ExportWalletContainer,
   ImportWalletContainer,
+  WalletInfoContainer,
 } from '../../features/wallet/containers';
 
 const AppNavigator = DrawerNavigator(
@@ -38,6 +39,9 @@ const AppNavigator = DrawerNavigator(
     },
     ImportWallet: {
       screen: ImportWalletContainer,
+    },
+    WalletInfo: {
+      screen: WalletInfoContainer,
     },
   },
   {

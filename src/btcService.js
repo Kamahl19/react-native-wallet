@@ -291,7 +291,12 @@ export function getTxDateTime(tx, format = 'MM/DD/YYYY hh:mm A') {
  * @returns {number}
  */
 export function getWalletBalance(wallet) {
-  return wallet.balance.availableConfirmedAmount;
+  return {
+    total: wallet.balance.totalAmount,
+    available: wallet.balance.availableConfirmedAmount,
+    confirming: wallet.balance.totalAmount - wallet.balance.totalConfirmedAmount,
+    locked: wallet.balance.lockedConfirmedAmount,
+  };
 }
 
 /**

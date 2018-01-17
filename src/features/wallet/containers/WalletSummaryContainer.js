@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
 import { FETCH_BALANCE_INTERVAL_MS, FETCH_PRICES_INTERVAL_MS } from '../constants';
 import { selectActiveWallet, getBalanceActions } from '../ducks';
-import ActiveWalletInfo from '../components/ActiveWalletInfo';
+import WalletSummary from '../components/WalletSummary';
 
 const mapStateToProps = state => ({
   wallet: selectActiveWallet(state),
@@ -24,7 +24,7 @@ const mapDispatchToProps = dispatch => ({
 });
 
 @connect(mapStateToProps, mapDispatchToProps)
-export default class ActiveWalletInfoContainer extends Component {
+export default class WalletSummaryContainer extends Component {
   static propTypes = {
     wallet: PropTypes.object,
     prices: PropTypes.object,
@@ -71,6 +71,6 @@ export default class ActiveWalletInfoContainer extends Component {
   render() {
     const { wallet, prices } = this.props;
 
-    return <ActiveWalletInfo wallet={wallet} price={prices ? prices.USD : undefined} />;
+    return <WalletSummary wallet={wallet} price={prices ? prices.USD : undefined} />;
   }
 }
