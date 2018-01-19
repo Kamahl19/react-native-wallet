@@ -2,18 +2,21 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectActiveWallet } from '../ducks';
+import { selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import WalletInfo from '../components/WalletInfo';
 import NoActiveWallet from '../components/NoActiveWallet';
+import { getWalletBalance } from '../../../btcService';
 
 const mapStateToProps = state => ({
-  wallet: selectActiveWallet(state),
+  activeWallet: selectActiveWallet(state),
+  activeWalletExtraData: selectActiveWalletExtraData(state),
 });
 
 @connect(mapStateToProps)
 export default class WalletInfoContainer extends Component {
   static propTypes = {
-    wallet: PropTypes.object,
+    activeWallet: PropTypes.object,
+    activeWalletExtraData: PropTypes.object,
   };
 
   static navigationOptions = {
@@ -21,12 +24,16 @@ export default class WalletInfoContainer extends Component {
   };
 
   render() {
-    const { wallet } = this.props;
+    const { activeWallet, activeWalletExtraData } = this.props;
 
-    if (!wallet) {
+    if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
-    return <WalletInfo wallet={wallet} />;
+    const balance = activeWalletExtraData.balance
+      ? getWalletBalance(activeWalletExtraData.balance)
+      : undefined;
+
+    return <WalletInfo wallet={activeWallet} balance={balance} />;
   }
 }

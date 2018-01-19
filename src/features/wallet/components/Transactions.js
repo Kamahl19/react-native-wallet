@@ -33,8 +33,6 @@ export default class Transactions extends Component {
     txAction: DEFAULT_TX_ACTION,
   };
 
-  getTxs = () => this.props.txs.filter(({ action }) => action === this.state.txAction);
-
   keyExtractor = tx => tx.txid;
 
   openExplorer = tx => {
@@ -46,10 +44,10 @@ export default class Transactions extends Component {
   renderItem = ({ item }) => <TxItem tx={item} onExplorePress={this.openExplorer} />;
 
   render() {
-    const { isLoading, onRefresh } = this.props;
+    const { txs, isLoading, onRefresh } = this.props;
     const { txAction } = this.state;
 
-    const txs = this.getTxs();
+    const filteredTxs = txs.filter(tx => tx.action === txAction);
 
     return (
       <ScreenWrapper scrollEnabled={false}>
@@ -57,9 +55,9 @@ export default class Transactions extends Component {
 
         <TxActionSelect onChange={txAction => this.setState({ txAction })} value={txAction} />
 
-        {txs.length > 0 && (
+        {filteredTxs.length > 0 && (
           <List
-            data={txs}
+            data={filteredTxs}
             extraData={txAction}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
@@ -67,7 +65,7 @@ export default class Transactions extends Component {
           />
         )}
 
-        {txs.length === 0 && (
+        {filteredTxs.length === 0 && (
           <CenterView>
             <Text>No transactions</Text>
           </CenterView>

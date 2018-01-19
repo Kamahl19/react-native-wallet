@@ -290,12 +290,12 @@ export function getTxDateTime(tx, format = 'MM/DD/YYYY hh:mm A') {
  * @param {object} wallet Wallet
  * @returns {number}
  */
-export function getWalletBalance(wallet) {
+export function getWalletBalance(balance) {
   return {
-    total: wallet.balance.totalAmount,
-    available: wallet.balance.availableConfirmedAmount,
-    confirming: wallet.balance.totalAmount - wallet.balance.totalConfirmedAmount,
-    locked: wallet.balance.lockedConfirmedAmount,
+    total: balance.totalAmount,
+    available: balance.availableConfirmedAmount,
+    confirming: balance.totalAmount - balance.totalConfirmedAmount,
+    locked: balance.lockedConfirmedAmount,
   };
 }
 

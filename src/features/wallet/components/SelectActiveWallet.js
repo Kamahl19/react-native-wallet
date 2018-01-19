@@ -24,8 +24,6 @@ export default class SelectActiveWallet extends Component {
     network: DEFAULT_NETWORK,
   };
 
-  getWallets = () => this.props.wallets.filter(({ network }) => network === this.state.network);
-
   keyExtractor = wallet => wallet.walletId;
 
   onSelect = walletId => {
@@ -48,26 +46,29 @@ export default class SelectActiveWallet extends Component {
   );
 
   render() {
+    const { wallets } = this.props;
     const { network } = this.state;
 
-    const wallets = this.getWallets();
+    const filteredWallets = wallets.filter(w => w.network === network);
 
     return (
       <ScreenWrapper scrollEnabled={false}>
         <Heading>Select Active Wallet</Heading>
 
-        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        {filteredWallets.length > 0 && (
+          <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        )}
 
-        {wallets.length > 0 && (
+        {filteredWallets.length > 0 && (
           <List
-            data={wallets}
+            data={filteredWallets}
             extraData={network}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
           />
         )}
 
-        {wallets.length === 0 && (
+        {filteredWallets.length === 0 && (
           <CenterView>
             <Text>No wallets</Text>
           </CenterView>

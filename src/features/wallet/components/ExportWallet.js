@@ -6,14 +6,14 @@ import { ScreenWrapper, Button, Heading, CenterView, TextInput } from '../../../
 
 export default class ExportWallet extends Component {
   static propTypes = {
-    activeWallet: PropTypes.object.isRequired,
+    mnemonic: PropTypes.string.isRequired,
+    exported: PropTypes.string,
     exportWallet: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
   };
 
   render() {
-    const { activeWallet, exportWallet, isLoading } = this.props;
-    const { mnemonic, exported } = activeWallet;
+    const { mnemonic, exported, exportWallet, isLoading } = this.props;
 
     return (
       <ScreenWrapper>

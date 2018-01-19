@@ -51,16 +51,20 @@ export const importWalletActions = createApiActionCreators(IMPORT_WALLET);
 const initialState = {
   activeWalletId: null,
   wallets: [],
+  walletsExtraData: [],
 };
-
-const enhanceNewWallet = wallet => ({
-  ...wallet,
-  addresses: [],
-  txs: [],
-});
 
 const activeWalletId = createReducer(initialState.activeWalletId, {
   [SELECT_ACTIVE_WALLET]: (state, walletId) => walletId,
+  [CREATE_WALLET]: {
+    [SUCCESS]: (state, wallet) => {
+      if (!state) {
+        return wallet.walletId;
+      }
+
+      return state;
+    },
+  },
   [DELETE_WALLET]: (state, walletId) => {
     if (state === walletId) {
       return null;
@@ -72,76 +76,92 @@ const activeWalletId = createReducer(initialState.activeWalletId, {
 
 const wallets = createReducer(initialState.wallets, {
   [CREATE_WALLET]: {
-    [SUCCESS]: (state, wallet) => [...state, enhanceNewWallet(wallet)],
+    [SUCCESS]: (state, wallet) => [...state, wallet],
   },
   [IMPORT_WALLET]: {
-    [SUCCESS]: (state, wallet) => [...state, enhanceNewWallet(wallet)],
+    [SUCCESS]: (state, wallet) => [...state, wallet],
   },
-  [DELETE_WALLET]: (state, walletId) =>
-    removeFromArray(state, wallet => wallet.walletId === walletId),
+  [DELETE_WALLET]: (state, walletId) => removeFromArray(state, w => w.walletId === walletId),
+});
+
+const walletsExtraData = createReducer(initialState.walletsExtraData, {
+  [CREATE_WALLET]: {
+    [SUCCESS]: (state, wallet) => [
+      ...state,
+      {
+        walletId: wallet.walletId,
+        addresses: [],
+        txs: [],
+      },
+    ],
+  },
+  [IMPORT_WALLET]: {
+    [SUCCESS]: (state, wallet) => [
+      ...state,
+      {
+        walletId: wallet.walletId,
+        addresses: [],
+        txs: [],
+      },
+    ],
+  },
+  [DELETE_WALLET]: (state, walletId) => removeFromArray(state, w => w.walletId === walletId),
   [GENERATE_ADDRESS]: {
     [SUCCESS]: (state, { address, walletId }) => {
-      const wallet = findActiveWallet(state, walletId);
+      const walletExtraData = state.find(w => w.walletId === walletId);
 
-      return updateActiveWallet(state, walletId, {
-        ...wallet,
+      return replaceInArray(state, w => w.walletId === walletId, {
+        ...walletExtraData,
         address,
       });
     },
   },
   [GET_BALANCE]: {
     [SUCCESS]: (state, { balance, walletId }) => {
-      const wallet = findActiveWallet(state, walletId);
+      const walletExtraData = state.find(w => w.walletId === walletId);
 
-      return updateActiveWallet(state, walletId, {
-        ...wallet,
+      return replaceInArray(state, w => w.walletId === walletId, {
+        ...walletExtraData,
         balance,
       });
     },
   },
   [GET_ADDRESSES]: {
     [SUCCESS]: (state, { addresses, walletId }) => {
-      const wallet = findActiveWallet(state, walletId);
+      const walletExtraData = state.find(w => w.walletId === walletId);
 
-      return updateActiveWallet(state, walletId, {
-        ...wallet,
+      return replaceInArray(state, w => w.walletId === walletId, {
+        ...walletExtraData,
         addresses,
       });
     },
   },
   [GET_TX_HISTORY]: {
     [SUCCESS]: (state, { txs, walletId }) => {
-      const wallet = findActiveWallet(state, walletId);
+      const walletExtraData = state.find(w => w.walletId === walletId);
 
-      return updateActiveWallet(state, walletId, {
-        ...wallet,
+      return replaceInArray(state, w => w.walletId === walletId, {
+        ...walletExtraData,
         txs,
       });
     },
   },
   [EXPORT_WALLET]: {
     [SUCCESS]: (state, { exported, walletId }) => {
-      const wallet = findActiveWallet(state, walletId);
+      const walletExtraData = state.find(w => w.walletId === walletId);
 
-      return updateActiveWallet(state, walletId, {
-        ...wallet,
+      return replaceInArray(state, w => w.walletId === walletId, {
+        ...walletExtraData,
         exported,
       });
     },
   },
 });
 
-function findActiveWallet(state, walletId) {
-  return state.find(wallet => wallet.walletId === walletId);
-}
-
-function updateActiveWallet(state, walletId, value) {
-  return replaceInArray(state, wallet => wallet.walletId === walletId, value);
-}
-
 export default combineReducers({
   activeWalletId,
   wallets,
+  walletsExtraData,
 });
 
 /**
@@ -151,12 +171,20 @@ export const selectWallet = state => state.wallet;
 
 export const selectActiveWalletId = state => selectWallet(state).activeWalletId;
 export const selectWallets = state => selectWallet(state).wallets;
+export const selectWalletsExtraData = state => selectWallet(state).walletsExtraData;
 
 export const selectActiveWallet = createSelector(
   selectActiveWalletId,
   selectWallets,
   (activeWalletId, wallets) =>
-    activeWalletId ? wallets.find(wallet => wallet.walletId === activeWalletId) : null
+    activeWalletId ? wallets.find(w => w.walletId === activeWalletId) : null
+);
+
+export const selectActiveWalletExtraData = createSelector(
+  selectActiveWalletId,
+  selectWalletsExtraData,
+  (activeWalletId, walletsExtraData) =>
+    activeWalletId ? walletsExtraData.find(w => w.walletId === activeWalletId) : null
 );
 
 /**

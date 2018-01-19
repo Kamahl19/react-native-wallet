@@ -3,13 +3,15 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import { getWalletBalance } from '../../../btcService';
 import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
 import { FETCH_BALANCE_INTERVAL_MS, FETCH_PRICES_INTERVAL_MS } from '../constants';
-import { selectActiveWallet, getBalanceActions } from '../ducks';
+import { selectActiveWallet, selectActiveWalletExtraData, getBalanceActions } from '../ducks';
 import WalletSummary from '../components/WalletSummary';
 
 const mapStateToProps = state => ({
-  wallet: selectActiveWallet(state),
+  activeWallet: selectActiveWallet(state),
+  activeWalletExtraData: selectActiveWalletExtraData(state),
   prices: selectPriceForActiveWallet(state),
 });
 
@@ -26,24 +28,26 @@ const mapDispatchToProps = dispatch => ({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class WalletSummaryContainer extends Component {
   static propTypes = {
-    wallet: PropTypes.object,
+    activeWallet: PropTypes.object,
+    activeWalletExtraData: PropTypes.object,
     prices: PropTypes.object,
     actions: PropTypes.object.isRequired,
   };
 
   componentWillMount() {
-    if (this.props.wallet) {
+    if (this.props.activeWallet) {
       this.startFetching();
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.wallet &&
-      (!this.props.wallet || nextProps.wallet.walletId !== this.props.wallet.walletId)
+      nextProps.activeWallet &&
+      (!this.props.activeWallet ||
+        nextProps.activeWallet.walletId !== this.props.activeWallet.walletId)
     ) {
       this.startFetching();
-    } else if (!nextProps.wallet) {
+    } else if (!nextProps.activeWallet) {
       this.stopFetching();
     }
   }
@@ -69,8 +73,19 @@ export default class WalletSummaryContainer extends Component {
   };
 
   render() {
-    const { wallet, prices } = this.props;
+    const { activeWallet, activeWalletExtraData, prices } = this.props;
 
-    return <WalletSummary wallet={wallet} price={prices ? prices.USD : undefined} />;
+    const balance =
+      activeWalletExtraData && activeWalletExtraData.balance
+        ? getWalletBalance(activeWalletExtraData.balance)
+        : undefined;
+
+    return (
+      <WalletSummary
+        wallet={activeWallet}
+        balance={balance}
+        price={prices ? prices.USD : undefined}
+      />
+    );
   }
 }

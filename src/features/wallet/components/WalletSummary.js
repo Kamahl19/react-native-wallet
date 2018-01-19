@@ -3,17 +3,17 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 
 import { View, Text } from '../../../common/components';
-import { satoshiToBitcoin, satoshiToUsd, getWalletBalance } from '../../../btcService';
+import { satoshiToBitcoin, satoshiToUsd } from '../../../btcService';
 
-const WalletSummary = ({ wallet, price }) =>
+const WalletSummary = ({ wallet, balance, price }) =>
   wallet ? (
     <View>
       <Text>Wallet Name: {wallet.walletName}</Text>
       <Text>Network: {wallet.network}</Text>
-      {wallet.balance && (
+      {balance && (
         <View style={styles.balance}>
-          <Text>Balance: {satoshiToBitcoin(getWalletBalance(wallet).available)} BTC</Text>
-          {price && <Text> (${satoshiToUsd(getWalletBalance(wallet).available, price)})</Text>}
+          <Text>Balance: {satoshiToBitcoin(balance.available)} BTC</Text>
+          {price && <Text> (${satoshiToUsd(balance.available, price)})</Text>}
         </View>
       )}
     </View>
@@ -25,6 +25,7 @@ const WalletSummary = ({ wallet, price }) =>
 
 WalletSummary.propTypes = {
   wallet: PropTypes.object,
+  balance: PropTypes.object,
   price: PropTypes.number,
 };
 

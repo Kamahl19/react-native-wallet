@@ -17,7 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// remove txs, addresses, balance, exported, address from wallet in redux
 // notifications like in copay
 // import wallet from Wallet.dat 3rd party software
 // get send max https://github.com/bitpay/copay/blob/6a3bf207b3de5691e412f007d7ca427ade53b8b1/src/js/controllers/confirm.js#L303

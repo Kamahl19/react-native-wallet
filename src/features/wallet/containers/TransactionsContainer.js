@@ -5,12 +5,13 @@ import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import { getTxHistoryActions, selectActiveWallet } from '../ducks';
+import { getTxHistoryActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import Transactions from '../components/Transactions';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
+  activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
 });
 
@@ -27,6 +28,7 @@ const mapDispatchToProps = dispatch => ({
 export default class TransactionsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
+    activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
@@ -40,7 +42,7 @@ export default class TransactionsContainer extends Component {
   }
 
   render() {
-    const { activeWallet, isLoading, actions } = this.props;
+    const { activeWallet, activeWalletExtraData, isLoading, actions } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
@@ -49,7 +51,7 @@ export default class TransactionsContainer extends Component {
     return (
       <Transactions
         network={activeWallet.network}
-        txs={activeWallet.txs}
+        txs={activeWalletExtraData.txs}
         onRefresh={actions.getTxHistory}
         isLoading={isLoading}
       />

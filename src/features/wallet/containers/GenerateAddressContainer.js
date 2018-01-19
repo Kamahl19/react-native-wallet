@@ -5,12 +5,12 @@ import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import { generateAddressActions, selectActiveWallet } from '../ducks';
+import { generateAddressActions, selectActiveWalletExtraData } from '../ducks';
 import GenerateAddress from '../components/GenerateAddress';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
-  activeWallet: selectActiveWallet(state),
+  activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.GENERATE_ADDRESS),
 });
 
@@ -26,7 +26,7 @@ const mapDispatchToProps = dispatch => ({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class GenerateAddressContainer extends Component {
   static propTypes = {
-    activeWallet: PropTypes.object,
+    activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
@@ -36,16 +36,16 @@ export default class GenerateAddressContainer extends Component {
   };
 
   render() {
-    const { activeWallet, isLoading, actions } = this.props;
+    const { activeWalletExtraData, isLoading, actions } = this.props;
 
-    if (!activeWallet) {
+    if (!activeWalletExtraData) {
       return <NoActiveWallet />;
     }
 
     return (
       <GenerateAddress
         onSubmit={actions.generateAddress}
-        address={activeWallet.address}
+        address={activeWalletExtraData.address}
         isLoading={isLoading}
       />
     );

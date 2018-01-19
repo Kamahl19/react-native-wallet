@@ -5,12 +5,13 @@ import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
-import { getAddressesActions, selectActiveWallet } from '../ducks';
+import { getAddressesActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import Addresses from '../components/Addresses';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
+  activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
 });
 
@@ -27,6 +28,7 @@ const mapDispatchToProps = dispatch => ({
 export default class AddressesContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
+    activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
   };
@@ -40,7 +42,7 @@ export default class AddressesContainer extends Component {
   }
 
   render() {
-    const { activeWallet, isLoading, actions } = this.props;
+    const { activeWallet, activeWalletExtraData, isLoading, actions } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
@@ -49,7 +51,7 @@ export default class AddressesContainer extends Component {
     return (
       <Addresses
         network={activeWallet.network}
-        addresses={activeWallet.addresses}
+        addresses={activeWalletExtraData.addresses}
         onRefresh={actions.getAddresses}
         isLoading={isLoading}
       />
