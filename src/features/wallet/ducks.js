@@ -38,7 +38,7 @@ export const selectActiveWalletAction = createActionCreator(SELECT_ACTIVE_WALLET
 export const deleteWalletAction = createActionCreator(DELETE_WALLET);
 export const createWalletActions = createApiActionCreators(CREATE_WALLET);
 export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
-export const sendTransactionAction = createActionCreator(SEND_TRANSACTION);
+export const sendTransactionActions = createApiActionCreators(SEND_TRANSACTION);
 export const getBalanceActions = createApiActionCreators(GET_BALANCE);
 export const getAddressesActions = createApiActionCreators(GET_ADDRESSES);
 export const getTxHistoryActions = createApiActionCreators(GET_TX_HISTORY);
@@ -241,6 +241,8 @@ function* sendTransaction({ payload }) {
       payload.feeLevel
     );
 
+    yield put(sendTransactionActions.success());
+
     yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, {
       msg: 'Transaction was sent successfully. You can see it in Transactions screen.',
     });
@@ -385,10 +387,12 @@ function* finishBitcoreCall(apiCallId, { error, msg } = {}) {
 export function* walletSaga() {
   yield takeLatest(createActionType(CREATE_WALLET, REQUEST), createWallet);
   yield takeLatest(createActionType(GENERATE_ADDRESS, REQUEST), generateAddress);
-  yield takeLatest(SEND_TRANSACTION, sendTransaction);
+  yield takeLatest(createActionType(SEND_TRANSACTION, REQUEST), sendTransaction);
+  yield takeLatest(createActionType(SEND_TRANSACTION, SUCCESS), getBalance);
   yield takeLatest(createActionType(GET_BALANCE, REQUEST), getBalance);
   yield takeLatest(createActionType(GET_ADDRESSES, REQUEST), getAddresses);
   yield takeLatest(createActionType(GET_TX_HISTORY, REQUEST), getTxHistory);
   yield takeLatest(createActionType(EXPORT_WALLET, REQUEST), exportWallet);
   yield takeLatest(createActionType(IMPORT_WALLET, REQUEST), importWallet);
+  yield takeLatest(createActionType(IMPORT_WALLET, SUCCESS), getBalance);
 }

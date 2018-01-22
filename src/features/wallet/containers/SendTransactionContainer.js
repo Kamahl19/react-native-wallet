@@ -8,7 +8,7 @@ import { getTransactionFee } from '../../../btcService';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { selectPriceForActiveWallet } from '../../price/ducks';
 import { apiCallIds } from '../constants';
-import { sendTransactionAction, selectActiveWallet } from '../ducks';
+import { sendTransactionActions, selectActiveWallet } from '../ducks';
 import SendTransaction from '../components/SendTransaction';
 import NoActiveWallet from '../components/NoActiveWallet';
 
@@ -21,7 +21,7 @@ const mapStateToProps = state => ({
 const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
-      sendTransaction: sendTransactionAction,
+      sendTransaction: sendTransactionActions.request,
     },
     dispatch
   ),
