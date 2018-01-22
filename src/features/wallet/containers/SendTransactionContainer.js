@@ -3,15 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
+import AlertService from '../../../common/services/alert';
+import { getTransactionFee } from '../../../btcService';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { selectPriceForActiveWallet } from '../../price/ducks';
 import { apiCallIds } from '../constants';
-import { sendTransactionAction, selectActiveWalletId } from '../ducks';
+import { sendTransactionAction, selectActiveWallet } from '../ducks';
 import SendTransaction from '../components/SendTransaction';
 import NoActiveWallet from '../components/NoActiveWallet';
 
 const mapStateToProps = state => ({
-  activeWalletId: selectActiveWalletId(state),
+  activeWallet: selectActiveWallet(state),
   prices: selectPriceForActiveWallet(state),
   isLoading: selectIsInProgress(state, apiCallIds.SEND_TRANSACTION),
 });
@@ -28,7 +30,7 @@ const mapDispatchToProps = dispatch => ({
 @connect(mapStateToProps, mapDispatchToProps)
 export default class SendTransactionContainer extends Component {
   static propTypes = {
-    activeWalletId: PropTypes.string,
+    activeWallet: PropTypes.object,
     prices: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     actions: PropTypes.object.isRequired,
@@ -38,24 +40,70 @@ export default class SendTransactionContainer extends Component {
     title: 'Send Transaction',
   };
 
-  onSubmit = transactionData => {
-    const { actions } = this.props;
+  state = {
+    confirmed: false,
+    calculatedFee: undefined,
+    isFetchingFee: false,
+  };
 
-    actions.sendTransaction(transactionData);
+  onInputChange = () => {
+    this.setState({
+      confirmed: false,
+      calculatedFee: undefined,
+    });
+  };
+
+  onSubmit = async transactionData => {
+    const { activeWallet, actions } = this.props;
+    const { confirmed } = this.state;
+
+    if (confirmed) {
+      actions.sendTransaction(transactionData);
+    } else {
+      let fee;
+
+      this.setState({
+        isFetchingFee: true,
+      });
+
+      try {
+        fee = await getTransactionFee(
+          activeWallet,
+          transactionData.address,
+          transactionData.amount,
+          transactionData.feeLevel
+        );
+
+        this.setState({
+          confirmed: true,
+          calculatedFee: fee,
+        });
+      } catch (error) {
+        AlertService.error(error.message);
+      } finally {
+        this.setState({
+          isFetchingFee: false,
+        });
+      }
+    }
   };
 
   render() {
-    const { isLoading, activeWalletId, prices } = this.props;
+    const { isLoading, activeWallet, prices } = this.props;
+    const { calculatedFee, confirmed, isFetchingFee } = this.state;
 
-    if (!activeWalletId) {
+    if (!activeWallet) {
       return <NoActiveWallet />;
     }
 
     return (
       <SendTransaction
         onSubmit={this.onSubmit}
-        isLoading={isLoading}
+        onInputChange={this.onInputChange}
+        calculatedFee={calculatedFee}
+        confirmed={confirmed}
         price={prices ? prices.USD : undefined}
+        isLoading={isLoading || isFetchingFee}
       />
     );
   }

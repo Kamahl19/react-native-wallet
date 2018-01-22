@@ -11,15 +11,24 @@ import {
   TextInput,
   Heading,
   Scanner,
+  Text,
 } from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
-import { parseBitcoinInput, bitcoinToUsd, bip21Decode } from '../../../btcService';
+import {
+  parseBitcoinInput,
+  bitcoinToUsd,
+  satoshiToBitcoin,
+  bip21Decode,
+} from '../../../btcService';
 
 @createForm()
 export default class SendTransaction extends Component {
   static propTypes = {
     price: PropTypes.number,
+    calculatedFee: PropTypes.number,
+    confirmed: PropTypes.bool.isRequired,
+    onInputChange: PropTypes.func.isRequired,
     onSubmit: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
     form: PropTypes.object.isRequired,
@@ -30,6 +39,11 @@ export default class SendTransaction extends Component {
     showScanner: false,
   };
 
+  onFeeLevelChange = feeLevel => {
+    this.setState({ feeLevel });
+    this.props.onInputChange();
+  };
+
   toggleQRCodeScanner = () => {
     this.setState({ showScanner: !this.state.showScanner });
   };
@@ -38,6 +52,7 @@ export default class SendTransaction extends Component {
     const { address } = bip21Decode(e.data);
 
     this.props.form.setFieldsValue({ address });
+    this.props.onInputChange();
     this.toggleQRCodeScanner();
   };
 
@@ -68,7 +83,7 @@ export default class SendTransaction extends Component {
   };
 
   render() {
-    const { form, isLoading } = this.props;
+    const { form, isLoading, onInputChange, calculatedFee, confirmed } = this.props;
     const { feeLevel, showScanner } = this.state;
 
     const amountUsd = this.getAmountInUsd();
@@ -79,7 +94,12 @@ export default class SendTransaction extends Component {
 
         <FormItem>
           {form.getFieldDecorator('address', { rules: [rules.required] })(
-            <TextInput label="Address" autoCorrect={false} autoCapitalize="none" />
+            <TextInput
+              label="Address"
+              autoCorrect={false}
+              autoCapitalize="none"
+              onChange={onInputChange}
+            />
           )}
         </FormItem>
 
@@ -99,15 +119,20 @@ export default class SendTransaction extends Component {
               label="Amount BTC"
               keyboardType="numeric"
               suffix={!!amountUsd ? `$${amountUsd.toFixed(2)}` : undefined}
+              onChange={onInputChange}
             />
           )}
         </FormItem>
 
-        <FeeLevelSelect onChange={feeLevel => this.setState({ feeLevel })} value={feeLevel} />
+        <FeeLevelSelect onChange={this.onFeeLevelChange} value={feeLevel} />
+
+        {calculatedFee && (
+          <Text style={styles.fee}>Transaction Fee: {satoshiToBitcoin(calculatedFee)} BTC</Text>
+        )}
 
         <Button
           onPress={this.handleSendTransaction}
-          title="Send"
+          title={confirmed ? 'Send' : 'Submit'}
           type="primary"
           size="lg"
           style={styles.button}
@@ -125,5 +150,10 @@ const styles = StyleSheet.create({
   scanButton: {
     alignSelf: 'flex-start',
     marginTop: 6,
+  },
+  fee: {
+    fontSize: 16,
+    marginTop: 24,
+    marginBottom: 6,
   },
 });

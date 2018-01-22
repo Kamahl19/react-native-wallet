@@ -331,7 +331,7 @@ export async function generateAddress(wallet) {
   return address;
 }
 
-export async function sendTransaction(wallet, address, amount, feeLevel, note) {
+export async function getTransactionFee(wallet, address, amount, feeLevel) {
   if (!wallet) {
     throw new Error('Missing wallet');
   }
@@ -343,7 +343,24 @@ export async function sendTransaction(wallet, address, amount, feeLevel, note) {
 
   const client = await getClient(wallet);
 
-  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel, note);
+  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel, { dryRun: true });
+
+  return txp.fee;
+}
+
+export async function sendTransaction(wallet, address, amount, feeLevel) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
+  }
+
+  validateAddress(address);
+  validateFeeLevel(feeLevel);
+
+  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount));
+
+  const client = await getClient(wallet);
+
+  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel);
 
   txp = await publishTxProposalAsync(client, txp);
 
@@ -539,7 +556,7 @@ function getAddressesAsync(client) {
   });
 }
 
-function createTxProposalAsync(client, address, amountSat, feeLevel, note) {
+function createTxProposalAsync(client, address, amountSat, feeLevel, opts = { dryRun: false }) {
   return new Promise((resolve, reject) => {
     client.createTxProposal(
       {
@@ -549,9 +566,9 @@ function createTxProposalAsync(client, address, amountSat, feeLevel, note) {
             amount: amountSat,
           },
         ],
-        message: note,
         feeLevel,
         excludeUnconfirmedUtxos: true,
+        dryRun: opts.dryRun,
       },
       (err, txp) => {
         if (err) {
