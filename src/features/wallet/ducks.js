@@ -209,9 +209,9 @@ function* createWallet({ payload }) {
 function* generateAddress() {
   yield put(startApiCall({ apiCallId: apiCallIds.GENERATE_ADDRESS }));
 
-  try {
-    const activeWallet = yield select(selectActiveWallet);
+  const activeWallet = yield select(selectActiveWallet);
 
+  try {
     const address = yield call(btcService.generateAddress, activeWallet);
 
     yield put(
@@ -230,9 +230,9 @@ function* generateAddress() {
 function* sendTransaction({ payload }) {
   yield put(startApiCall({ apiCallId: apiCallIds.SEND_TRANSACTION }));
 
-  try {
-    const activeWallet = yield select(selectActiveWallet);
+  const activeWallet = yield select(selectActiveWallet);
 
+  try {
     yield call(
       btcService.sendTransaction,
       activeWallet,
@@ -252,9 +252,9 @@ function* sendTransaction({ payload }) {
 function* getBalance() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_BALANCE }));
 
-  try {
-    const activeWallet = yield select(selectActiveWallet);
+  const activeWallet = yield select(selectActiveWallet);
 
+  try {
     const balance = yield call(btcService.getBalance, activeWallet);
 
     yield put(
@@ -273,9 +273,9 @@ function* getBalance() {
 function* getAddresses() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_ADDRESSES }));
 
-  try {
-    const activeWallet = yield select(selectActiveWallet);
+  const activeWallet = yield select(selectActiveWallet);
 
+  try {
     const addresses = yield call(btcService.getAddresses, activeWallet);
 
     yield put(
@@ -294,9 +294,9 @@ function* getAddresses() {
 function* getTxHistory() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_TX_HISTORY }));
 
-  try {
-    const activeWallet = yield select(selectActiveWallet);
+  const activeWallet = yield select(selectActiveWallet);
 
+  try {
     const txs = yield call(btcService.getTxHistory, activeWallet);
 
     yield put(
@@ -315,9 +315,9 @@ function* getTxHistory() {
 function* exportWallet() {
   yield put(startApiCall({ apiCallId: apiCallIds.EXPORT_WALLET }));
 
-  try {
-    const activeWallet = yield select(selectActiveWallet);
+  const activeWallet = yield select(selectActiveWallet);
 
+  try {
     const exported = yield call(btcService.exportWallet, activeWallet);
 
     yield put(
@@ -354,11 +354,7 @@ function* importWallet({ payload }) {
     const alreadyExists = !!existingWallets.filter(w => w.walletId === wallet.walletId).length;
 
     if (alreadyExists) {
-      yield finishBitcoreCall(apiCallIds.IMPORT_WALLET, {
-        error: {
-          message: 'This wallet already exists in the device',
-        },
-      });
+      throw new Error('This wallet already exists in the device');
     } else {
       yield put(importWalletActions.success(wallet));
 
