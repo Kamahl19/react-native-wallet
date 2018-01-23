@@ -4,8 +4,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 import { getWalletBalance } from '../../../btcService';
-import { getPricesActions, selectPriceForActiveWallet } from '../../price/ducks';
-import { FETCH_BALANCE_INTERVAL_MS, FETCH_PRICES_INTERVAL_MS } from '../constants';
+import { selectPriceForActiveWallet } from '../../price/ducks';
+import { FETCH_BALANCE_INTERVAL_MS } from '../constants';
 import { selectActiveWallet, selectActiveWalletExtraData, getBalanceActions } from '../ducks';
 import WalletSummary from '../components/WalletSummary';
 
@@ -19,7 +19,6 @@ const mapDispatchToProps = dispatch => ({
   actions: bindActionCreators(
     {
       getBalance: getBalanceActions.request,
-      getPrices: getPricesActions.request,
     },
     dispatch
   ),
@@ -61,15 +60,12 @@ export default class WalletSummaryContainer extends Component {
     const { actions } = this.props;
 
     actions.getBalance();
-    actions.getPrices();
 
     this.balanceInterval = setInterval(actions.getBalance, FETCH_BALANCE_INTERVAL_MS);
-    this.pricesInterval = setInterval(actions.getPrices, FETCH_PRICES_INTERVAL_MS);
   };
 
   stopFetching = () => {
     clearInterval(this.balanceInterval);
-    clearInterval(this.pricesInterval);
   };
 
   render() {

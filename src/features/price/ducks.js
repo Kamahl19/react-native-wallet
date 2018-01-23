@@ -1,29 +1,23 @@
 import { combineReducers } from 'redux';
-import { call, put, takeLatest } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { call, put, fork } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
-import AlertService from '../../common/services/alert';
-import {
-  createApiActionCreators,
-  createReducer,
-  createActionType,
-  REQUEST,
-  SUCCESS,
-} from '../../common/utils/reduxHelpers';
+import { createActionCreator, createReducer } from '../../common/utils/reduxHelpers';
 import { finishApiCall, startApiCall } from '../spinner/ducks';
 import { selectActiveWallet } from '../wallet/ducks';
 import * as btcService from '../../btcService';
-import { PRICES_FROM, PRICES_TO, apiCallIds } from './constants';
+import { PRICES_FROM, PRICES_TO, FETCH_PRICES_INTERVAL_MS, apiCallIds } from './constants';
 
 /**
  * ACTION TYPES
  */
-export const GET_PRICES = 'price/GET_PRICES';
+export const GET_PRICES_SUCCESS = 'price/GET_PRICES_SUCCESS';
 
 /**
  * ACTIONS
  */
-export const getPricesActions = createApiActionCreators(GET_PRICES);
+export const getPricesSuccessAction = createActionCreator(GET_PRICES_SUCCESS);
 
 /**
  * REDUCERS
@@ -33,9 +27,7 @@ const initialState = {
 };
 
 const prices = createReducer(initialState.prices, {
-  [GET_PRICES]: {
-    [SUCCESS]: (state, payload) => payload,
-  },
+  [GET_PRICES_SUCCESS]: (state, payload) => payload,
 });
 
 export default combineReducers({
@@ -59,32 +51,36 @@ export const selectPriceForActiveWallet = createSelector(
  * SAGAS
  */
 function* getPrices() {
-  yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
-
   try {
+    yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
+
     const prices = yield call(btcService.getPrices, PRICES_FROM, PRICES_TO);
 
-    yield put(getPricesActions.success(prices));
+    yield put(getPricesSuccessAction(prices));
 
-    yield finishPricesCall(apiCallIds.GET_PRICES);
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GET_PRICES,
+      })
+    );
   } catch (error) {
-    yield finishPricesCall(apiCallIds.GET_PRICES, error);
+    yield put(
+      finishApiCall({
+        apiCallId: apiCallIds.GET_PRICES,
+        error,
+      })
+    );
   }
 }
 
-function* finishPricesCall(apiCallId, error) {
-  yield put(
-    finishApiCall({
-      apiCallId,
-      error,
-    })
-  );
+function* updatePricesContinuously() {
+  while (true) {
+    yield call(getPrices);
 
-  if (error) {
-    AlertService.error(error.message || error);
+    yield call(delay, FETCH_PRICES_INTERVAL_MS);
   }
 }
 
 export function* priceSaga() {
-  yield takeLatest(createActionType(GET_PRICES, REQUEST), getPrices);
+  yield fork(updatePricesContinuously);
 }
