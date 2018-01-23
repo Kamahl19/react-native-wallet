@@ -51,9 +51,9 @@ export const selectPriceForActiveWallet = createSelector(
  * SAGAS
  */
 function* getPrices() {
-  try {
-    yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
+  yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
 
+  try {
     const prices = yield call(btcService.getPrices, PRICES_FROM, PRICES_TO);
 
     yield put(getPricesSuccessAction(prices));

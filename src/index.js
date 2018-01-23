@@ -17,7 +17,6 @@ if (Platform.OS === 'ios') {
 // }, 3000);
 
 // TODO
-// fetch balance in saga
 // notifications like in copay
 // import wallet from Wallet.dat 3rd party software
 // BUG in bitcore-lib https://github.com/bitpay/bitcore-lib/issues/184

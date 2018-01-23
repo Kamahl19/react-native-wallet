@@ -1,5 +1,6 @@
 import { combineReducers } from 'redux';
-import { call, put, takeLatest, select } from 'redux-saga/effects';
+import { delay } from 'redux-saga';
+import { call, put, fork, takeLatest, select } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
 import AlertService from '../../common/services/alert';
@@ -15,7 +16,7 @@ import {
 } from '../../common/utils/reduxHelpers';
 import { startApiCall, finishApiCall } from '../spinner/ducks';
 import * as btcService from '../../btcService';
-import { apiCallIds } from './constants';
+import { FETCH_BALANCE_INTERVAL_MS, apiCallIds } from './constants';
 
 /**
  * ACTION TYPES
@@ -25,11 +26,11 @@ export const DELETE_WALLET = 'wallet/DELETE_WALLET';
 export const CREATE_WALLET = 'wallet/CREATE_WALLET';
 export const GENERATE_ADDRESS = 'wallet/GENERATE_ADDRESS';
 export const SEND_TRANSACTION = 'wallet/SEND_TRANSACTION';
-export const GET_BALANCE = 'wallet/GET_BALANCE';
 export const GET_ADDRESSES = 'wallet/GET_ADDRESSES';
 export const GET_TX_HISTORY = 'wallet/GET_TX_HISTORY';
 export const EXPORT_WALLET = 'wallet/EXPORT_WALLET';
 export const IMPORT_WALLET = 'wallet/IMPORT_WALLET';
+export const GET_BALANCE_SUCCESS = 'wallet/GET_BALANCE_SUCCESS';
 
 /**
  * ACTIONS
@@ -39,11 +40,11 @@ export const deleteWalletAction = createActionCreator(DELETE_WALLET);
 export const createWalletActions = createApiActionCreators(CREATE_WALLET);
 export const generateAddressActions = createApiActionCreators(GENERATE_ADDRESS);
 export const sendTransactionActions = createApiActionCreators(SEND_TRANSACTION);
-export const getBalanceActions = createApiActionCreators(GET_BALANCE);
 export const getAddressesActions = createApiActionCreators(GET_ADDRESSES);
 export const getTxHistoryActions = createApiActionCreators(GET_TX_HISTORY);
 export const exportWalletActions = createApiActionCreators(EXPORT_WALLET);
 export const importWalletActions = createApiActionCreators(IMPORT_WALLET);
+export const getBalanceSuccessAction = createActionCreator(GET_BALANCE_SUCCESS);
 
 /**
  * REDUCERS
@@ -116,16 +117,6 @@ const walletsExtraData = createReducer(initialState.walletsExtraData, {
       });
     },
   },
-  [GET_BALANCE]: {
-    [SUCCESS]: (state, { balance, walletId }) => {
-      const walletExtraData = state.find(w => w.walletId === walletId);
-
-      return replaceInArray(state, w => w.walletId === walletId, {
-        ...walletExtraData,
-        balance,
-      });
-    },
-  },
   [GET_ADDRESSES]: {
     [SUCCESS]: (state, { addresses, walletId }) => {
       const walletExtraData = state.find(w => w.walletId === walletId);
@@ -155,6 +146,14 @@ const walletsExtraData = createReducer(initialState.walletsExtraData, {
         exported,
       });
     },
+  },
+  [GET_BALANCE_SUCCESS]: (state, { balance, walletId }) => {
+    const walletExtraData = state.find(w => w.walletId === walletId);
+
+    return replaceInArray(state, w => w.walletId === walletId, {
+      ...walletExtraData,
+      balance,
+    });
   },
 });
 
@@ -248,27 +247,6 @@ function* sendTransaction({ payload }) {
     });
   } catch (error) {
     yield finishBitcoreCall(apiCallIds.SEND_TRANSACTION, { error });
-  }
-}
-
-function* getBalance() {
-  yield put(startApiCall({ apiCallId: apiCallIds.GET_BALANCE }));
-
-  const activeWallet = yield select(selectActiveWallet);
-
-  try {
-    const balance = yield call(btcService.getBalance, activeWallet);
-
-    yield put(
-      getBalanceActions.success({
-        walletId: activeWallet.walletId,
-        balance,
-      })
-    );
-
-    yield finishBitcoreCall(apiCallIds.GET_BALANCE);
-  } catch (error) {
-    yield finishBitcoreCall(apiCallIds.GET_BALANCE, { error });
   }
 }
 
@@ -369,6 +347,39 @@ function* importWallet({ payload }) {
   }
 }
 
+function* getBalance() {
+  yield put(startApiCall({ apiCallId: apiCallIds.GET_BALANCE }));
+
+  const activeWallet = yield select(selectActiveWallet);
+
+  if (!activeWallet) {
+    return;
+  }
+
+  try {
+    const balance = yield call(btcService.getBalance, activeWallet);
+
+    yield put(
+      getBalanceSuccessAction({
+        walletId: activeWallet.walletId,
+        balance,
+      })
+    );
+
+    yield finishBitcoreCall(apiCallIds.GET_BALANCE);
+  } catch (error) {
+    yield finishBitcoreCall(apiCallIds.GET_BALANCE, { error });
+  }
+}
+
+function* updateBalanceContinuously() {
+  while (true) {
+    yield call(getBalance);
+
+    yield call(delay, FETCH_BALANCE_INTERVAL_MS);
+  }
+}
+
 function* finishBitcoreCall(apiCallId, { error, msg } = {}) {
   yield put(
     finishApiCall({
@@ -388,11 +399,15 @@ export function* walletSaga() {
   yield takeLatest(createActionType(CREATE_WALLET, REQUEST), createWallet);
   yield takeLatest(createActionType(GENERATE_ADDRESS, REQUEST), generateAddress);
   yield takeLatest(createActionType(SEND_TRANSACTION, REQUEST), sendTransaction);
-  yield takeLatest(createActionType(SEND_TRANSACTION, SUCCESS), getBalance);
-  yield takeLatest(createActionType(GET_BALANCE, REQUEST), getBalance);
   yield takeLatest(createActionType(GET_ADDRESSES, REQUEST), getAddresses);
   yield takeLatest(createActionType(GET_TX_HISTORY, REQUEST), getTxHistory);
   yield takeLatest(createActionType(EXPORT_WALLET, REQUEST), exportWallet);
   yield takeLatest(createActionType(IMPORT_WALLET, REQUEST), importWallet);
+
+  yield takeLatest(SELECT_ACTIVE_WALLET, getBalance);
+  yield takeLatest(createActionType(CREATE_WALLET, SUCCESS), getBalance);
   yield takeLatest(createActionType(IMPORT_WALLET, SUCCESS), getBalance);
+  yield takeLatest(createActionType(SEND_TRANSACTION, SUCCESS), getBalance);
+
+  yield fork(updateBalanceContinuously);
 }
