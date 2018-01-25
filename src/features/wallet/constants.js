@@ -36,5 +36,3 @@ export const apiCallIds = {
 };
 
 export const FETCH_BALANCE_INTERVAL_MS = 1000 * 60 * 1;
-
-export const FETCH_PRICES_INTERVAL_MS = 1000 * 60 * 5;
