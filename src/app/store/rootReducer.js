@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux';
 
 import wallet from '../../features/wallet/ducks';
-import price from '../../features/price/ducks';
+import prices from '../../features/prices/ducks';
 import spinner from '../../features/spinner/ducks';
 
 const rootReducer = combineReducers({
   wallet,
   spinner,
-  price,
+  prices,
 });
 
 export default (state, action) => rootReducer(state, action);
