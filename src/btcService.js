@@ -1,7 +1,6 @@
 import cryptocompare from 'cryptocompare';
 import bs58check from 'bs58check';
 import Big from 'big.js';
-import moment from 'moment';
 import bip21 from 'bip21';
 import BitcoreClient from 'bitcore-wallet-client';
 
@@ -277,8 +276,8 @@ export function bip21Decode(uri) {
  * @param {string} format Format od datetime
  * @returns {object}
  */
-export function getTxDateTime(tx, format = 'MM/DD/YYYY hh:mm A') {
-  return moment((tx.createdOn || tx.time) * 1000).format(format);
+export function getTxDateTime(tx) {
+  return (tx.createdOn || tx.time) * 1000;
 }
 
 /**

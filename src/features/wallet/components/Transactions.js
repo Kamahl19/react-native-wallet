@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
+import moment from 'moment';
 
 import {
   ScreenWrapper,
@@ -77,7 +78,7 @@ export default class Transactions extends Component {
 
 const TxItem = ({ tx, onExplorePress }) => {
   const { confirmations, status } = getTxConfirmationStatus(tx);
-  const txDateTime = getTxDateTime(tx);
+  const txDateTime = moment(getTxDateTime(tx)).format('MM/DD/YYYY hh:mm A');
 
   return (
     <View style={styles.item}>
