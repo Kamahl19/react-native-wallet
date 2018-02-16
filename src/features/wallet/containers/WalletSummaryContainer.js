@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { getWalletBalance } from '../../../btcService';
-import { selectPriceForActiveWallet } from '../../price/ducks';
+import { selectPriceForActiveWallet } from '../../prices/ducks';
 import { selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import WalletSummary from '../components/WalletSummary';
 

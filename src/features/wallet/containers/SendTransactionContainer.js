@@ -6,7 +6,7 @@ import { bindActionCreators } from 'redux';
 import AlertService from '../../../common/services/alert';
 import { getTransactionFee } from '../../../btcService';
 import { selectIsInProgress } from '../../spinner/ducks';
-import { selectPriceForActiveWallet } from '../../price/ducks';
+import { selectPriceForActiveWallet } from '../../prices/ducks';
 import { apiCallIds } from '../constants';
 import { sendTransactionActions, selectActiveWallet } from '../ducks';
 import SendTransaction from '../components/SendTransaction';
