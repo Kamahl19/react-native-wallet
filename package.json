@@ -1,7 +1,7 @@
 {
-  "name": "crypto-mobile",
+  "name": "react-native-wallet",
   "version": "0.0.1",
-  "description": "Simple mobile bitcoin wallet",
+  "description": "Simple mobile Bitcoin & Ethereum wallet",
   "author": "Martin Litvaj <kamahl19@gmail.com> (http://litvaj.com)",
   "license": "MIT",
   "engines": {
