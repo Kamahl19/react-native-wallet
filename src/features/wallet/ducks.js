@@ -1,6 +1,5 @@
 import { combineReducers } from 'redux';
-import { delay } from 'redux-saga';
-import { call, put, fork, takeLatest, select } from 'redux-saga/effects';
+import { call, put, fork, takeLatest, select, delay } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
 import AlertService from '../../common/services/alert';

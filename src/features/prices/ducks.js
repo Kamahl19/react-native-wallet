@@ -1,5 +1,4 @@
-import { delay } from 'redux-saga';
-import { call, put, fork } from 'redux-saga/effects';
+import { call, put, fork, delay } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
 import { createActionCreator, createReducer } from '../../common/utils/reduxHelpers';
