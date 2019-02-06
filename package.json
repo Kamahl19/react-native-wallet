@@ -1,5 +1,5 @@
 {
-  "name": "react-native-wallet",
+  "name": "bitcoinwallet",
   "version": "0.0.1",
   "description": "Simple mobile Bitcoin & Ethereum wallet",
   "author": "Martin Litvaj <kamahl19@gmail.com> (http://litvaj.com)",
@@ -15,7 +15,8 @@
     "react-devtools": "react-devtools",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "postinstall": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js"
+    "postinstall":
+      "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
