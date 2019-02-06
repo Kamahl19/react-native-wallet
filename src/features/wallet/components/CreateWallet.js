@@ -7,8 +7,7 @@ import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../co
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
 
-@createForm()
-export default class CreateWallet extends Component {
+class CreateWallet extends Component {
   static propTypes = {
     form: PropTypes.object.isRequired,
     onSubmit: PropTypes.func.isRequired,
@@ -60,3 +59,5 @@ export default class CreateWallet extends Component {
     );
   }
 }
+
+export default createForm()(CreateWallet);

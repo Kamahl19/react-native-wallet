@@ -12,8 +12,7 @@ const mapStateToProps = state => ({
   activeWalletExtraData: selectActiveWalletExtraData(state),
 });
 
-@connect(mapStateToProps)
-export default class WalletInfoContainer extends Component {
+class WalletInfoContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     activeWalletExtraData: PropTypes.object,
@@ -37,3 +36,5 @@ export default class WalletInfoContainer extends Component {
     return <WalletInfo wallet={activeWallet} balance={balance} />;
   }
 }
+
+export default connect(mapStateToProps)(WalletInfoContainer);
