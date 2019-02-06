@@ -221,7 +221,7 @@ export function parseBitcoinInput(input) {
 export function getExploreAddressUrl(address, network) {
   return `https://live.blockcypher.com/${
     network === BTC_NETWORKS.TEST_NET ? 'btc-testnet' : 'btc'
-    }/address/${address}/`;
+  }/address/${address}/`;
 }
 
 /**
@@ -233,7 +233,7 @@ export function getExploreAddressUrl(address, network) {
 export function getExploreTxUrl(txId, network) {
   return `https://live.blockcypher.com/${
     network === BTC_NETWORKS.TEST_NET ? 'btc-testnet' : 'btc'
-    }/tx/${txId}/`;
+  }/tx/${txId}/`;
 }
 
 /**
@@ -292,18 +292,19 @@ export function getTxDateTime(tx) {
  * @returns {number}
  */
 export function getWalletBalance(balance) {
-  return SPEND_UNCONFIRMED ?
-    {
-      available: balance.availableAmount,
-      locked: balance.lockedAmount,
-      confirming: 0,
-      total: balance.totalAmount,
-    } : {
-      available: balance.availableConfirmedAmount,
-      locked: balance.lockedConfirmedAmount,
-      confirming: balance.totalAmount - balance.totalConfirmedAmount,
-      total: balance.totalConfirmedAmount,
-    };
+  return SPEND_UNCONFIRMED
+    ? {
+        available: balance.availableAmount,
+        locked: balance.lockedAmount,
+        confirming: 0,
+        total: balance.totalAmount,
+      }
+    : {
+        available: balance.availableConfirmedAmount,
+        locked: balance.lockedConfirmedAmount,
+        confirming: balance.totalAmount - balance.totalConfirmedAmount,
+        total: balance.totalConfirmedAmount,
+      };
 }
 
 /**

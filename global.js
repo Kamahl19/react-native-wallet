@@ -1,9 +1,9 @@
+import { randomBytes } from 'react-native-randombytes';
+
 // Inject node globals into React Native global scope.
 global.Buffer = require('buffer').Buffer;
 global.process = require('process');
 global.process.env.NODE_ENV = __DEV__ ? 'development' : 'production';
-
-const { randomBytes } = require('react-native-randombytes');
 
 // implement window.getRandomValues()
 if (typeof window === 'object') {

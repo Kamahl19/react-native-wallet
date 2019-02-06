@@ -24,7 +24,10 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
 export default class AddressesContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,

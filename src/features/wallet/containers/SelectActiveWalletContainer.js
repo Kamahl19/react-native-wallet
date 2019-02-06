@@ -20,7 +20,10 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
 export default class SelectActiveWalletContainer extends Component {
   static propTypes = {
     wallets: PropTypes.array.isRequired,

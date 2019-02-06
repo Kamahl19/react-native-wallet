@@ -21,7 +21,10 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
+@connect(
+  mapStateToProps,
+  mapDispatchToProps
+)
 export default class ImportWalletContainer extends Component {
   static propTypes = {
     isLoading: PropTypes.bool.isRequired,
