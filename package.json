@@ -10,7 +10,7 @@
   },
   "scripts": {
     "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
-    "postinstall-TODO": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js",
+    "postinstall": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest"
   },
