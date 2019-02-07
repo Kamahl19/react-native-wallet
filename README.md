@@ -8,6 +8,7 @@ Start the React Native
 
 ```sh
 yarn install
+yarn postinstall
 react-native run-ios
 ```
 
