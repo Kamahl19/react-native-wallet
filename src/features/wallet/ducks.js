@@ -375,7 +375,7 @@ function* updateBalanceContinuously() {
   while (true) {
     yield call(getBalance);
 
-    yield call(delay, FETCH_BALANCE_INTERVAL_MS);
+    yield delay(FETCH_BALANCE_INTERVAL_MS);
   }
 }
 
