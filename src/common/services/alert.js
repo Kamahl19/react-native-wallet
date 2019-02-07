@@ -9,13 +9,10 @@ const warn = (message, title = '') => _alert.alertWithType('warn', title, messag
 const error = (message, title = '') => _alert.alertWithType('error', title, message);
 const success = (message, title = '') => _alert.alertWithType('success', title, message);
 
-const dismiss = (onDismiss, action) => _alert.dismiss(onDismiss, action);
-
 export default {
   setAlert,
   info,
   warn,
   error,
   success,
-  dismiss,
 };

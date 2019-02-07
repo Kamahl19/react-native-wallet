@@ -1,8 +1,9 @@
 import React, { Component, PureComponent, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import createRcForm from 'rc-form/lib/createForm';
+import { StyleSheet } from 'react-native';
 
-import { View } from '../../common/components';
+import { Text, View } from '../../common/components';
 
 const FIELD_META_PROP = 'data-__meta';
 
@@ -56,7 +57,7 @@ export const createForm = options => {
 export class FormItem extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    style: PropTypes.any,
+    label: PropTypes.string,
     successColor: PropTypes.string,
     errorColor: PropTypes.string,
     validatingColor: PropTypes.string,
@@ -151,13 +152,14 @@ export class FormItem extends PureComponent {
   }
 
   render() {
-    const { style, children } = this.props;
+    const { children, label } = this.props;
 
     const validateStatus = this.getValidateStatus();
     const helpMsg = this.getHelpMsg();
 
     return (
-      <View style={style}>
+      <View style={styles.col}>
+        {label && <Text>{label}</Text>}
         {cloneElement(children, {
           error: !!validateStatus ? helpMsg : undefined,
           errorColor: !!validateStatus ? this.props[`${validateStatus}Color`] : undefined,
@@ -166,3 +168,9 @@ export class FormItem extends PureComponent {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  col: {
+    flexDirection: 'column',
+  },
+});

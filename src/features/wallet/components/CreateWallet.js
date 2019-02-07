@@ -42,19 +42,13 @@ class CreateWallet extends Component {
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-        <FormItem>
+        <FormItem label="Wallet Name">
           {form.getFieldDecorator('walletName', { rules: [rules.required] })(
-            <TextInput label="Wallet Name" autoCorrect={false} />
+            <TextInput autoCorrect={false} />
           )}
         </FormItem>
 
-        <Button
-          onPress={this.handleCreateWallet}
-          title="Create Wallet"
-          type="primary"
-          size="lg"
-          disabled={isLoading}
-        />
+        <Button disabled={isLoading} title="Create Wallet" onPress={this.handleCreateWallet} />
       </ScreenWrapper>
     );
   }

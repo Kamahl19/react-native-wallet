@@ -2,7 +2,15 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
-import { ScreenWrapper, Button, Heading, CenterView, TextInput } from '../../../common/components';
+import {
+  ScreenWrapper,
+  Button,
+  Heading,
+  CenterView,
+  View,
+  Text,
+  TextInput,
+} from '../../../common/components';
 
 export default class ExportWallet extends Component {
   static propTypes = {
@@ -19,7 +27,10 @@ export default class ExportWallet extends Component {
       <ScreenWrapper>
         <Heading>Backup Wallet</Heading>
 
-        <TextInput label="Mnemonic" value={mnemonic} />
+        <View>
+          <Text>Mnemonic</Text>
+          <TextInput value={mnemonic} />
+        </View>
 
         <CenterView>
           <QRCode value={mnemonic} />
@@ -27,15 +38,14 @@ export default class ExportWallet extends Component {
 
         <Heading notFirst>Export Wallet</Heading>
 
-        <Button
-          onPress={() => exportWallet()}
-          title="Export Wallet"
-          type="primary"
-          size="lg"
-          disabled={isLoading}
-        />
+        <Button disabled={isLoading} title="Export Wallet" onPress={exportWallet} />
 
-        {exported && <TextInput label="Wallet.dat" value={exported} multiline />}
+        {exported && (
+          <View>
+            <Text>Wallet.dat</Text>
+            <TextInput multiline value={exported} />
+          </View>
+        )}
       </ScreenWrapper>
     );
   }

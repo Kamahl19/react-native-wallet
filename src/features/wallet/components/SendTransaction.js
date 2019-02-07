@@ -12,6 +12,7 @@ import {
   Heading,
   Scanner,
   Text,
+  View,
 } from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
@@ -91,37 +92,27 @@ class SendTransaction extends Component {
       <ScreenWrapper>
         <Heading>Send Transaction</Heading>
 
-        <FormItem>
+        <FormItem label="Address">
           {form.getFieldDecorator('address', { rules: [rules.required] })(
-            <TextInput
-              label="Address"
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChange={onInputChange}
-            />
+            <TextInput autoCapitalize="none" autoCorrect={false} onChange={onInputChange} />
           )}
         </FormItem>
 
-        <Button
-          onPress={this.toggleQRCodeScanner}
-          title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
-          type="default"
-          size="sm"
-          style={styles.scanButton}
-        />
+        <View style={styles.scanButton}>
+          <Button
+            title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
+            onPress={this.toggleQRCodeScanner}
+          />
+        </View>
 
         {showScanner && <Scanner onRead={this.onQRCodeRead} />}
 
-        <FormItem>
+        <FormItem label="Amount BTC">
           {form.getFieldDecorator('amount', { rules: [rules.required] })(
-            <TextInput
-              label="Amount BTC"
-              keyboardType="numeric"
-              suffix={!!amountUsd ? `$${amountUsd.toFixed(2)}` : undefined}
-              onChange={onInputChange}
-            />
+            <TextInput keyboardType="numeric" onChange={onInputChange} />
           )}
         </FormItem>
+        <Text>${amountUsd.toFixed(2)}</Text>
 
         <FeeLevelSelect onChange={this.onFeeLevelChange} value={feeLevel} />
 
@@ -129,14 +120,13 @@ class SendTransaction extends Component {
           <Text style={styles.fee}>Transaction Fee: {satoshiToBitcoin(calculatedFee)} BTC</Text>
         )}
 
-        <Button
-          onPress={this.handleSendTransaction}
-          title={confirmed ? 'Send' : 'Submit'}
-          type="primary"
-          size="lg"
-          style={styles.button}
-          disabled={isLoading}
-        />
+        <View style={styles.button}>
+          <Button
+            disabled={isLoading}
+            title={confirmed ? 'Send' : 'Submit'}
+            onPress={this.handleSendTransaction}
+          />
+        </View>
       </ScreenWrapper>
     );
   }

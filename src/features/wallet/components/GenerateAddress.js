@@ -3,7 +3,15 @@ import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
-import { ScreenWrapper, CenterView, Button, TextInput, Heading } from '../../../common/components';
+import {
+  ScreenWrapper,
+  CenterView,
+  Button,
+  TextInput,
+  Heading,
+  Text,
+  View,
+} from '../../../common/components';
 import { bip21Encode } from '../../../btcService';
 
 export default class GenerateAddress extends Component {
@@ -20,7 +28,12 @@ export default class GenerateAddress extends Component {
       <ScreenWrapper>
         <Heading>Generate Address</Heading>
 
-        {address && <TextInput label="Address" value={address.address} />}
+        {address && (
+          <View>
+            <Text>Address</Text>
+            <TextInput value={address.address} />
+          </View>
+        )}
 
         {address && (
           <CenterView style={styles.qrCode}>
@@ -28,14 +41,9 @@ export default class GenerateAddress extends Component {
           </CenterView>
         )}
 
-        <Button
-          onPress={() => onSubmit()}
-          title="Generate New Address"
-          type="primary"
-          size="lg"
-          style={styles.button}
-          disabled={isLoading}
-        />
+        <View style={styles.button}>
+          <Button disabled={isLoading} title="Generate New Address" onPress={onSubmit} />
+        </View>
       </ScreenWrapper>
     );
   }

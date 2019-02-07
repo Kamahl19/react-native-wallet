@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { StyleSheet, Linking } from 'react-native';
 import PropTypes from 'prop-types';
-import moment from 'moment';
 
 import {
   ScreenWrapper,
@@ -78,7 +77,6 @@ export default class Transactions extends Component {
 
 const TxItem = ({ tx, onExplorePress }) => {
   const { confirmations, status } = getTxConfirmationStatus(tx);
-  const txDateTime = moment(getTxDateTime(tx)).format('MM/DD/YYYY hh:mm A');
 
   return (
     <View style={styles.item}>
@@ -87,16 +85,12 @@ const TxItem = ({ tx, onExplorePress }) => {
         Status: {status} ({confirmations} confirmations)
       </Text>
       <Text>Amount: {satoshiToBitcoin(tx.amount)} BTC</Text>
-      <Text>Date: {txDateTime}</Text>
+      <Text>Date: {getTxDateTime(tx)}</Text>
       <Text>Fee: {satoshiToBitcoin(tx.fees)} BTC</Text>
       <Text>ID: {tx.txid}</Text>
-      <Button
-        onPress={() => onExplorePress(tx)}
-        title="Explore"
-        type="default"
-        size="sm"
-        style={styles.button}
-      />
+      <View style={styles.button}>
+        <Button title="Explore" onPress={() => onExplorePress(tx)} />
+      </View>
     </View>
   );
 };
