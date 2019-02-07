@@ -67,7 +67,7 @@ function* updatePricesContinuously() {
   while (true) {
     yield call(getPrices);
 
-    yield call(delay, FETCH_PRICES_INTERVAL_MS);
+    yield delay(FETCH_PRICES_INTERVAL_MS);
   }
 }
 
