@@ -15,7 +15,8 @@
     "react-devtools": "react-devtools",
     "start": "node node_modules/react-native/local-cli/cli.js start",
     "test": "jest",
-    "postinstall": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js"
+    "postinstall":
+      "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script (from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js"
   },
   "devDependencies": {
     "babel-eslint": "8.2.1",
@@ -67,7 +68,7 @@
     "react-redux": "^5.0.6",
     "redux": "^3.7.2",
     "redux-persist": "^5.5.0",
-    "redux-saga": "^0.16.0",
+    "redux-saga": "^1.0.1",
     "reselect": "^3.0.1"
   },
   "jest": {
