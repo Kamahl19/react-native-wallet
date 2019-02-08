@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
@@ -18,10 +18,10 @@ const GenerateAddress = ({ address, onSubmit, isLoading }) => (
     <Heading>Generate Address</Heading>
 
     {address && (
-      <>
+      <Fragment>
         <Text>Address</Text>
         <TextInput value={address.address} />
-      </>
+      </Fragment>
     )}
 
     {address && (

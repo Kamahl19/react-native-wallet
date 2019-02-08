@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Fragment } from 'react';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
@@ -15,10 +15,10 @@ const ExportWallet = ({ mnemonic, exported, exportWallet, isLoading }) => (
   <ScreenWrapper>
     <Heading>Backup Wallet</Heading>
 
-    <>
+    <Fragment>
       <Text>Mnemonic</Text>
       <TextInput value={mnemonic} />
-    </>
+    </Fragment>
 
     <CenterView>
       <QRCode value={mnemonic} />
@@ -29,10 +29,10 @@ const ExportWallet = ({ mnemonic, exported, exportWallet, isLoading }) => (
     <Button disabled={isLoading} title="Export Wallet" onPress={exportWallet} />
 
     {exported && (
-      <>
+      <Fragment>
         <Text>Wallet.dat</Text>
         <TextInput multiline value={exported} />
-      </>
+      </Fragment>
     )}
   </ScreenWrapper>
 );
