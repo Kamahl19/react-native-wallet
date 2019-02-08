@@ -1,10 +1,10 @@
-# Mobile BTC Wallet
+# React Native Crypto Wallet
 
-Simple mobile bitcoin wallet
+Simple mobile Bitcoin & Ethereum wallet
 
 ## Getting Started
 
-Start the React native
+Start the React Native
 
 ```sh
 yarn install
