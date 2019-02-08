@@ -41,4 +41,7 @@ GenerateAddressContainer.navigationOptions = {
   title: 'Generate Address',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(GenerateAddressContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(GenerateAddressContainer);

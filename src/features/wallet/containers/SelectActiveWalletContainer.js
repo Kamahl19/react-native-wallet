@@ -34,4 +34,7 @@ SelectActiveWalletContainer.navigationOptions = {
   title: 'Select Active Wallet',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(SelectActiveWalletContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SelectActiveWalletContainer);

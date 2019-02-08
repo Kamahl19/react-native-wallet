@@ -49,4 +49,7 @@ ExportWalletContainer.navigationOptions = {
   title: 'Backup Wallet',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ExportWalletContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ExportWalletContainer);

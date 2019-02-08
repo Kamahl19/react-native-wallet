@@ -28,4 +28,7 @@ ImportWalletContainer.navigationOptions = {
   title: 'Restore Wallet',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(ImportWalletContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ImportWalletContainer);

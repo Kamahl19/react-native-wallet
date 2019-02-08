@@ -52,4 +52,7 @@ class AddressesContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(AddressesContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(AddressesContainer);

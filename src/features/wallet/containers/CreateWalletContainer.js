@@ -28,4 +28,7 @@ CreateWalletContainer.navigationOptions = {
   title: 'Create Wallet',
 };
 
-export default connect(mapStateToProps, mapDispatchToProps)(CreateWalletContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(CreateWalletContainer);

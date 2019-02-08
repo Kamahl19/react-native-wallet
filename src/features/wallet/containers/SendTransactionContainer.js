@@ -102,4 +102,7 @@ class SendTransactionContainer extends Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(SendTransactionContainer);
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(SendTransactionContainer);
