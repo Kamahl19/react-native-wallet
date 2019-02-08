@@ -13,8 +13,7 @@ const mapStateToProps = state => ({
   prices: selectPriceForActiveWallet(state),
 });
 
-@connect(mapStateToProps)
-export default class WalletSummaryContainer extends Component {
+class WalletSummaryContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     activeWalletExtraData: PropTypes.object,
@@ -38,3 +37,5 @@ export default class WalletSummaryContainer extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps)(WalletSummaryContainer);

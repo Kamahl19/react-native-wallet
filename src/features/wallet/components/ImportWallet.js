@@ -15,8 +15,7 @@ import {
 import NetworkSelect from './NetworkSelect';
 import { DEFAULT_NETWORK } from '../constants';
 
-@createForm()
-export default class ImportWallet extends Component {
+class ImportWallet extends Component {
   static propTypes = {
     importWallet: PropTypes.func.isRequired,
     form: PropTypes.object.isRequired,
@@ -122,6 +121,8 @@ export default class ImportWallet extends Component {
     );
   }
 }
+
+export default createForm()(ImportWallet);
 
 const styles = StyleSheet.create({
   scanButton: {

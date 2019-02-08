@@ -22,8 +22,7 @@ import {
   bip21Decode,
 } from '../../../btcService';
 
-@createForm()
-export default class SendTransaction extends Component {
+class SendTransaction extends Component {
   static propTypes = {
     price: PropTypes.number,
     calculatedFee: PropTypes.number,
@@ -142,6 +141,8 @@ export default class SendTransaction extends Component {
     );
   }
 }
+
+export default createForm()(SendTransaction);
 
 const styles = StyleSheet.create({
   button: {

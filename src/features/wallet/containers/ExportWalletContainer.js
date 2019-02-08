@@ -24,8 +24,7 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class ExportWalletContainer extends Component {
+class ExportWalletContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     activeWalletExtraData: PropTypes.object,
@@ -54,3 +53,5 @@ export default class ExportWalletContainer extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExportWalletContainer);

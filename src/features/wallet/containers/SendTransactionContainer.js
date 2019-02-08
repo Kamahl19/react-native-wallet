@@ -27,8 +27,7 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class SendTransactionContainer extends Component {
+class SendTransactionContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     prices: PropTypes.object,
@@ -108,3 +107,5 @@ export default class SendTransactionContainer extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(SendTransactionContainer);

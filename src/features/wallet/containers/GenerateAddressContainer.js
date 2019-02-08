@@ -23,8 +23,7 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class GenerateAddressContainer extends Component {
+class GenerateAddressContainer extends Component {
   static propTypes = {
     activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
@@ -51,3 +50,5 @@ export default class GenerateAddressContainer extends Component {
     );
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(GenerateAddressContainer);

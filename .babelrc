@@ -1,4 +1,3 @@
 {
-  "presets": ["react-native"],
-  "plugins": ["transform-decorators-legacy"]
+  "presets": ["react-native"]
 }

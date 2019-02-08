@@ -21,8 +21,7 @@ const mapDispatchToProps = dispatch => ({
   ),
 });
 
-@connect(mapStateToProps, mapDispatchToProps)
-export default class CreateWalletContainer extends Component {
+class CreateWalletContainer extends Component {
   static propTypes = {
     actions: PropTypes.object.isRequired,
     isLoading: PropTypes.bool.isRequired,
@@ -38,3 +37,5 @@ export default class CreateWalletContainer extends Component {
     return <CreateWallet onSubmit={actions.createWallet} isLoading={isLoading} />;
   }
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(CreateWalletContainer);
