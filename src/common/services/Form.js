@@ -1,7 +1,6 @@
 import React, { Component, PureComponent, cloneElement } from 'react';
 import PropTypes from 'prop-types';
 import createRcForm from 'rc-form/lib/createForm';
-import { StyleSheet } from 'react-native';
 
 import { Text, View } from '../../common/components';
 
@@ -158,7 +157,7 @@ export class FormItem extends PureComponent {
     const helpMsg = this.getHelpMsg();
 
     return (
-      <View style={styles.col}>
+      <View>
         {label && <Text>{label}</Text>}
         {cloneElement(children, {
           error: !!validateStatus ? helpMsg : undefined,
@@ -168,9 +167,3 @@ export class FormItem extends PureComponent {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  col: {
-    flexDirection: 'column',
-  },
-});
