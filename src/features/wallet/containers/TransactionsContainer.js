@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
@@ -15,21 +14,16 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      getTxHistory: getTxHistoryActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  getTxHistory: getTxHistoryActions.request,
+};
 
 class TransactionsContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
+    getTxHistory: PropTypes.func.isRequired,
   };
 
   static navigationOptions = {
@@ -37,11 +31,11 @@ class TransactionsContainer extends Component {
   };
 
   componentWillMount() {
-    this.props.actions.getTxHistory();
+    this.props.getTxHistory();
   }
 
   render() {
-    const { activeWallet, activeWalletExtraData, isLoading, actions } = this.props;
+    const { activeWallet, activeWalletExtraData, isLoading, getTxHistory } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
@@ -51,7 +45,7 @@ class TransactionsContainer extends Component {
       <Transactions
         network={activeWallet.network}
         txs={activeWalletExtraData.txs}
-        onRefresh={actions.getTxHistory}
+        onRefresh={getTxHistory}
         isLoading={isLoading}
       />
     );

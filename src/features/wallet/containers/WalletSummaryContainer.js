@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -7,35 +7,33 @@ import { selectPriceForActiveWallet } from '../../prices/ducks';
 import { selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import WalletSummary from '../components/WalletSummary';
 
+// TODO currently not visible
+
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
   activeWalletExtraData: selectActiveWalletExtraData(state),
   prices: selectPriceForActiveWallet(state),
 });
 
-class WalletSummaryContainer extends Component {
-  static propTypes = {
-    activeWallet: PropTypes.object,
-    activeWalletExtraData: PropTypes.object,
-    prices: PropTypes.object,
-  };
+const WalletSummaryContainer = ({ activeWallet, activeWalletExtraData, prices }) => {
+  const balance =
+    activeWalletExtraData && activeWalletExtraData.balance
+      ? getWalletBalance(activeWalletExtraData.balance)
+      : undefined;
 
-  render() {
-    const { activeWallet, activeWalletExtraData, prices } = this.props;
+  return (
+    <WalletSummary
+      wallet={activeWallet}
+      balance={balance}
+      price={prices ? prices.USD : undefined}
+    />
+  );
+};
 
-    const balance =
-      activeWalletExtraData && activeWalletExtraData.balance
-        ? getWalletBalance(activeWalletExtraData.balance)
-        : undefined;
-
-    return (
-      <WalletSummary
-        wallet={activeWallet}
-        balance={balance}
-        price={prices ? prices.USD : undefined}
-      />
-    );
-  }
-}
+WalletSummaryContainer.propTypes = {
+  activeWallet: PropTypes.object,
+  activeWalletExtraData: PropTypes.object,
+  prices: PropTypes.object,
+};
 
 export default connect(mapStateToProps)(WalletSummaryContainer);

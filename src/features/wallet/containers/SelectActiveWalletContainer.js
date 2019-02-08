@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectActiveWalletAction, deleteWalletAction, selectWallets } from '../ducks';
 import SelectActiveWallet from '../components/SelectActiveWallet';
@@ -10,38 +9,28 @@ const mapStateToProps = state => ({
   wallets: selectWallets(state),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      selectActiveWallet: selectActiveWalletAction,
-      deleteWallet: deleteWalletAction,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  selectActiveWallet: selectActiveWalletAction,
+  deleteWallet: deleteWalletAction,
+};
 
-class SelectActiveWalletContainer extends Component {
-  static propTypes = {
-    wallets: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired,
-  };
+const SelectActiveWalletContainer = ({ wallets, selectActiveWallet, deleteWallet }) => (
+  <SelectActiveWallet
+    selectActiveWallet={selectActiveWallet}
+    deleteWallet={deleteWallet}
+    wallets={wallets}
+  />
+);
 
-  static navigationOptions = {
-    title: 'Select Active Wallet',
-  };
+SelectActiveWalletContainer.propTypes = {
+  wallets: PropTypes.array.isRequired,
+  selectActiveWallet: PropTypes.func.isRequired,
+  deleteWallet: PropTypes.func.isRequired,
+};
 
-  render() {
-    const { wallets, actions } = this.props;
-
-    return (
-      <SelectActiveWallet
-        selectActiveWallet={actions.selectActiveWallet}
-        deleteWallet={actions.deleteWallet}
-        wallets={wallets}
-      />
-    );
-  }
-}
+SelectActiveWalletContainer.navigationOptions = {
+  title: 'Select Active Wallet',
+};
 
 export default connect(
   mapStateToProps,

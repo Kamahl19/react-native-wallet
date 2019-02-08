@@ -5,7 +5,7 @@ import { StyleSheet, Alert } from 'react-native';
 import {
   Text,
   ScreenWrapper,
-  TouchableItem,
+  TouchableOpacity,
   Heading,
   List,
   CenterView,
@@ -79,12 +79,12 @@ export default class SelectActiveWallet extends Component {
 }
 
 const WalletItem = ({ wallet, onPress, onLongPress }) => (
-  <TouchableItem
+  <TouchableOpacity
     onPress={() => onPress(wallet.walletId)}
     onLongPress={() => onLongPress(wallet.walletId)}
   >
     <Text style={styles.walletName}>{wallet.walletName}</Text>
-  </TouchableItem>
+  </TouchableOpacity>
 );
 
 WalletItem.propTypes = {

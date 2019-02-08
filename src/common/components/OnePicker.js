@@ -1,8 +1,7 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { Picker, View, Text, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import { Picker, View, Text } from './';
 import { getColor } from '../utils/color';
 
 const OnePicker = ({ children, label, ...rest }) => (

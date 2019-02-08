@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Text } from 'react-native';
 import PropTypes from 'prop-types';
-
-import { Text } from './';
 
 const Heading = ({ children, notFirst, ...rest }) => (
   <Text style={[styles.heading, notFirst ? styles.notFirst : undefined]} {...rest}>

@@ -1,5 +1,5 @@
 import { AppRegistry } from 'react-native';
 
-import Root from './app/containers/Root';
+import Root from './app/Root';
 
 AppRegistry.registerComponent('rncryptowallet', () => Root);

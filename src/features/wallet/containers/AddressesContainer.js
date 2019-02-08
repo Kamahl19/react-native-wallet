@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
@@ -15,21 +14,16 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      getAddresses: getAddressesActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  getAddresses: getAddressesActions.request,
+};
 
 class AddressesContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
+    getAddresses: PropTypes.func.isRequired,
   };
 
   static navigationOptions = {
@@ -37,11 +31,11 @@ class AddressesContainer extends Component {
   };
 
   componentWillMount() {
-    this.props.actions.getAddresses();
+    this.props.getAddresses();
   }
 
   render() {
-    const { activeWallet, activeWalletExtraData, isLoading, actions } = this.props;
+    const { activeWallet, activeWalletExtraData, isLoading, getAddresses } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
@@ -51,7 +45,7 @@ class AddressesContainer extends Component {
       <Addresses
         network={activeWallet.network}
         addresses={activeWalletExtraData.addresses}
-        onRefresh={actions.getAddresses}
+        onRefresh={getAddresses}
         isLoading={isLoading}
       />
     );

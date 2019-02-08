@@ -1,7 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
@@ -12,31 +11,22 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.CREATE_WALLET),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      createWallet: createWalletActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  createWallet: createWalletActions.request,
+};
 
-class CreateWalletContainer extends Component {
-  static propTypes = {
-    actions: PropTypes.object.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-  };
+const CreateWalletContainer = ({ isLoading, createWallet }) => (
+  <CreateWallet onSubmit={createWallet} isLoading={isLoading} />
+);
 
-  static navigationOptions = {
-    title: 'Create Wallet',
-  };
+CreateWalletContainer.propTypes = {
+  createWallet: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
 
-  render() {
-    const { isLoading, actions } = this.props;
-
-    return <CreateWallet onSubmit={actions.createWallet} isLoading={isLoading} />;
-  }
-}
+CreateWalletContainer.navigationOptions = {
+  title: 'Create Wallet',
+};
 
 export default connect(
   mapStateToProps,

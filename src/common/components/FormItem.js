@@ -1,10 +1,9 @@
 import React, { PureComponent, cloneElement } from 'react';
+import { Text, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import { FIELD_META_PROP } from '../services/Form';
 import { getColor } from '../utils/color';
-
-import { Text, View } from './';
 
 export default props => (
   <FormItem
