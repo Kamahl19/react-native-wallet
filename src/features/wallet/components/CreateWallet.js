@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 
-import { createForm } from '../../../common/services/Form';
+import createForm from '../../../common/services/Form';
 import rules from '../../../common/rules';
 import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';

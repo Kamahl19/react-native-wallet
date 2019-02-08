@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 
-import { createForm } from '../../../common/services/Form';
+import createForm from '../../../common/services/Form';
 import rules from '../../../common/rules';
 import {
   ScreenWrapper,
