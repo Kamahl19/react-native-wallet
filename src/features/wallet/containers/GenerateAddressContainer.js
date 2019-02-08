@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
@@ -14,20 +13,15 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.GENERATE_ADDRESS),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      generateAddress: generateAddressActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  generateAddress: generateAddressActions.request,
+};
 
 class GenerateAddressContainer extends Component {
   static propTypes = {
     activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
+    generateAddress: PropTypes.func.isRequired,
   };
 
   static navigationOptions = {
@@ -35,7 +29,7 @@ class GenerateAddressContainer extends Component {
   };
 
   render() {
-    const { activeWalletExtraData, isLoading, actions } = this.props;
+    const { activeWalletExtraData, isLoading, generateAddress } = this.props;
 
     if (!activeWalletExtraData) {
       return <NoActiveWallet />;
@@ -43,7 +37,7 @@ class GenerateAddressContainer extends Component {
 
     return (
       <GenerateAddress
-        onSubmit={actions.generateAddress}
+        onSubmit={generateAddress}
         address={activeWalletExtraData.address}
         isLoading={isLoading}
       />

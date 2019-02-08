@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
@@ -15,21 +14,16 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      exportWallet: exportWalletActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  exportWallet: exportWalletActions.request,
+};
 
 class ExportWalletContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
+    exportWallet: PropTypes.func.isRequired,
   };
 
   static navigationOptions = {
@@ -37,7 +31,7 @@ class ExportWalletContainer extends Component {
   };
 
   render() {
-    const { activeWallet, activeWalletExtraData, isLoading, actions } = this.props;
+    const { activeWallet, activeWalletExtraData, isLoading, exportWallet } = this.props;
 
     if (!activeWallet) {
       return <NoActiveWallet />;
@@ -47,7 +41,7 @@ class ExportWalletContainer extends Component {
       <ExportWallet
         mnemonic={activeWallet.mnemonic}
         exported={activeWalletExtraData.exported}
-        exportWallet={actions.exportWallet}
+        exportWallet={exportWallet}
         isLoading={isLoading}
       />
     );

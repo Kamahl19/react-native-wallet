@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import AlertService from '../../../common/services/alert';
 import { getTransactionFee } from '../../../btcService';
@@ -18,21 +17,16 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.SEND_TRANSACTION),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      sendTransaction: sendTransactionActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  sendTransaction: sendTransactionActions.request,
+};
 
 class SendTransactionContainer extends Component {
   static propTypes = {
     activeWallet: PropTypes.object,
     prices: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
-    actions: PropTypes.object.isRequired,
+    sendTransaction: PropTypes.func.isRequired,
   };
 
   static navigationOptions = {
@@ -53,11 +47,11 @@ class SendTransactionContainer extends Component {
   };
 
   onSubmit = async transactionData => {
-    const { activeWallet, actions } = this.props;
+    const { activeWallet, sendTransaction } = this.props;
     const { confirmed } = this.state;
 
     if (confirmed) {
-      actions.sendTransaction(transactionData);
+      sendTransaction(transactionData);
     } else {
       let fee;
 

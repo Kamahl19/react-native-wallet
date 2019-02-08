@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
 import { apiCallIds } from '../constants';
@@ -12,18 +11,13 @@ const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.CREATE_WALLET),
 });
 
-const mapDispatchToProps = dispatch => ({
-  actions: bindActionCreators(
-    {
-      createWallet: createWalletActions.request,
-    },
-    dispatch
-  ),
-});
+const mapDispatchToProps = {
+  createWallet: createWalletActions.request,
+};
 
 class CreateWalletContainer extends Component {
   static propTypes = {
-    actions: PropTypes.object.isRequired,
+    createWallet: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
   };
 
@@ -32,9 +26,9 @@ class CreateWalletContainer extends Component {
   };
 
   render() {
-    const { isLoading, actions } = this.props;
+    const { isLoading, createWallet } = this.props;
 
-    return <CreateWallet onSubmit={actions.createWallet} isLoading={isLoading} />;
+    return <CreateWallet onSubmit={createWallet} isLoading={isLoading} />;
   }
 }
 
