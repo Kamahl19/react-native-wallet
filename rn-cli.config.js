@@ -1,5 +1,3 @@
-const extraNodeModules = require('node-libs-browser');
-
 module.exports = {
-  extraNodeModules,
+  extraNodeModules: require('node-libs-browser'),
 };
