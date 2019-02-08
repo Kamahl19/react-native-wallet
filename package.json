@@ -44,7 +44,7 @@
     "react": "16.6.3",
     "react-native": "0.58.4",
     "react-native-camera": "^1.10.1",
-    "react-native-dropdownalert": "^3.9.1",
+    "react-native-dropdownalert": "^3.9.2",
     "react-native-gesture-handler": "^1.0.15",
     "react-native-qrcode-scanner": "^1.1.2",
     "react-native-qrcode-svg": "^5.1.2",
