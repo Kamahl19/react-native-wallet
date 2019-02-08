@@ -1,42 +1,38 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import QRCode from 'react-native-qrcode-svg';
 
 import { ScreenWrapper, Button, Heading, CenterView, TextInput } from '../../../common/components';
 
-export default class ExportWallet extends Component {
-  static propTypes = {
-    mnemonic: PropTypes.string.isRequired,
-    exported: PropTypes.string,
-    exportWallet: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-  };
+const ExportWallet = ({ mnemonic, exported, exportWallet, isLoading }) => (
+  <ScreenWrapper>
+    <Heading>Backup Wallet</Heading>
 
-  render() {
-    const { mnemonic, exported, exportWallet, isLoading } = this.props;
+    <TextInput label="Mnemonic" value={mnemonic} />
 
-    return (
-      <ScreenWrapper>
-        <Heading>Backup Wallet</Heading>
+    <CenterView>
+      <QRCode value={mnemonic} />
+    </CenterView>
 
-        <TextInput label="Mnemonic" value={mnemonic} />
+    <Heading notFirst>Export Wallet</Heading>
 
-        <CenterView>
-          <QRCode value={mnemonic} />
-        </CenterView>
+    <Button
+      onPress={() => exportWallet()}
+      title="Export Wallet"
+      type="primary"
+      size="lg"
+      disabled={isLoading}
+    />
 
-        <Heading notFirst>Export Wallet</Heading>
+    {exported && <TextInput label="Wallet.dat" value={exported} multiline />}
+  </ScreenWrapper>
+);
 
-        <Button
-          onPress={() => exportWallet()}
-          title="Export Wallet"
-          type="primary"
-          size="lg"
-          disabled={isLoading}
-        />
+ExportWallet.propTypes = {
+  mnemonic: PropTypes.string.isRequired,
+  exported: PropTypes.string,
+  exportWallet: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
 
-        {exported && <TextInput label="Wallet.dat" value={exported} multiline />}
-      </ScreenWrapper>
-    );
-  }
-}
+export default ExportWallet;

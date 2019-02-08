@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -12,29 +12,25 @@ const mapStateToProps = state => ({
   activeWalletExtraData: selectActiveWalletExtraData(state),
 });
 
-class WalletInfoContainer extends Component {
-  static propTypes = {
-    activeWallet: PropTypes.object,
-    activeWalletExtraData: PropTypes.object,
-  };
-
-  static navigationOptions = {
-    title: 'Wallet Info',
-  };
-
-  render() {
-    const { activeWallet, activeWalletExtraData } = this.props;
-
-    if (!activeWallet) {
-      return <NoActiveWallet />;
-    }
-
-    const balance = activeWalletExtraData.balance
-      ? getWalletBalance(activeWalletExtraData.balance)
-      : undefined;
-
-    return <WalletInfo wallet={activeWallet} balance={balance} />;
+const WalletInfoContainer = ({ activeWallet, activeWalletExtraData }) => {
+  if (!activeWallet) {
+    return <NoActiveWallet />;
   }
-}
+
+  const balance = activeWalletExtraData.balance
+    ? getWalletBalance(activeWalletExtraData.balance)
+    : undefined;
+
+  return <WalletInfo wallet={activeWallet} balance={balance} />;
+};
+
+WalletInfoContainer.propTypes = {
+  activeWallet: PropTypes.object,
+  activeWalletExtraData: PropTypes.object,
+};
+
+WalletInfoContainer.navigationOptions = {
+  title: 'Wallet Info',
+};
 
 export default connect(mapStateToProps)(WalletInfoContainer);

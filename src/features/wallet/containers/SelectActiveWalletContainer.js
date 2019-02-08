@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -14,28 +14,24 @@ const mapDispatchToProps = {
   deleteWallet: deleteWalletAction,
 };
 
-class SelectActiveWalletContainer extends Component {
-  static propTypes = {
-    wallets: PropTypes.array.isRequired,
-    deleteWallet: PropTypes.func.isRequired,
-    selectActiveWallet: PropTypes.func.isRequired,
-  };
+const SelectActiveWalletContainer = ({ wallets, deleteWallet, selectActiveWallet }) => {
+  return (
+    <SelectActiveWallet
+      selectActiveWallet={selectActiveWallet}
+      deleteWallet={deleteWallet}
+      wallets={wallets}
+    />
+  );
+};
 
-  static navigationOptions = {
-    title: 'Select Active Wallet',
-  };
+SelectActiveWalletContainer.propTypes = {
+  wallets: PropTypes.array.isRequired,
+  deleteWallet: PropTypes.func.isRequired,
+  selectActiveWallet: PropTypes.func.isRequired,
+};
 
-  render() {
-    const { wallets, deleteWallet, selectActiveWallet } = this.props;
-
-    return (
-      <SelectActiveWallet
-        selectActiveWallet={selectActiveWallet}
-        deleteWallet={deleteWallet}
-        wallets={wallets}
-      />
-    );
-  }
-}
+SelectActiveWalletContainer.navigationOptions = {
+  title: 'Select Active Wallet',
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(SelectActiveWalletContainer);

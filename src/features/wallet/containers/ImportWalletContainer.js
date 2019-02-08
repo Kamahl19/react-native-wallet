@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,21 +15,17 @@ const mapDispatchToProps = {
   importWallet: importWalletActions.request,
 };
 
-class ImportWalletContainer extends Component {
-  static propTypes = {
-    isLoading: PropTypes.bool.isRequired,
-    importWallet: PropTypes.func.isRequired,
-  };
+const ImportWalletContainer = ({ isLoading, importWallet }) => (
+  <ImportWallet importWallet={importWallet} isLoading={isLoading} />
+);
 
-  static navigationOptions = {
-    title: 'Restore Wallet',
-  };
+ImportWalletContainer.propTypes = {
+  isLoading: PropTypes.bool.isRequired,
+  importWallet: PropTypes.func.isRequired,
+};
 
-  render() {
-    const { isLoading, importWallet } = this.props;
-
-    return <ImportWallet importWallet={importWallet} isLoading={isLoading} />;
-  }
-}
+ImportWalletContainer.navigationOptions = {
+  title: 'Restore Wallet',
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(ImportWalletContainer);

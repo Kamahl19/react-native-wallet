@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -15,21 +15,17 @@ const mapDispatchToProps = {
   createWallet: createWalletActions.request,
 };
 
-class CreateWalletContainer extends Component {
-  static propTypes = {
-    createWallet: PropTypes.func.isRequired,
-    isLoading: PropTypes.bool.isRequired,
-  };
+const CreateWalletContainer = ({ isLoading, createWallet }) => (
+  <CreateWallet onSubmit={createWallet} isLoading={isLoading} />
+);
 
-  static navigationOptions = {
-    title: 'Create Wallet',
-  };
+CreateWalletContainer.propTypes = {
+  createWallet: PropTypes.func.isRequired,
+  isLoading: PropTypes.bool.isRequired,
+};
 
-  render() {
-    const { isLoading, createWallet } = this.props;
-
-    return <CreateWallet onSubmit={createWallet} isLoading={isLoading} />;
-  }
-}
+CreateWalletContainer.navigationOptions = {
+  title: 'Create Wallet',
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(CreateWalletContainer);

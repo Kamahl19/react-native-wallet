@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
@@ -17,32 +17,28 @@ const mapDispatchToProps = {
   generateAddress: generateAddressActions.request,
 };
 
-class GenerateAddressContainer extends Component {
-  static propTypes = {
-    activeWalletExtraData: PropTypes.object,
-    isLoading: PropTypes.bool.isRequired,
-    generateAddress: PropTypes.func.isRequired,
-  };
-
-  static navigationOptions = {
-    title: 'Generate Address',
-  };
-
-  render() {
-    const { activeWalletExtraData, isLoading, generateAddress } = this.props;
-
-    if (!activeWalletExtraData) {
-      return <NoActiveWallet />;
-    }
-
-    return (
-      <GenerateAddress
-        onSubmit={generateAddress}
-        address={activeWalletExtraData.address}
-        isLoading={isLoading}
-      />
-    );
+const GenerateAddressContainer = ({ activeWalletExtraData, isLoading, generateAddress }) => {
+  if (!activeWalletExtraData) {
+    return <NoActiveWallet />;
   }
-}
+
+  return (
+    <GenerateAddress
+      onSubmit={generateAddress}
+      address={activeWalletExtraData.address}
+      isLoading={isLoading}
+    />
+  );
+};
+
+GenerateAddressContainer.propTypes = {
+  activeWalletExtraData: PropTypes.object,
+  isLoading: PropTypes.bool.isRequired,
+  generateAddress: PropTypes.func.isRequired,
+};
+
+GenerateAddressContainer.navigationOptions = {
+  title: 'Generate Address',
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(GenerateAddressContainer);
