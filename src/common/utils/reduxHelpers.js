@@ -1,5 +1,4 @@
 import flattenDeep from 'lodash.flattendeep';
-import reduce from 'lodash.reduce';
 
 export const REQUEST = 'REQUEST';
 export const SUCCESS = 'SUCCESS';
@@ -19,15 +18,15 @@ export const createApiActionCreators = (...type) => ({
 });
 
 export const createReducer = (initialState, reducerMap) => {
-  const iterator = (reducers, initial = {}, prefix = []) =>
-    reduce(
-      reducers,
-      (acc, reducer, type) => {
-        if (typeof reducer === 'function') {
-          return { ...acc, [createActionType(prefix, type)]: reducer };
-        }
-        return iterator(reducer, acc, [createActionType(prefix, type)]);
-      },
+  const iterator = (reducersObj, initial = {}, prefix = []) =>
+    Object.entries(reducersObj).reduce(
+      (acc, [actionType, reducerFn]) =>
+        typeof reducerFn === 'function'
+          ? {
+              ...acc,
+              [createActionType(prefix, actionType)]: reducerFn,
+            }
+          : iterator(reducerFn, acc, [createActionType(prefix, actionType)]),
       initial
     );
 
@@ -39,14 +38,22 @@ export const createReducer = (initialState, reducerMap) => {
   };
 };
 
-export const replaceInArray = (array, selector, newValue) => {
+export const replaceInArray = (array, selector, value) => {
   const idx = array.findIndex(selector);
 
-  return [...array.slice(0, idx), newValue, ...array.slice(idx + 1)];
+  return idx >= 0 ? [...array.slice(0, idx), value, ...array.slice(idx + 1)] : array;
+};
+
+export const updateInArray = (array, selector, diff) => {
+  const idx = array.findIndex(selector);
+
+  return idx >= 0
+    ? [...array.slice(0, idx), { ...array[idx], ...diff }, ...array.slice(idx + 1)]
+    : array;
 };
 
 export const removeFromArray = (array, selector) => {
   const idx = array.findIndex(selector);
 
-  return [...array.slice(0, idx), ...array.slice(idx + 1)];
+  return idx >= 0 ? [...array.slice(0, idx), ...array.slice(idx + 1)] : array;
 };

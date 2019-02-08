@@ -91,37 +91,26 @@ class SendTransaction extends Component {
       <ScreenWrapper>
         <Heading>Send Transaction</Heading>
 
-        <FormItem>
+        <FormItem label="Address">
           {form.getFieldDecorator('address', { rules: [rules.required] })(
-            <TextInput
-              label="Address"
-              autoCorrect={false}
-              autoCapitalize="none"
-              onChange={onInputChange}
-            />
+            <TextInput autoCapitalize="none" autoCorrect={false} onChange={onInputChange} />
           )}
         </FormItem>
 
         <Button
           onPress={this.toggleQRCodeScanner}
           title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
-          type="default"
-          size="sm"
           style={styles.scanButton}
         />
 
         {showScanner && <Scanner onRead={this.onQRCodeRead} />}
 
-        <FormItem>
+        <FormItem label="Amount BTC">
           {form.getFieldDecorator('amount', { rules: [rules.required] })(
-            <TextInput
-              label="Amount BTC"
-              keyboardType="numeric"
-              suffix={!!amountUsd ? `$${amountUsd.toFixed(2)}` : undefined}
-              onChange={onInputChange}
-            />
+            <TextInput keyboardType="numeric" onChange={onInputChange} />
           )}
         </FormItem>
+        <Text style={styles.usd}>${amountUsd.toFixed(2)}</Text>
 
         <FeeLevelSelect onChange={this.onFeeLevelChange} value={feeLevel} />
 
@@ -132,8 +121,6 @@ class SendTransaction extends Component {
         <Button
           onPress={this.handleSendTransaction}
           title={confirmed ? 'Send' : 'Submit'}
-          type="primary"
-          size="lg"
           style={styles.button}
           disabled={isLoading}
         />
@@ -151,6 +138,10 @@ const styles = StyleSheet.create({
   scanButton: {
     alignSelf: 'flex-start',
     marginTop: 6,
+  },
+  usd: {
+    marginTop: 6,
+    marginBottom: 6,
   },
   fee: {
     fontSize: 16,

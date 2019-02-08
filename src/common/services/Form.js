@@ -1,8 +1,9 @@
-import React, { Component, PureComponent, cloneElement } from 'react';
+import React, { Component, PureComponent } from 'react';
 import PropTypes from 'prop-types';
 import createRcForm from 'rc-form/lib/createForm';
 
-import { View } from '../../common/components';
+import { Text, View } from '../../common/components';
+import { getColor } from '../utils/color';
 
 const FIELD_META_PROP = 'data-__meta';
 
@@ -56,10 +57,7 @@ export const createForm = options => {
 export class FormItem extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
-    style: PropTypes.any,
-    successColor: PropTypes.string,
-    errorColor: PropTypes.string,
-    validatingColor: PropTypes.string,
+    label: PropTypes.string,
   };
 
   static contextTypes = {
@@ -151,17 +149,16 @@ export class FormItem extends PureComponent {
   }
 
   render() {
-    const { style, children } = this.props;
+    const { children, label } = this.props;
 
-    const validateStatus = this.getValidateStatus();
+    const hasError = this.getValidateStatus() === 'error';
     const helpMsg = this.getHelpMsg();
 
     return (
-      <View style={style}>
-        {cloneElement(children, {
-          error: !!validateStatus ? helpMsg : undefined,
-          errorColor: !!validateStatus ? this.props[`${validateStatus}Color`] : undefined,
-        })}
+      <View>
+        {label && <Text>{label}</Text>}
+        {children}
+        {hasError && <Text style={{ color: getColor('red') }}>{helpMsg}</Text>}
       </View>
     );
   }

@@ -61,13 +61,7 @@ export default class Addresses extends Component {
 const AddressItem = ({ address, onExplorePress }) => (
   <View style={styles.item}>
     <Text>{address.address}</Text>
-    <Button
-      onPress={() => onExplorePress(address)}
-      title="Explore"
-      type="default"
-      size="sm"
-      style={styles.button}
-    />
+    <Button title="Explore" onPress={() => onExplorePress(address)} style={styles.button} />
   </View>
 );
 

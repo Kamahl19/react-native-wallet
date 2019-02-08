@@ -62,17 +62,15 @@ class ImportWallet extends Component {
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-        <FormItem>
+        <FormItem label="Mnemonic">
           {form.getFieldDecorator('mnemonic')(
-            <TextInput label="Mnemonic" autoCorrect={false} autoCapitalize="none" />
+            <TextInput autoCapitalize="none" autoCorrect={false} />
           )}
         </FormItem>
 
         <Button
           onPress={this.toggleQRCodeScanner}
           title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
-          type="default"
-          size="sm"
           style={styles.scanButton}
         />
 
@@ -81,8 +79,6 @@ class ImportWallet extends Component {
         <Button
           onPress={() => this.doImport({ mnemonic: true, from3rdParty: false })}
           title="Restore"
-          type="primary"
-          size="lg"
           disabled={isLoading}
         />
 
@@ -94,8 +90,6 @@ class ImportWallet extends Component {
         <Button
           onPress={() => this.doImport({ mnemonic: true, from3rdParty: true })}
           title="Import from 3rd party software"
-          type="default"
-          size="lg"
           disabled={isLoading}
           style={styles.spacing}
         />
@@ -104,17 +98,15 @@ class ImportWallet extends Component {
 
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
-        <FormItem>
+        <FormItem label="Wallet Data">
           {form.getFieldDecorator('walletData')(
-            <TextInput label="Wallet Data" autoCorrect={false} autoCapitalize="none" multiline />
+            <TextInput autoCapitalize="none" autoCorrect={false} multiline />
           )}
         </FormItem>
 
         <Button
           onPress={() => this.doImport({ mnemonic: false, from3rdParty: false })}
           title="Import"
-          type="primary"
-          size="lg"
           disabled={isLoading}
         />
       </ScreenWrapper>
