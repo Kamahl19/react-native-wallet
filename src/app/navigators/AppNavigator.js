@@ -1,4 +1,3 @@
-import React from 'react';
 import { DrawerNavigator } from 'react-navigation';
 
 import CustomDrawer from './drawer/CustomDrawer';
