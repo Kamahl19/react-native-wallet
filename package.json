@@ -1,5 +1,5 @@
 {
-  "name": "bitcoinwallet",
+  "name": "rncryptowallet",
   "version": "1.0.0",
   "description": "Simple mobile Bitcoin & Ethereum wallet",
   "author": "Martin Litvaj <kamahl19@gmail.com> (http://litvaj.com)",
@@ -9,7 +9,7 @@
     "yarn": ">=1.13.0"
   },
   "scripts": {
-    "cleanup": "watchman watch-del-all && rm -rf node_modules && yarn install && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-*",
+    "cleanup": "watchman watch-del-all && rm -rf node_modules && yarn cache clean && yarn install && rm -rf /tmp/metro-bundler-cache-* && rm -rf /tmp/haste-map-react-native-packager-* && rm -rf ~/.rncache",
     "format": "prettier --write '{src,__{tests,mocks}__}/**/*.js'",
     "lint": "node ./node_modules/eslint/bin/eslint.js --ext .js src/",
     "postinstall": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script(from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js",

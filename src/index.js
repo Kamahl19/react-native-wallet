@@ -2,10 +2,9 @@ import { AppRegistry } from 'react-native';
 
 import Root from './app/containers/Root';
 
-AppRegistry.registerComponent('bitcoinwallet', () => Root);
+AppRegistry.registerComponent('rncryptowallet', () => Root);
 
 // TODO
-// - rename app to rncryptowallet
 // - init new RN 0.53
 // - upgrade based on paynut deps
 // - https://github.com/Kamahl19/react-native-wallet/commit/dd2699203125df5a44cfbd7ede530a8f3317a226
