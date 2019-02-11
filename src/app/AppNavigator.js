@@ -1,4 +1,4 @@
-import { DrawerNavigator } from 'react-navigation';
+import { createDrawerNavigator } from 'react-navigation';
 
 import CreateWalletContainer from '../features/wallet/containers/CreateWalletContainer';
 import SelectActiveWalletContainer from '../features/wallet/containers/SelectActiveWalletContainer';
@@ -10,14 +10,14 @@ import ExportWalletContainer from '../features/wallet/containers/ExportWalletCon
 import ImportWalletContainer from '../features/wallet/containers/ImportWalletContainer';
 import WalletInfoContainer from '../features/wallet/containers/WalletInfoContainer';
 
-export default DrawerNavigator({
-  SelectActiveWallet: { screen: SelectActiveWalletContainer },
-  CreateWallet: { screen: CreateWalletContainer },
-  SendTransaction: { screen: SendTransactionContainer },
-  GenerateAddress: { screen: GenerateAddressContainer },
-  Addresses: { screen: AddressesContainer },
-  Transactions: { screen: TransactionsContainer },
-  ExportWallet: { screen: ExportWalletContainer },
-  ImportWallet: { screen: ImportWalletContainer },
-  WalletInfo: { screen: WalletInfoContainer },
+export default createDrawerNavigator({
+  SelectActiveWallet: SelectActiveWalletContainer,
+  CreateWallet: CreateWalletContainer,
+  SendTransaction: SendTransactionContainer,
+  GenerateAddress: GenerateAddressContainer,
+  Addresses: AddressesContainer,
+  Transactions: TransactionsContainer,
+  ExportWallet: ExportWalletContainer,
+  ImportWallet: ImportWalletContainer,
+  WalletInfo: WalletInfoContainer,
 });

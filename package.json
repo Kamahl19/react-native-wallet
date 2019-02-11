@@ -50,7 +50,7 @@
     "react-native-radio-buttons": "^1.0.0",
     "react-native-randombytes": "^3.5.2",
     "react-native-svg": "~6.5.2",
-    "react-navigation": "~1.6.1",
+    "react-navigation": "~2.18.3",
     "react-redux": "^5.1.1",
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
