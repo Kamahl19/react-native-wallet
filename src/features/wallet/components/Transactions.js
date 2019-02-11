@@ -8,7 +8,7 @@ import {
   Heading,
   Text,
   View,
-  List,
+  FlatList,
   CenterView,
   RefreshControl,
 } from '../../../common/components';
@@ -56,7 +56,7 @@ export default class Transactions extends Component {
         <TxActionSelect onChange={txAction => this.setState({ txAction })} value={txAction} />
 
         {filteredTxs.length > 0 && (
-          <List
+          <FlatList
             data={filteredTxs}
             extraData={txAction}
             keyExtractor={this.keyExtractor}

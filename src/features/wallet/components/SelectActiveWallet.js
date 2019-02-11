@@ -7,7 +7,7 @@ import {
   ScreenWrapper,
   TouchableOpacity,
   Heading,
-  List,
+  FlatList,
   CenterView,
 } from '../../../common/components';
 import NetworkSelect from './NetworkSelect';
@@ -58,7 +58,7 @@ export default class SelectActiveWallet extends Component {
         <NetworkSelect onChange={network => this.setState({ network })} value={network} />
 
         {filteredWallets.length > 0 ? (
-          <List
+          <FlatList
             data={filteredWallets}
             extraData={network}
             keyExtractor={this.keyExtractor}

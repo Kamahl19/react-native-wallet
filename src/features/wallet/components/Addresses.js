@@ -8,7 +8,7 @@ import {
   Heading,
   Text,
   View,
-  List,
+  FlatList,
   CenterView,
   RefreshControl,
 } from '../../../common/components';
@@ -40,7 +40,7 @@ export default class Addresses extends Component {
       <ScreenWrapper scrollEnabled={false}>
         <Heading>Addresses</Heading>
         {addresses.length > 0 ? (
-          <List
+          <FlatList
             data={addresses}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
