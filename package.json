@@ -19,7 +19,7 @@
   },
   "devDependencies": {
     "babel-eslint": "9.x",
-    "babel-jest": "^22.1.0",
+    "babel-jest": "^24.1.0",
     "babel-preset-react-native": "^4.0.0",
     "eslint": "5.x",
     "eslint-config-react-app": "^3.0.7",
@@ -27,7 +27,7 @@
     "eslint-plugin-import": "2.x",
     "eslint-plugin-jsx-a11y": "6.x",
     "eslint-plugin-react": "7.x",
-    "jest": "^22.1.4",
+    "jest": "^24.1.0",
     "prettier": "^1.16.4",
     "redux-logger": "^3.0.6"
   },
