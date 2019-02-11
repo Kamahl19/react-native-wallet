@@ -32,14 +32,14 @@
     "redux-logger": "^3.0.6"
   },
   "dependencies": {
-    "big.js": "^5.2.2",
+    "bignumber.js": "^8.0.2",
     "bip21": "^2.0.2",
     "bitcore-wallet-client": "^6.7.5",
     "bs58check": "^2.1.2",
     "cryptocompare": "^1.0.0",
     "lodash.flattendeep": "^4.4.0",
     "node-libs-browser": "^2.2.0",
-    "prop-types": "^15.6.2",
+    "prop-types": "^15.7.1",
     "rc-form": "^1.5.0",
     "react": "^16.2.0",
     "react-native": "0.53.3",

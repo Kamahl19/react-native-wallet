@@ -1,6 +1,6 @@
 import cryptocompare from 'cryptocompare';
 import bs58check from 'bs58check';
-import Big from 'big.js';
+import BigNumber from 'bignumber.js';
 import bip21 from 'bip21';
 import BitcoreClient from 'bitcore-wallet-client';
 
@@ -107,10 +107,10 @@ export function satoshiToBitcoin(satoshi) {
   }
 
   if (!Number.isInteger(satoshi)) {
-    throw new TypeError('satoshiToBitcoin must be called on a whole number');
+    throw new TypeError('satoshiToBitcoin must be called on an integer');
   }
 
-  return Number(Big(satoshi).div(UNITS.sat.toBitcoin));
+  return Number(BigNumber(satoshi).div(UNITS.sat.toBitcoin));
 }
 
 /**
@@ -130,7 +130,11 @@ export function bitcoinToSatoshi(bitcoin) {
     bitcoin = Number(bitcoin);
   }
 
-  return Number(Big(bitcoin).times(UNITS.btc.toSatoshis));
+  return Number.isNaN(bitcoin)
+    ? 0
+    : BigNumber(bitcoin)
+        .times(UNITS.btc.toSatoshis)
+        .toNumber();
 }
 
 /**
@@ -165,11 +169,13 @@ export function bitcoinToUsd(bitcoin, btcInUsd) {
     btcInUsd = Number(btcInUsd);
   }
 
-  return Number(
-    Big(bitcoin)
-      .times(btcInUsd)
-      .toFixed(2)
-  );
+  return Number.isNaN(bitcoin) || Number.isNaN(btcInUsd)
+    ? 0
+    : Number(
+        BigNumber(bitcoin)
+          .times(btcInUsd)
+          .toFixed(2)
+      );
 }
 
 /**
