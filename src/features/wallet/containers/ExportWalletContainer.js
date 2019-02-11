@@ -18,17 +18,10 @@ const mapDispatchToProps = {
   exportWallet: exportWalletActions.request,
 };
 
-const ExportWalletContainer = ({
-  activeWallet,
-  activeWalletExtraData,
-  isLoading,
-  exportWallet,
-}) => {
-  if (!activeWallet) {
-    return <NoActiveWallet />;
-  }
-
-  return (
+const ExportWalletContainer = ({ activeWallet, activeWalletExtraData, isLoading, exportWallet }) =>
+  !activeWallet ? (
+    <NoActiveWallet />
+  ) : (
     <ExportWallet
       mnemonic={activeWallet.mnemonic}
       exported={activeWalletExtraData.exported}
@@ -36,7 +29,6 @@ const ExportWalletContainer = ({
       isLoading={isLoading}
     />
   );
-};
 
 ExportWalletContainer.propTypes = {
   activeWallet: PropTypes.object,

@@ -1,8 +1,6 @@
 import React from 'react';
-import { StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
-
-import { View } from './';
+import { StyleSheet, View } from 'react-native';
 
 const CenterView = ({ direction, style, ...rest }) => (
   <View

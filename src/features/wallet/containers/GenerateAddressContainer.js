@@ -17,19 +17,16 @@ const mapDispatchToProps = {
   generateAddress: generateAddressActions.request,
 };
 
-const GenerateAddressContainer = ({ activeWalletExtraData, isLoading, generateAddress }) => {
-  if (!activeWalletExtraData) {
-    return <NoActiveWallet />;
-  }
-
-  return (
+const GenerateAddressContainer = ({ activeWalletExtraData, isLoading, generateAddress }) =>
+  !activeWalletExtraData ? (
+    <NoActiveWallet />
+  ) : (
     <GenerateAddress
       onSubmit={generateAddress}
       address={activeWalletExtraData.address}
       isLoading={isLoading}
     />
   );
-};
 
 GenerateAddressContainer.propTypes = {
   activeWalletExtraData: PropTypes.object,

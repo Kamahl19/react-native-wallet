@@ -14,15 +14,13 @@ const mapDispatchToProps = {
   deleteWallet: deleteWalletAction,
 };
 
-const SelectActiveWalletContainer = ({ wallets, deleteWallet, selectActiveWallet }) => {
-  return (
-    <SelectActiveWallet
-      selectActiveWallet={selectActiveWallet}
-      deleteWallet={deleteWallet}
-      wallets={wallets}
-    />
-  );
-};
+const SelectActiveWalletContainer = ({ wallets, deleteWallet, selectActiveWallet }) => (
+  <SelectActiveWallet
+    selectActiveWallet={selectActiveWallet}
+    deleteWallet={deleteWallet}
+    wallets={wallets}
+  />
+);
 
 SelectActiveWalletContainer.propTypes = {
   wallets: PropTypes.array.isRequired,

@@ -39,16 +39,14 @@ export default class Addresses extends Component {
     return (
       <ScreenWrapper scrollEnabled={false}>
         <Heading>Addresses</Heading>
-        {addresses.length > 0 && (
+        {addresses.length > 0 ? (
           <List
             data={addresses}
             keyExtractor={this.keyExtractor}
             renderItem={this.renderItem}
             refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}
           />
-        )}
-
-        {addresses.length === 0 && (
+        ) : (
           <CenterView>
             <Text>No addresses</Text>
           </CenterView>

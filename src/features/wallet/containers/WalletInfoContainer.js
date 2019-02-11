@@ -12,17 +12,17 @@ const mapStateToProps = state => ({
   activeWalletExtraData: selectActiveWalletExtraData(state),
 });
 
-const WalletInfoContainer = ({ activeWallet, activeWalletExtraData }) => {
-  if (!activeWallet) {
-    return <NoActiveWallet />;
-  }
-
-  const balance = activeWalletExtraData.balance
-    ? getWalletBalance(activeWalletExtraData.balance)
-    : undefined;
-
-  return <WalletInfo wallet={activeWallet} balance={balance} />;
-};
+const WalletInfoContainer = ({ activeWallet, activeWalletExtraData }) =>
+  !activeWallet ? (
+    <NoActiveWallet />
+  ) : (
+    <WalletInfo
+      wallet={activeWallet}
+      balance={
+        activeWalletExtraData.balance ? getWalletBalance(activeWalletExtraData.balance) : undefined
+      }
+    />
+  );
 
 WalletInfoContainer.propTypes = {
   activeWallet: PropTypes.object,

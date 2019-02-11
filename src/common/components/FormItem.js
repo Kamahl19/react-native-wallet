@@ -1,7 +1,7 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
+import { Text, View } from 'react-native';
 
-import { Text, View } from '../../common/components';
 import { FIELD_META_PROP } from '../services/Form';
 import { getColor } from '../utils/color';
 
