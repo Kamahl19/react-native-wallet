@@ -29,18 +29,15 @@ export default function createForm(options) {
           };
         }
 
-        componentWillMount() {
-          this.getFieldDecorator = this.props.form.getFieldDecorator;
-        }
+        getDOMFieldDecorator = this.props.form.getFieldDecorator;
 
-        getRNFieldDecorator = (id, options) => {
-          return this.getFieldDecorator(id, {
+        getRNFieldDecorator = (id, options) =>
+          this.getDOMFieldDecorator(id, {
             trigger: 'onChangeText',
             validateTrigger: 'onChangeText',
             getValueFromEvent: value => value,
             ...options,
           });
-        };
 
         render() {
           this.props.form.getFieldDecorator = this.getRNFieldDecorator;
