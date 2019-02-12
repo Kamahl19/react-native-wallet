@@ -1,4 +1,3 @@
-import cryptocompare from 'cryptocompare';
 import bs58check from 'bs58check';
 import BigNumber from 'bignumber.js';
 import bip21 from 'bip21';
@@ -69,19 +68,6 @@ export function validateNetwork(network) {
   if (Object.values(BTC_NETWORKS).filter(n => n === network).length === 0) {
     throw new Error('Invalid network');
   }
-}
-
-/**
- * PRICE
- */
-
-/**
- * Get prices
- * @param {array} fromCoins
- * @param {array} toCoins
- */
-export async function getPrices(fromCoins, toCoins) {
-  return await cryptocompare.priceMulti(fromCoins, toCoins);
 }
 
 /**
