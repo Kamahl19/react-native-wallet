@@ -35,6 +35,22 @@ module.exports = {
 };
 ```
 
+## Running tests
+
+- [Detox guide](https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md)
+
+Build the project with
+
+```
+detox build
+```
+
+then launch the tests.
+
+```
+yarn test:e2e
+```
+
 # 1. App Menu
 
 ![screenshot 2019-02-07 at 14 09 37](https://user-images.githubusercontent.com/38855190/52413908-22b8f400-2ae3-11e9-9bd7-ce15276414df.png)
