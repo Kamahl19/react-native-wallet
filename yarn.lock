@@ -6075,12 +6075,12 @@ react-lifecycles-compat@^3, react-lifecycles-compat@^3.0.0, react-lifecycles-com
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
   integrity sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA==
 
-react-native-camera@^0.13.0:
-  version "0.13.0"
-  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-0.13.0.tgz#7a612eb0de14978c53c22d2211a44a9e4a6ee618"
+react-native-camera@^1.10.2:
+  version "1.10.2"
+  resolved "https://registry.yarnpkg.com/react-native-camera/-/react-native-camera-1.10.2.tgz#0e188c4efdf1f1af0f44664d57b84e33b1343978"
+  integrity sha512-Ssq/Ku+dzmO2Jkb8ojxrD3kfZrqYOo7HydX8L74fATr/UZhc1preFrIveoyc5eDr4PWT4tNuhHrd8u2C/RUcOg==
   dependencies:
-    lodash "^4.17.4"
-    prop-types "^15.5.10"
+    prop-types "^15.6.2"
 
 react-native-dismiss-keyboard@1.0.0:
   version "1.0.0"
@@ -6108,11 +6108,18 @@ react-native-dropdownalert@^3.9.2:
   dependencies:
     prop-types "15.5.10"
 
-react-native-qrcode-scanner@^0.0.29:
-  version "0.0.29"
-  resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-0.0.29.tgz#ad396dd1dc5728b596f1660bb21748119f4d86ef"
+react-native-permissions@^1.1.1:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/react-native-permissions/-/react-native-permissions-1.1.1.tgz#4876004681ff8556454613d85249b01baff9b35b"
+  integrity sha512-t0Ujm177bagjUOSzhpmkSz+LqFW04HnY9TeZFavDCmV521fQvFz82aD+POXqWsAdsJVOK3umJYBNNqCjC3g0hQ==
+
+react-native-qrcode-scanner@^1.1.2:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/react-native-qrcode-scanner/-/react-native-qrcode-scanner-1.1.2.tgz#5b6dfb4efd267a810bedb1f09b7c9ccb6d321e20"
+  integrity sha512-ID/s6za6N1m+V5dgzGZYr+rf9txuTYEnqqkowR8hujm9ddPRJEkXXGkoR6Y18WnpDGS7eDEt2BNPLXFkLLYhvQ==
   dependencies:
     prop-types "^15.5.10"
+    react-native-permissions "^1.1.1"
 
 react-native-qrcode-svg@^5.1.2:
   version "5.1.2"
