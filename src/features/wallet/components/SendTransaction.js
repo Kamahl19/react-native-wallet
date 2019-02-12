@@ -15,12 +15,8 @@ import {
 } from '../../../common/components';
 import FeeLevelSelect from './FeeLevelSelect';
 import { DEFAULT_FEE_LEVEL } from '../constants';
-import {
-  parseBitcoinInput,
-  bitcoinToUsd,
-  satoshiToBitcoin,
-  bip21Decode,
-} from '../../../btcService';
+import { parseBitcoinInput, bip21Decode } from '../../../btcService';
+import { satoshiToBitcoin, bitcoinToUsd } from '../../../unitsService';
 
 class SendTransaction extends Component {
   static propTypes = {

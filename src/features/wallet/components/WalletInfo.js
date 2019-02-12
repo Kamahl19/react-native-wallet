@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 
 import { Text, ScreenWrapper, Heading, View } from '../../../common/components';
-import { satoshiToBitcoin, satoshiToUsd } from '../../../btcService';
+import { satoshiToBitcoin, satoshiToUsd } from '../../../unitsService';
 
 const WalletInfo = ({ balance, price, wallet }) => (
   <ScreenWrapper>

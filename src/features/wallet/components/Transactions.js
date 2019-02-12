@@ -14,12 +14,8 @@ import {
 } from '../../../common/components';
 import TxActionSelect from './TxActionSelect';
 import { DEFAULT_TX_ACTION } from '../constants';
-import {
-  satoshiToBitcoin,
-  getExploreTxUrl,
-  getTxConfirmationStatus,
-  getTxDateTime,
-} from '../../../btcService';
+import { getExploreTxUrl, getTxConfirmationStatus, getTxDateTime } from '../../../btcService';
+import { satoshiToBitcoin } from '../../../unitsService';
 
 export default class Transactions extends Component {
   static propTypes = {
