@@ -4,7 +4,7 @@ import { createSelector } from 'reselect';
 import { createActionCreator, createReducer } from '../../common/utils/reduxHelpers';
 import { finishApiCall, startApiCall } from '../spinner/ducks';
 import { selectActiveWallet } from '../wallet/ducks';
-import * as btcService from '../../btcService';
+import * as priceService from '../../priceService';
 import { PRICES_FROM, PRICES_TO, FETCH_PRICES_INTERVAL_MS, apiCallIds } from './constants';
 
 /**
@@ -44,7 +44,7 @@ function* getPrices() {
   yield put(startApiCall({ apiCallId: apiCallIds.GET_PRICES }));
 
   try {
-    const prices = yield call(btcService.getPrices, PRICES_FROM, PRICES_TO);
+    const prices = yield call(priceService.getPrices, PRICES_FROM, PRICES_TO);
 
     yield put(getPricesSuccessAction(prices));
 
