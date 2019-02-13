@@ -43,7 +43,7 @@ const WalletInfo = ({ balance, price, wallet }) => (
 
     {balance && (
       <View>
-        <Heading>Balance</Heading>
+        <Heading notFirst>Balance</Heading>
 
         <View style={styles.cat}>
           <Text>
