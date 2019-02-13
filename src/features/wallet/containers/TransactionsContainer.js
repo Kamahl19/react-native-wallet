@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
+
 import { apiCallIds } from '../constants';
 import { getTxHistoryActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
-import Transactions from '../components/Transactions';
 import NoActiveWallet from '../components/NoActiveWallet';
+import Transactions from '../screens/Transactions';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
@@ -24,10 +25,6 @@ class TransactionsContainer extends Component {
     activeWalletExtraData: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     getTxHistory: PropTypes.func.isRequired,
-  };
-
-  static navigationOptions = {
-    title: 'Transactions',
   };
 
   componentWillMount() {

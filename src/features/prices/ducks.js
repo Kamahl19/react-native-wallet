@@ -2,9 +2,10 @@ import { call, put, fork, delay } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
 import { createActionCreator, createReducer } from '../../common/utils/reduxHelpers';
+import * as priceService from '../../priceService';
 import { finishApiCall, startApiCall } from '../spinner/ducks';
 import { selectActiveWallet } from '../wallet/ducks';
-import * as priceService from '../../priceService';
+
 import { PRICES_FROM, PRICES_TO, FETCH_PRICES_INTERVAL_MS, apiCallIds } from './constants';
 
 /**

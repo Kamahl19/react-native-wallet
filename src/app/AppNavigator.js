@@ -1,5 +1,7 @@
-import { createDrawerNavigator } from 'react-navigation';
+import React from 'react';
+import { createDrawerNavigator, createStackNavigator } from 'react-navigation';
 
+import { DrawerButton } from '../common/components';
 import CreateWalletContainer from '../features/wallet/containers/CreateWalletContainer';
 import SelectActiveWalletContainer from '../features/wallet/containers/SelectActiveWalletContainer';
 import SendTransactionContainer from '../features/wallet/containers/SendTransactionContainer';
@@ -11,13 +13,30 @@ import ImportWalletContainer from '../features/wallet/containers/ImportWalletCon
 import WalletInfoContainer from '../features/wallet/containers/WalletInfoContainer';
 
 export default createDrawerNavigator({
-  SelectActiveWallet: SelectActiveWalletContainer,
-  CreateWallet: CreateWalletContainer,
-  SendTransaction: SendTransactionContainer,
-  GenerateAddress: GenerateAddressContainer,
-  Addresses: AddressesContainer,
-  Transactions: TransactionsContainer,
-  ExportWallet: ExportWalletContainer,
-  ImportWallet: ImportWalletContainer,
-  WalletInfo: WalletInfoContainer,
+  SelectActiveWallet: createSubNavigator(SelectActiveWalletContainer, 'Select Active Wallet'),
+  CreateWallet: createSubNavigator(CreateWalletContainer, 'Create Wallet'),
+  SendTransaction: createSubNavigator(SendTransactionContainer, 'Send Transaction'),
+  GenerateAddress: createSubNavigator(GenerateAddressContainer, 'Generate Address'),
+  Addresses: createSubNavigator(AddressesContainer, 'Addresses'),
+  Transactions: createSubNavigator(TransactionsContainer, 'Transactions'),
+  ExportWallet: createSubNavigator(ExportWalletContainer, 'Backup Wallet'),
+  ImportWallet: createSubNavigator(ImportWalletContainer, 'Restore Wallet'),
+  WalletInfo: createSubNavigator(WalletInfoContainer, 'Wallet Info'),
 });
+
+function createSubNavigator(screen, title) {
+  return {
+    screen: createStackNavigator({
+      Main: {
+        screen,
+        navigationOptions: ({ navigation }) => ({
+          headerLeft: <DrawerButton onPress={navigation.openDrawer} />,
+          title,
+        }),
+      },
+    }),
+    navigationOptions: {
+      title,
+    },
+  };
+}

@@ -18,8 +18,9 @@ export default class EnhancedTextInput extends Component {
 
 const styles = StyleSheet.create({
   input: {
-    borderBottomColor: getColor('lightGray'),
-    borderBottomWidth: 1,
     marginBottom: 6,
+    fontSize: 18,
+    borderBottomWidth: 1,
+    borderBottomColor: getColor('gray'),
   },
 });

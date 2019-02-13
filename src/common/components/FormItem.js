@@ -1,6 +1,6 @@
 import React, { PureComponent } from 'react';
 import PropTypes from 'prop-types';
-import { Text, View } from 'react-native';
+import { Text, View, StyleSheet } from 'react-native';
 
 import { FIELD_META_PROP } from '../services/Form';
 import { getColor } from '../utils/color';
@@ -9,6 +9,7 @@ export default class FormItem extends PureComponent {
   static propTypes = {
     children: PropTypes.node.isRequired,
     label: PropTypes.string,
+    style: PropTypes.any,
   };
 
   static contextTypes = {
@@ -59,16 +60,24 @@ export default class FormItem extends PureComponent {
   }
 
   render() {
-    const { children, label } = this.props;
+    const { children, label, style } = this.props;
 
     const error = this.getError();
 
     return (
-      <View>
+      <View style={style}>
         {label && <Text>{label}</Text>}
         {children}
-        {!!error && <Text style={{ color: getColor('red') }}>{error}</Text>}
+        {!!error && <Text style={styles.error}>{error}</Text>}
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  error: {
+    color: getColor('red'),
+    marginTop: -3,
+    marginBottom: 6,
+  },
+});

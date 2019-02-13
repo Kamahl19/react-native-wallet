@@ -9,14 +9,17 @@ import {
   Button,
   FormItem,
   TextInput,
-  Heading,
   Scanner,
   Text,
+  View,
 } from '../../../common/components';
-import FeeLevelSelect from './FeeLevelSelect';
-import { DEFAULT_FEE_LEVEL } from '../constants';
 import { parseBitcoinInput, bip21Decode } from '../../../btcService';
-import { satoshiToBitcoin, bitcoinToUsd } from '../../../unitsService';
+import { bitcoinToSatoshi } from '../../../unitsService';
+
+import { DEFAULT_FEE_LEVEL } from '../constants';
+import FeeSelect from '../components/FeeSelect';
+import Btc from '../components/Btc';
+import Usd from '../components/Usd';
 
 class SendTransaction extends Component {
   static propTypes = {
@@ -39,16 +42,12 @@ class SendTransaction extends Component {
     this.props.onInputChange();
   };
 
-  toggleQRCodeScanner = () => {
-    this.setState({ showScanner: !this.state.showScanner });
-  };
-
-  onQRCodeRead = e => {
+  handleQRCodeRead = e => {
     const { address } = bip21Decode(e.data);
 
     this.props.form.setFieldsValue({ address });
     this.props.onInputChange();
-    this.toggleQRCodeScanner();
+    this.setState({ showScanner: false });
   };
 
   handleSendTransaction = () => {
@@ -65,28 +64,24 @@ class SendTransaction extends Component {
     });
   };
 
-  getAmountInUsd = () => {
-    const { form, price } = this.props;
-
+  getInputSatoshi = () => {
     let bitcoins = 0;
 
     try {
-      bitcoins = parseBitcoinInput(form.getFieldValue('amount'));
+      bitcoins = parseBitcoinInput(this.props.form.getFieldValue('amount'));
     } catch (err) {}
 
-    return bitcoinToUsd(bitcoins, price);
+    return bitcoinToSatoshi(bitcoins);
   };
 
   render() {
-    const { form, isLoading, onInputChange, calculatedFee, confirmed } = this.props;
+    const { form, isLoading, onInputChange, calculatedFee, confirmed, price } = this.props;
     const { feeLevel, showScanner } = this.state;
 
-    const amountUsd = this.getAmountInUsd();
+    const amountSatoshi = this.getInputSatoshi();
 
     return (
       <ScreenWrapper>
-        <Heading>Send Transaction</Heading>
-
         <FormItem label="Address">
           {form.getFieldDecorator('address', { rules: [rules.required] })(
             <TextInput autoCapitalize="none" autoCorrect={false} onChange={onInputChange} />
@@ -94,31 +89,36 @@ class SendTransaction extends Component {
         </FormItem>
 
         <Button
-          onPress={this.toggleQRCodeScanner}
+          onPress={() => this.setState({ showScanner: !showScanner })}
           title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
-          style={styles.scanButton}
         />
 
-        {showScanner && <Scanner onRead={this.onQRCodeRead} />}
+        {showScanner && <Scanner onRead={this.handleQRCodeRead} />}
 
-        <FormItem label="Amount BTC">
+        <FormItem label="Amount BTC" style={styles.spacingTop}>
           {form.getFieldDecorator('amount', { rules: [rules.required] })(
             <TextInput keyboardType="numeric" onChange={onInputChange} />
           )}
         </FormItem>
-        <Text style={styles.usd}>${amountUsd.toFixed(2)}</Text>
+        <Text>
+          <Usd price={price} satoshi={amountSatoshi} />
+        </Text>
 
-        <FeeLevelSelect onChange={this.onFeeLevelChange} value={feeLevel} />
+        <Text style={styles.spacingTop}>Fee Level</Text>
+        <FeeSelect value={feeLevel} onChange={this.onFeeLevelChange} />
 
         {calculatedFee && (
-          <Text style={styles.fee}>Transaction Fee: {satoshiToBitcoin(calculatedFee)} BTC</Text>
+          <View style={styles.spacingTop}>
+            <Text>Calculated Fee: </Text>
+            <Btc satoshi={calculatedFee} />
+          </View>
         )}
 
         <Button
           onPress={this.handleSendTransaction}
           title={confirmed ? 'Send' : 'Submit'}
-          style={styles.button}
           disabled={isLoading}
+          style={styles.spacingTop}
         />
       </ScreenWrapper>
     );
@@ -128,20 +128,7 @@ class SendTransaction extends Component {
 export default createForm()(SendTransaction);
 
 const styles = StyleSheet.create({
-  button: {
+  spacingTop: {
     marginTop: 12,
-  },
-  scanButton: {
-    alignSelf: 'flex-start',
-    marginTop: 6,
-  },
-  usd: {
-    marginTop: 6,
-    marginBottom: 6,
-  },
-  fee: {
-    fontSize: 16,
-    marginTop: 24,
-    marginBottom: 6,
   },
 });

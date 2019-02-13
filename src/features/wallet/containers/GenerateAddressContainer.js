@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
+
 import { apiCallIds } from '../constants';
 import { generateAddressActions, selectActiveWalletExtraData } from '../ducks';
-import GenerateAddress from '../components/GenerateAddress';
 import NoActiveWallet from '../components/NoActiveWallet';
+import GenerateAddress from '../screens/GenerateAddress';
 
 const mapStateToProps = state => ({
   activeWalletExtraData: selectActiveWalletExtraData(state),
@@ -32,10 +33,6 @@ GenerateAddressContainer.propTypes = {
   activeWalletExtraData: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
   generateAddress: PropTypes.func.isRequired,
-};
-
-GenerateAddressContainer.navigationOptions = {
-  title: 'Generate Address',
 };
 
 export default connect(

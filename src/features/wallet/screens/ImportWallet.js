@@ -6,19 +6,19 @@ import createForm from '../../../common/services/Form';
 import {
   ScreenWrapper,
   Button,
-  Heading,
   FormItem,
   TextInput,
   Scanner,
   Text,
 } from '../../../common/components';
-import NetworkSelect from './NetworkSelect';
+
 import { DEFAULT_NETWORK } from '../constants';
+import NetworkSelect from '../components/NetworkSelect';
 
 class ImportWallet extends Component {
   static propTypes = {
-    importWallet: PropTypes.func.isRequired,
     form: PropTypes.object.isRequired,
+    importWallet: PropTypes.func.isRequired,
     isLoading: PropTypes.bool.isRequired,
   };
 
@@ -27,13 +27,9 @@ class ImportWallet extends Component {
     showScanner: false,
   };
 
-  toggleQRCodeScanner = () => {
-    this.setState({ showScanner: !this.state.showScanner });
-  };
-
-  onQRCodeRead = e => {
+  handleQRCodeRead = e => {
     this.props.form.setFieldsValue({ mnemonic: e.data });
-    this.toggleQRCodeScanner();
+    this.setState({ showScanner: false });
   };
 
   doImport = (opts = { mnemonic: true, from3rdParty: false }) => {
@@ -58,9 +54,7 @@ class ImportWallet extends Component {
 
     return (
       <ScreenWrapper>
-        <Heading>Restore Wallet</Heading>
-
-        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        <NetworkSelect value={network} onChange={network => this.setState({ network })} />
 
         <FormItem label="Mnemonic">
           {form.getFieldDecorator('mnemonic')(
@@ -69,12 +63,15 @@ class ImportWallet extends Component {
         </FormItem>
 
         <Button
-          onPress={this.toggleQRCodeScanner}
+          onPress={() => this.setState({ showScanner: !showScanner })}
           title={showScanner ? 'Hide scanner' : 'Scan QRCode'}
-          style={styles.scanButton}
         />
 
-        {showScanner && <Scanner onRead={this.onQRCodeRead} />}
+        {showScanner && <Scanner onRead={this.handleQRCodeRead} />}
+
+        <Text style={styles.spacingTop}>
+          If mnemonic comes from the wallet created via this software, click on button bellow
+        </Text>
 
         <Button
           onPress={() => this.doImport({ mnemonic: true, from3rdParty: false })}
@@ -82,23 +79,17 @@ class ImportWallet extends Component {
           disabled={isLoading}
         />
 
-        <Text style={styles.spacing}>
-          NOTE: If mnemonic comes from the wallet not created via this software, please use the
-          button below
+        <Text style={styles.spacingTop}>
+          If mnemonic comes from the wallet created via different software, click on button bellow
         </Text>
 
         <Button
           onPress={() => this.doImport({ mnemonic: true, from3rdParty: true })}
           title="Import from 3rd party software"
           disabled={isLoading}
-          style={styles.spacing}
         />
 
-        <Heading notFirst>Import Wallet</Heading>
-
-        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
-
-        <FormItem label="Wallet Data">
+        <FormItem label="Wallet JSON Data" style={styles.spacingTop}>
           {form.getFieldDecorator('walletData')(
             <TextInput autoCapitalize="none" autoCorrect={false} multiline />
           )}
@@ -106,7 +97,7 @@ class ImportWallet extends Component {
 
         <Button
           onPress={() => this.doImport({ mnemonic: false, from3rdParty: false })}
-          title="Import"
+          title="Import as JSON"
           disabled={isLoading}
         />
       </ScreenWrapper>
@@ -117,12 +108,7 @@ class ImportWallet extends Component {
 export default createForm()(ImportWallet);
 
 const styles = StyleSheet.create({
-  scanButton: {
-    alignSelf: 'flex-start',
-    marginTop: 6,
-    marginBottom: 12,
-  },
-  spacing: {
-    marginTop: 24,
+  spacingTop: {
+    marginTop: 12,
   },
 });

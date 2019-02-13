@@ -1,13 +1,12 @@
-import React from 'react';
-import { StyleSheet, Platform } from 'react-native';
+import React, { Fragment } from 'react';
 import { Provider } from 'react-redux';
 import { PersistGate } from 'redux-persist/es/integration/react';
 import DropdownAlert from 'react-native-dropdownalert';
 
-import configureStore from './store/configureStore';
 import AlertService from '../common/services/alert';
-import { CenterView, ActivityIndicator, View } from '../common/components';
+import { CenterView, ActivityIndicator } from '../common/components';
 
+import configureStore from './store/configureStore';
 import AppNavigator from './AppNavigator';
 
 const { store, persistor } = configureStore();
@@ -22,19 +21,12 @@ const Root = () => (
       }
       persistor={persistor}
     >
-      <View style={styles.component}>
+      <Fragment>
         <AppNavigator />
         <DropdownAlert ref={ref => AlertService.setAlert(ref)} />
-      </View>
+      </Fragment>
     </PersistGate>
   </Provider>
 );
 
 export default Root;
-
-const styles = StyleSheet.create({
-  component: {
-    flexGrow: 1,
-    marginTop: Platform.OS === 'ios' ? 20 : 0,
-  },
-});

@@ -44,14 +44,6 @@ export const replaceInArray = (array, selector, value) => {
   return idx >= 0 ? [...array.slice(0, idx), value, ...array.slice(idx + 1)] : array;
 };
 
-export const updateInArray = (array, selector, diff) => {
-  const idx = array.findIndex(selector);
-
-  return idx >= 0
-    ? [...array.slice(0, idx), { ...array[idx], ...diff }, ...array.slice(idx + 1)]
-    : array;
-};
-
 export const removeFromArray = (array, selector) => {
   const idx = array.findIndex(selector);
 

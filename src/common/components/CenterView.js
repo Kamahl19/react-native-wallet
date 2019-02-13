@@ -2,19 +2,12 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { StyleSheet, View } from 'react-native';
 
-const CenterView = ({ direction, style, ...rest }) => (
-  <View
-    style={[
-      styles.component,
-      direction === 'row' ? styles.rowDirection : styles.columnDirection,
-      style,
-    ]}
-    {...rest}
-  />
+const CenterView = ({ children, style }) => (
+  <View style={[styles.component, style]}>{children}</View>
 );
 
 CenterView.propTypes = {
-  direction: PropTypes.string,
+  children: PropTypes.node.isRequired,
   style: PropTypes.any,
 };
 
@@ -25,11 +18,5 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-  },
-  columnDirection: {
-    flexDirection: 'column',
-  },
-  rowDirection: {
-    flexDirection: 'row',
   },
 });

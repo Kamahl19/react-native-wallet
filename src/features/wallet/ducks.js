@@ -15,6 +15,7 @@ import {
 } from '../../common/utils/reduxHelpers';
 import { startApiCall, finishApiCall } from '../spinner/ducks';
 import * as btcService from '../../btcService';
+
 import { FETCH_BALANCE_INTERVAL_MS, apiCallIds } from './constants';
 
 /**

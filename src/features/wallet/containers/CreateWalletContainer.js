@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
+
 import { apiCallIds } from '../constants';
 import { createWalletActions } from '../ducks';
-import CreateWallet from '../components/CreateWallet';
+import CreateWallet from '../screens/CreateWallet';
 
 const mapStateToProps = state => ({
   isLoading: selectIsInProgress(state, apiCallIds.CREATE_WALLET),
@@ -22,10 +23,6 @@ const CreateWalletContainer = ({ isLoading, createWallet }) => (
 CreateWalletContainer.propTypes = {
   createWallet: PropTypes.func.isRequired,
   isLoading: PropTypes.bool.isRequired,
-};
-
-CreateWalletContainer.navigationOptions = {
-  title: 'Create Wallet',
 };
 
 export default connect(

@@ -3,9 +3,10 @@ import PropTypes from 'prop-types';
 
 import createForm from '../../../common/services/Form';
 import rules from '../../../common/rules';
-import { ScreenWrapper, Button, FormItem, TextInput, Heading } from '../../../common/components';
-import NetworkSelect from './NetworkSelect';
+import { ScreenWrapper, Button, FormItem, TextInput } from '../../../common/components';
+
 import { DEFAULT_NETWORK } from '../constants';
+import NetworkSelect from '../components/NetworkSelect';
 
 class CreateWallet extends Component {
   static propTypes = {
@@ -38,9 +39,7 @@ class CreateWallet extends Component {
 
     return (
       <ScreenWrapper>
-        <Heading>Create Wallet</Heading>
-
-        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+        <NetworkSelect value={network} onChange={network => this.setState({ network })} />
 
         <FormItem label="Wallet Name">
           {form.getFieldDecorator('walletName', { rules: [rules.required] })(
@@ -48,7 +47,7 @@ class CreateWallet extends Component {
           )}
         </FormItem>
 
-        <Button disabled={isLoading} title="Create Wallet" onPress={this.handleCreateWallet} />
+        <Button disabled={isLoading} title="Submit" onPress={this.handleCreateWallet} />
       </ScreenWrapper>
     );
   }

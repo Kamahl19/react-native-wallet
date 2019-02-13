@@ -4,27 +4,27 @@ import { StyleSheet } from 'react-native';
 
 import { SegmentedControl } from '../../../common/components';
 
-import { networkOptions } from '../constants';
+import { txActionsOptions } from '../constants';
 
-const values = networkOptions.map(n => n.label);
+const values = txActionsOptions.map(n => n.label);
 
-const NetworkSelect = ({ onChange, value }) => (
+const TxTypeSelect = ({ onChange, value }) => (
   <SegmentedControl
     values={values}
     onChange={({ nativeEvent: { selectedSegmentIndex } }) =>
-      onChange(networkOptions[selectedSegmentIndex].value)
+      onChange(txActionsOptions[selectedSegmentIndex].value)
     }
-    selectedIndex={networkOptions.findIndex(n => n.value === value)}
+    selectedIndex={txActionsOptions.findIndex(n => n.value === value)}
     style={styles.select}
   />
 );
 
-NetworkSelect.propTypes = {
+TxTypeSelect.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default NetworkSelect;
+export default TxTypeSelect;
 
 const styles = StyleSheet.create({
   select: {

@@ -4,15 +4,11 @@ function setAlert(alert) {
   _alert = alert;
 }
 
-const info = (message, title = '') => _alert.alertWithType('info', title, message);
-const warn = (message, title = '') => _alert.alertWithType('warn', title, message);
 const error = (message, title = '') => _alert.alertWithType('error', title, message);
 const success = (message, title = '') => _alert.alertWithType('success', title, message);
 
 export default {
   setAlert,
-  info,
-  warn,
   error,
   success,
 };

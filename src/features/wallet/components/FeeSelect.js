@@ -4,27 +4,27 @@ import { StyleSheet } from 'react-native';
 
 import { SegmentedControl } from '../../../common/components';
 
-import { networkOptions } from '../constants';
+import { feeLevelOptions } from '../constants';
 
-const values = networkOptions.map(n => n.label);
+const values = feeLevelOptions.map(n => n.label);
 
-const NetworkSelect = ({ onChange, value }) => (
+const FeeSelect = ({ onChange, value }) => (
   <SegmentedControl
     values={values}
     onChange={({ nativeEvent: { selectedSegmentIndex } }) =>
-      onChange(networkOptions[selectedSegmentIndex].value)
+      onChange(feeLevelOptions[selectedSegmentIndex].value)
     }
-    selectedIndex={networkOptions.findIndex(n => n.value === value)}
+    selectedIndex={feeLevelOptions.findIndex(n => n.value === value)}
     style={styles.select}
   />
 );
 
-NetworkSelect.propTypes = {
+FeeSelect.propTypes = {
   value: PropTypes.string.isRequired,
   onChange: PropTypes.func.isRequired,
 };
 
-export default NetworkSelect;
+export default FeeSelect;
 
 const styles = StyleSheet.create({
   select: {

@@ -4,13 +4,14 @@ import { Button, View, StyleSheet } from 'react-native';
 
 import { getColor } from '../utils/color';
 
-const EnhancedButton = ({ style, ...props }) => (
+const EnhancedButton = ({ color, style, ...props }) => (
   <View style={[styles.buttonContainer, style]}>
-    <Button color={getColor('white')} {...props} />
+    <Button color={color || getColor('white')} {...props} />
   </View>
 );
 
 EnhancedButton.propTypes = {
+  color: PropTypes.string,
   style: PropTypes.any,
 };
 

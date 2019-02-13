@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { selectActiveWalletAction, deleteWalletAction, selectWallets } from '../ducks';
-import SelectActiveWallet from '../components/SelectActiveWallet';
+import SelectActiveWallet from '../screens/SelectActiveWallet';
 
 const mapStateToProps = state => ({
   wallets: selectWallets(state),
@@ -26,10 +26,6 @@ SelectActiveWalletContainer.propTypes = {
   wallets: PropTypes.array.isRequired,
   deleteWallet: PropTypes.func.isRequired,
   selectActiveWallet: PropTypes.func.isRequired,
-};
-
-SelectActiveWalletContainer.navigationOptions = {
-  title: 'Select Active Wallet',
 };
 
 export default connect(

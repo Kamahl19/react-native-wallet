@@ -1,55 +1,33 @@
-import React, { Component } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, View, ScrollView } from 'react-native';
+import { StyleSheet, ScrollView } from 'react-native';
+import { SafeAreaView } from 'react-navigation';
 
-export default class ScreenWrapper extends Component {
-  static propTypes = {
-    children: PropTypes.node.isRequired,
-    scrollEnabled: PropTypes.bool,
-    fill: PropTypes.bool,
-    keyboardShouldPersistTaps: PropTypes.oneOf(['always', 'never', 'handled']),
-    containerStyle: PropTypes.any,
-    style: PropTypes.any,
-  };
+const ScreenWrapper = ({ children, disableScroll }) => (
+  <SafeAreaView style={styles.grow}>
+    <ScrollView
+      alwaysBounceVertical={false}
+      scrollEnabled={!disableScroll}
+      contentContainerStyle={[styles.grow, styles.spacing]}
+      style={styles.grow}
+    >
+      {children}
+    </ScrollView>
+  </SafeAreaView>
+);
 
-  static defaultProps = {
-    scrollEnabled: true,
-  };
+ScreenWrapper.propTypes = {
+  children: PropTypes.node.isRequired,
+  disableScroll: PropTypes.bool,
+};
 
-  render() {
-    const {
-      children,
-      scrollEnabled,
-      fill,
-      keyboardShouldPersistTaps,
-      containerStyle,
-      style,
-    } = this.props;
-
-    const C = scrollEnabled ? ScrollView : View;
-    const passProps = {};
-
-    if (scrollEnabled) {
-      passProps.keyboardShouldPersistTaps = keyboardShouldPersistTaps || 'never';
-      passProps.alwaysBounceVertical = false;
-      passProps.overScrollMode = 'auto';
-      passProps.contentContainerStyle = [containerStyle, fill ? styles.fillContentView : undefined];
-    }
-
-    return (
-      <C {...passProps} style={[styles.component, style]}>
-        {children}
-      </C>
-    );
-  }
-}
+export default ScreenWrapper;
 
 const styles = StyleSheet.create({
-  component: {
+  grow: {
     flex: 1,
-    paddingHorizontal: 10,
   },
-  fillContentView: {
-    minHeight: '100%',
+  spacing: {
+    padding: 10,
   },
 });

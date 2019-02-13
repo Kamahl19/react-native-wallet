@@ -3,10 +3,11 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
 import { selectIsInProgress } from '../../spinner/ducks';
+
 import { apiCallIds } from '../constants';
 import { exportWalletActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
-import ExportWallet from '../components/ExportWallet';
 import NoActiveWallet from '../components/NoActiveWallet';
+import ExportWallet from '../screens/ExportWallet';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
@@ -35,10 +36,6 @@ ExportWalletContainer.propTypes = {
   activeWalletExtraData: PropTypes.object,
   isLoading: PropTypes.bool.isRequired,
   exportWallet: PropTypes.func.isRequired,
-};
-
-ExportWalletContainer.navigationOptions = {
-  title: 'Backup Wallet',
 };
 
 export default connect(

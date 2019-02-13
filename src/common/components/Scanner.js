@@ -3,13 +3,7 @@ import PropTypes from 'prop-types';
 import { StyleSheet } from 'react-native';
 import QRCodeScanner from 'react-native-qrcode-scanner';
 
-const Scanner = ({ onRead }) => (
-  <QRCodeScanner
-    onRead={onRead}
-    containerStyle={styles.container}
-    cameraStyle={styles.cameraContainer}
-  />
-);
+const Scanner = ({ onRead }) => <QRCodeScanner cameraStyle={styles.camera} onRead={onRead} />;
 
 Scanner.propTypes = {
   onRead: PropTypes.func.isRequired,
@@ -18,10 +12,7 @@ Scanner.propTypes = {
 export default Scanner;
 
 const styles = StyleSheet.create({
-  container: {
-    marginVertical: 12,
-  },
-  cameraContainer: {
+  camera: {
     width: '100%',
   },
 });

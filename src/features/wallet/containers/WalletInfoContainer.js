@@ -6,8 +6,8 @@ import { getWalletBalance } from '../../../btcService';
 import { selectPriceForActiveWallet } from '../../prices/ducks';
 
 import { selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
-import WalletInfo from '../components/WalletInfo';
 import NoActiveWallet from '../components/NoActiveWallet';
+import WalletInfo from '../screens/WalletInfo';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
@@ -32,10 +32,6 @@ WalletInfoContainer.propTypes = {
   activeWallet: PropTypes.object,
   activeWalletExtraData: PropTypes.object,
   prices: PropTypes.object,
-};
-
-WalletInfoContainer.navigationOptions = {
-  title: 'Wallet Info',
 };
 
 export default connect(mapStateToProps)(WalletInfoContainer);

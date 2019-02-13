@@ -3,9 +3,9 @@ import React from 'react';
 import { ScreenWrapper, CenterView, Text } from '../../../common/components';
 
 const NoActiveWallet = () => (
-  <ScreenWrapper scrollEnabled={false}>
+  <ScreenWrapper>
     <CenterView>
-      <Text>Please select a wallet (swipe from left)</Text>
+      <Text>Please select a wallet</Text>
     </CenterView>
   </ScreenWrapper>
 );

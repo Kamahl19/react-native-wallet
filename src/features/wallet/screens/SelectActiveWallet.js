@@ -1,17 +1,18 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { StyleSheet, Alert } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import {
+  Alert,
   Text,
   ScreenWrapper,
   TouchableOpacity,
-  Heading,
   FlatList,
   CenterView,
 } from '../../../common/components';
-import NetworkSelect from './NetworkSelect';
+
 import { DEFAULT_NETWORK } from '../constants';
+import NetworkSelect from '../components/NetworkSelect';
 
 export default class SelectActiveWallet extends Component {
   static propTypes = {
@@ -24,13 +25,7 @@ export default class SelectActiveWallet extends Component {
     network: DEFAULT_NETWORK,
   };
 
-  keyExtractor = wallet => wallet.walletId;
-
-  onSelect = walletId => {
-    this.props.selectActiveWallet(walletId);
-  };
-
-  onDelete = walletId => {
+  handleDelete = walletId => {
     Alert.alert(
       'Do you really want to delete this wallet?',
       'Make sure you have a mnemonic or a backup of this wallet.',
@@ -41,8 +36,15 @@ export default class SelectActiveWallet extends Component {
     );
   };
 
-  renderItem = ({ item }) => (
-    <WalletItem wallet={item} onPress={this.onSelect} onLongPress={this.onDelete} />
+  keyExtractor = ({ walletId }) => walletId;
+
+  renderItem = ({ item: { walletId, walletName } }) => (
+    <TouchableOpacity
+      onPress={() => this.props.selectActiveWallet(walletId)}
+      onLongPress={() => this.handleDelete(walletId)}
+    >
+      <Text style={styles.walletName}>{walletName}</Text>
+    </TouchableOpacity>
   );
 
   render() {
@@ -52,10 +54,8 @@ export default class SelectActiveWallet extends Component {
     const filteredWallets = wallets.filter(w => w.network === network);
 
     return (
-      <ScreenWrapper scrollEnabled={false}>
-        <Heading>Select Active Wallet</Heading>
-
-        <NetworkSelect onChange={network => this.setState({ network })} value={network} />
+      <ScreenWrapper disableScroll>
+        <NetworkSelect value={network} onChange={network => this.setState({ network })} />
 
         {filteredWallets.length > 0 ? (
           <FlatList
@@ -73,21 +73,6 @@ export default class SelectActiveWallet extends Component {
     );
   }
 }
-
-const WalletItem = ({ wallet, onPress, onLongPress }) => (
-  <TouchableOpacity
-    onPress={() => onPress(wallet.walletId)}
-    onLongPress={() => onLongPress(wallet.walletId)}
-  >
-    <Text style={styles.walletName}>{wallet.walletName}</Text>
-  </TouchableOpacity>
-);
-
-WalletItem.propTypes = {
-  wallet: PropTypes.object.isRequired,
-  onPress: PropTypes.func.isRequired,
-  onLongPress: PropTypes.func.isRequired,
-};
 
 const styles = StyleSheet.create({
   walletName: {

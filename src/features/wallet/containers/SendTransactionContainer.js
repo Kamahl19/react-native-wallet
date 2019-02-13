@@ -6,10 +6,11 @@ import AlertService from '../../../common/services/alert';
 import { getTransactionFee } from '../../../btcService';
 import { selectIsInProgress } from '../../spinner/ducks';
 import { selectPriceForActiveWallet } from '../../prices/ducks';
+
 import { apiCallIds } from '../constants';
 import { sendTransactionActions, selectActiveWallet } from '../ducks';
-import SendTransaction from '../components/SendTransaction';
 import NoActiveWallet from '../components/NoActiveWallet';
+import SendTransaction from '../screens/SendTransaction';
 
 const mapStateToProps = state => ({
   activeWallet: selectActiveWallet(state),
@@ -27,10 +28,6 @@ class SendTransactionContainer extends Component {
     prices: PropTypes.object,
     isLoading: PropTypes.bool.isRequired,
     sendTransaction: PropTypes.func.isRequired,
-  };
-
-  static navigationOptions = {
-    title: 'Send Transaction',
   };
 
   state = {
