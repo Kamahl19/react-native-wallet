@@ -41,7 +41,7 @@
     "cryptocompare": "^1.0.0",
     "lodash.flattendeep": "^4.4.0",
     "node-libs-browser": "^2.2.0",
-    "prop-types": "^15.7.1",
+    "prop-types": "^15.7.2",
     "rc-form": "^2.4.1",
     "react": "^16.2.0",
     "react-native": "0.53.3",
