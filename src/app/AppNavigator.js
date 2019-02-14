@@ -14,6 +14,7 @@ import WalletInfoContainer from '../features/wallet/containers/WalletInfoContain
 
 export default createDrawerNavigator({
   SelectActiveWallet: createSubNavigator(SelectActiveWalletContainer, 'Select Active Wallet'),
+  WalletInfo: createSubNavigator(WalletInfoContainer, 'Wallet Info'),
   CreateWallet: createSubNavigator(CreateWalletContainer, 'Create Wallet'),
   SendTransaction: createSubNavigator(SendTransactionContainer, 'Send Transaction'),
   GenerateAddress: createSubNavigator(GenerateAddressContainer, 'Generate Address'),
@@ -21,7 +22,6 @@ export default createDrawerNavigator({
   Transactions: createSubNavigator(TransactionsContainer, 'Transactions'),
   ExportWallet: createSubNavigator(ExportWalletContainer, 'Backup Wallet'),
   ImportWallet: createSubNavigator(ImportWalletContainer, 'Restore Wallet'),
-  WalletInfo: createSubNavigator(WalletInfoContainer, 'Wallet Info'),
 });
 
 function createSubNavigator(screen, title) {

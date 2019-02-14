@@ -3,6 +3,7 @@ import { call, put, fork, takeLatest, select, delay } from 'redux-saga/effects';
 import { createSelector } from 'reselect';
 
 import AlertService from '../../common/services/alert';
+import { startApiCall, finishApiCall } from '../../common/services/spinner';
 import {
   createActionCreator,
   createApiActionCreators,
@@ -13,7 +14,6 @@ import {
   REQUEST,
   SUCCESS,
 } from '../../common/utils/reduxHelpers';
-import { startApiCall, finishApiCall } from '../spinner/ducks';
 import * as btcService from '../../btcService';
 
 import { FETCH_BALANCE_INTERVAL_MS, apiCallIds } from './constants';
@@ -56,23 +56,11 @@ const initialState = {
 };
 
 const activeWalletId = createReducer(initialState.activeWalletId, {
-  [SELECT_ACTIVE_WALLET]: (state, walletId) => walletId,
+  [SELECT_ACTIVE_WALLET]: (_, walletId) => walletId,
   [CREATE_WALLET]: {
-    [SUCCESS]: (state, wallet) => {
-      if (!state) {
-        return wallet.walletId;
-      }
-
-      return state;
-    },
+    [SUCCESS]: (activeWalletId, wallet) => (!activeWalletId ? wallet.walletId : activeWalletId),
   },
-  [DELETE_WALLET]: (state, walletId) => {
-    if (state === walletId) {
-      return null;
-    }
-
-    return state;
-  },
+  [DELETE_WALLET]: (activeWalletId, walletId) => (activeWalletId === walletId ? null : walletId),
 });
 
 const wallets = createReducer(initialState.wallets, {

@@ -1,12 +1,12 @@
 import { combineReducers } from 'redux';
 
+import spinner from '../../common/services/spinner';
 import wallet from '../../features/wallet/ducks';
 import prices from '../../features/prices/ducks';
-import spinner from '../../features/spinner/ducks';
 
 const rootReducer = combineReducers({
-  wallet,
   spinner,
+  wallet,
   prices,
 });
 

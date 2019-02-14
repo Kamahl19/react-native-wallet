@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
+import { selectIsInProgress } from '../../../common/services/spinner';
 import AlertService from '../../../common/services/alert';
 import { getTransactionFee } from '../../../btcService';
-import { selectIsInProgress } from '../../spinner/ducks';
 import { selectPriceForActiveWallet } from '../../prices/ducks';
 
 import { apiCallIds } from '../constants';

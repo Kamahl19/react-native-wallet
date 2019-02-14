@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 
-import { selectIsInProgress } from '../../spinner/ducks';
+import { selectIsInProgress } from '../../../common/services/spinner';
 
 import { apiCallIds } from '../constants';
 import { getTxHistoryActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
