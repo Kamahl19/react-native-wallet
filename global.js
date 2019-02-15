@@ -1,17 +1,7 @@
 // Inject node globals into React Native global scope
-global.Buffer = require('buffer').Buffer;
-global.process = require('process');
-global.process.env.NODE_ENV = __DEV__ ? 'development' : 'production';
+require('rn-nodeify/shim');
 
-// Needed so that 'stream-http' chooses the right default protocol
-global.location = {
-  protocol: 'file:',
-};
-
-// Some modules expect userAgent to be a string
-global.navigator.userAgent = 'React Native';
-
-// Polyfill window.getRandomValues()
+// Polyfill getRandomValues()
 const { randomBytes } = require('react-native-randombytes');
 if (typeof window === 'object') {
   if (!window.crypto) window.crypto = {};
