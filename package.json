@@ -15,14 +15,12 @@
     "postinstall": "sed -i -e \"s/var Script = function Script(from) {/var Script = function Script(from) { Address = require('..\\/address');/g\" ./node_modules/bitcore-lib/lib/script/script.js",
     "run-ios": "react-native run-ios",
     "start": "node node_modules/react-native/local-cli/cli.js start",
-    "test": "jest",
-    "test:e2e": "detox test"
+    "test": "jest --watch"
   },
   "devDependencies": {
     "babel-eslint": "9.x",
     "babel-jest": "^22.1.0",
     "babel-preset-react-native": "^4.0.1",
-    "detox": "^10.0.7",
     "eslint": "5.x",
     "eslint-config-react-app": "^3.0.7",
     "eslint-plugin-flowtype": "2.x",
@@ -39,13 +37,14 @@
     "bitcore-wallet-client": "^6.7.5",
     "bs58check": "^2.1.2",
     "cryptocompare": "^1.0.0",
+    "ethers": "^4.0.26",
     "lodash.flattendeep": "^4.4.0",
     "node-libs-browser": "^2.2.0",
     "prop-types": "^15.7.2",
     "rc-form": "^2.4.2",
     "react": "^16.2.0",
     "react-native": "0.53.3",
-    "react-native-camera": "^1.11.0",
+    "react-native-camera": "^1.12.0",
     "react-native-dropdownalert": "^3.9.2",
     "react-native-qrcode-scanner": "^1.1.2",
     "react-native-qrcode-svg": "^5.1.2",
@@ -62,16 +61,5 @@
   },
   "jest": {
     "preset": "react-native"
-  },
-  "detox": {
-    "configurations": {
-      "ios.sim.debug": {
-        "binaryPath": "ios/build/Build/Products/Debug-iphonesimulator/rncryptowallet.app",
-        "build": "xcodebuild -project ios/rncryptowallet.xcodeproj -scheme rncryptowallet -configuration Debug -sdk iphonesimulator -derivedDataPath ios/build",
-        "type": "ios.simulator",
-        "name": "iPhone 8"
-      }
-    },
-    "test-runner": "jest"
   }
 }

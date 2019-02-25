@@ -23,11 +23,6 @@ export const BTC_NETWORKS = {
   LIVE_NET: 'livenet',
 };
 
-export const TX_ACTIONS = {
-  SENT: 'sent',
-  RECEIVED: 'received',
-};
-
 export const numberOfNeededConfirmations = 1;
 
 /**

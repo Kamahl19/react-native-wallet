@@ -14,7 +14,7 @@ export default function configureStore() {
       key: 'root',
       version: 0,
       storage: AsyncStorage,
-      whitelist: ['wallet'],
+      whitelist: ['btcWallet', 'ethWallet'],
       debug: __DEV__,
     },
     rootReducer

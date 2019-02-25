@@ -21,3 +21,6 @@ if (typeof window === 'object') {
     };
   }
 }
+
+// Ethers.js shims - must be imported after randomBytes polyfill
+require('ethers/dist/shims.js');

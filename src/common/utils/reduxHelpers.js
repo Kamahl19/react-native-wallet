@@ -38,12 +38,6 @@ export const createReducer = (initialState, reducerMap) => {
   };
 };
 
-export const replaceInArray = (array, selector, value) => {
-  const idx = array.findIndex(selector);
-
-  return idx >= 0 ? [...array.slice(0, idx), value, ...array.slice(idx + 1)] : array;
-};
-
 export const removeFromArray = (array, selector) => {
   const idx = array.findIndex(selector);
 

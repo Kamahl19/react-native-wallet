@@ -1,4 +1,4 @@
-export const PRICES_FROM = ['BTC'];
+export const PRICES_FROM = ['BTC', 'ETH'];
 
 export const PRICES_TO = ['USD'];
 

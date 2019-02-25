@@ -1,12 +1,14 @@
 import { combineReducers } from 'redux';
 
 import spinner from '../../common/services/spinner';
-import wallet from '../../features/wallet/ducks';
+import btcWallet from '../../features/btc-wallet/ducks';
+import ethWallet from '../../features/eth-wallet/ducks';
 import prices from '../../features/prices/ducks';
 
 const rootReducer = combineReducers({
   spinner,
-  wallet,
+  btcWallet,
+  ethWallet,
   prices,
 });
 

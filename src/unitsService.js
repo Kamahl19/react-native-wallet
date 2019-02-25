@@ -1,4 +1,5 @@
 import BigNumber from 'bignumber.js';
+import { formatWeiToEther } from './ethService';
 
 export const UNITS = {
   btc: {
@@ -112,4 +113,14 @@ export function bitcoinToUsd(bitcoin, btcInUsd) {
  */
 export function satoshiToUsd(satoshi, btcInUsd) {
   return bitcoinToUsd(satoshiToBitcoin(satoshi), btcInUsd);
+}
+
+/**
+ * Convert Wei to USD
+ * @param {BigNumber} wei Amount of Wei to convert
+ * @param {number|string} ethInUsd Price of ETH in USD
+ * @returns {number}
+ */
+export function weiToUsd(wei, ethInUsd) {
+  return (formatWeiToEther(wei) * ethInUsd).toFixed(2);
 }

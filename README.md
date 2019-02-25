@@ -17,6 +17,7 @@ react-native run-ios
 - polyfill NodeJS globals in `global.js` using [shims](https://github.com/tradle/rn-nodeify/blob/master/shim.js)
 - polyfill randomBytes using [react-native-randombytes](https://github.com/mvayngrib/react-native-randombytes) in `global.js`
 - fix the `bitcore-lib` [circular dependency](https://github.com/bitpay/bitcore-lib/issues/184) using the `postinstall` script (RN Metro bundler works differently than webpack which can work around the circular dependency)
+- use [shims](https://docs.ethers.io/ethers.js/html/cookbook-react.html) for the `ethers.js` lib
 - relevant links:
   - https://gist.github.com/parshap/e3063d9bf6058041b34b26b7166fd6bd
 
@@ -94,19 +95,3 @@ Export mnemonic or private key of your wallet.
 Add wallet by mnemonic or .dat file.
 
 ![screenshot 2019-02-07 at 14 13 43](https://user-images.githubusercontent.com/38855190/52414127-be4a6480-2ae3-11e9-8474-6caa8258f6ba.png)
-
-## Running tests
-
-- [Detox guide](https://github.com/wix/Detox/blob/master/docs/Introduction.GettingStarted.md)
-
-Build the project with
-
-```
-detox build
-```
-
-then launch the tests.
-
-```
-yarn test:e2e
-```
