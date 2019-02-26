@@ -21,6 +21,7 @@
     "babel-eslint": "9.x",
     "babel-jest": "^22.1.0",
     "babel-preset-react-native": "^4.0.1",
+    "bip39": "^2.5.0",
     "eslint": "5.x",
     "eslint-config-react-app": "^3.0.7",
     "eslint-plugin-flowtype": "2.x",

@@ -5,7 +5,7 @@ import BitcoreClient from 'bitcore-wallet-client';
 import { bitcoinToSatoshi } from './unitsService';
 import config from './config';
 
-const SPEND_UNCONFIRMED = true;
+export const SPEND_UNCONFIRMED = true;
 
 /**
  * CONSTANTS
@@ -23,34 +23,40 @@ export const BTC_NETWORKS = {
   LIVE_NET: 'livenet',
 };
 
-export const numberOfNeededConfirmations = 1;
+const numberOfNeededConfirmations = 1;
 
 /**
  * VALIDATORS
  */
-export function validateAddress(address) {
+function validateAddress(address) {
   try {
     bs58check.decode(address);
-  } catch (err) {
+  } catch (e) {
     throw new Error('Invalid address');
   }
 }
 
-export function validateWalletName(walletName) {
+function validateWalletName(walletName) {
   if (typeof walletName !== 'string' || walletName === '') {
     throw new Error('Invalid wallet name');
   }
 }
 
-export function validateFeeLevel(feeLevel) {
-  if (Object.values(FEE_LEVELS).filter(fl => fl === feeLevel).length === 0) {
+function validateFeeLevel(feeLevel) {
+  if (!Object.values(FEE_LEVELS).find(fl => fl === feeLevel)) {
     throw new Error('Invalid fee level');
   }
 }
 
-export function validateNetwork(network) {
-  if (Object.values(BTC_NETWORKS).filter(n => n === network).length === 0) {
+function validateNetwork(network) {
+  if (!Object.values(BTC_NETWORKS).find(n => n === network)) {
     throw new Error('Invalid network');
+  }
+}
+
+function validateWallet(wallet) {
+  if (!wallet) {
+    throw new Error('Missing wallet');
   }
 }
 
@@ -185,34 +191,23 @@ export async function createWallet(walletName, network) {
 
   const client = await getClient();
 
-  client.seedFromRandomWithMnemonic({
-    network,
-  });
+  client.seedFromRandomWithMnemonic({ network });
 
   await createWalletAsync(client, walletName, network);
 
-  const wallet = JSON.parse(client.export());
-
-  return wallet;
+  return getWalletData(client);
 }
 
 export async function generateAddress(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
+  validateWallet(wallet);
 
   const client = await getClient(wallet);
 
-  const address = await createAddressAsync(client);
-
-  return address;
+  return await createAddress(client);
 }
 
 export async function getTransactionFee(wallet, address, amount, feeLevel) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
+  validateWallet(wallet);
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
@@ -220,16 +215,13 @@ export async function getTransactionFee(wallet, address, amount, feeLevel) {
 
   const client = await getClient(wallet);
 
-  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel, { dryRun: true });
+  let txp = await createTxProposal(client, address, amountSat, feeLevel, { dryRun: true });
 
   return txp.fee;
 }
 
 export async function sendTransaction(wallet, address, amount, feeLevel) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
-
+  validateWallet(wallet);
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
@@ -237,63 +229,47 @@ export async function sendTransaction(wallet, address, amount, feeLevel) {
 
   const client = await getClient(wallet);
 
-  let txp = await createTxProposalAsync(client, address, amountSat, feeLevel);
+  let txp = await createTxProposal(client, address, amountSat, feeLevel);
 
-  txp = await publishTxProposalAsync(client, txp);
+  txp = await publishTxProposal(client, txp);
 
-  txp = await signTxProposalAsync(client, txp);
+  txp = await signTxProposal(client, txp);
 
-  txp = await broadcastTxProposalAsync(client, txp);
+  txp = await broadcastTxProposal(client, txp);
 
   return txp;
 }
 
 export async function getBalance(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
+  validateWallet(wallet);
 
   const client = await getClient(wallet);
 
-  const balance = await getBalanceAsync(client);
-
-  return balance;
+  return await getBalanceAsync(client);
 }
 
 export async function getTxHistory(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
+  validateWallet(wallet);
 
   const client = await getClient(wallet);
 
-  const txs = await getTxHistoryAsync(client);
-
-  return txs;
+  return await getTxHistoryAsync(client);
 }
 
 export async function getAddresses(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
+  validateWallet(wallet);
 
   const client = await getClient(wallet);
 
-  const addresses = await getAddressesAsync(client);
-
-  return addresses;
+  return await getAddressesAsync(client);
 }
 
 export async function exportWallet(wallet) {
-  if (!wallet) {
-    throw new Error('Missing wallet');
-  }
+  validateWallet(wallet);
 
   const client = await getClient(wallet, { doNotOpen: true });
 
-  const walletData = client.export();
-
-  return walletData;
+  return client.export();
 }
 
 export async function importWalletFromData(walletData) {
@@ -305,9 +281,7 @@ export async function importWalletFromData(walletData) {
 
   client.import(walletData);
 
-  const wallet = JSON.parse(client.export());
-
-  return wallet;
+  return getWalletData(client);
 }
 
 export async function importWalletFromMnemonic(mnemonic, network, from3rdParty) {
@@ -315,9 +289,7 @@ export async function importWalletFromMnemonic(mnemonic, network, from3rdParty) 
     throw new Error('Missing import data');
   }
 
-  if (!network) {
-    throw new Error('Network is missing');
-  }
+  validateNetwork(network);
 
   const client = await getClient();
 
@@ -326,17 +298,19 @@ export async function importWalletFromMnemonic(mnemonic, network, from3rdParty) 
 
     await createWalletAsync(client, 'Imported wallet', network);
   } else {
-    await importFromMnemonicAsync(client, mnemonic, network);
+    await importFromMnemonic(client, mnemonic, network);
   }
 
-  const wallet = JSON.parse(client.export());
-
-  return wallet;
+  return getWalletData(client);
 }
 
 /**
  * BITCORE HELPERS
  */
+function getWalletData(client) {
+  return JSON.parse(client.export());
+}
+
 function getClient(wallet, opts = {}) {
   const client = new BitcoreClient({
     baseUrl: config.bwsUrl,
@@ -366,74 +340,37 @@ function getClient(wallet, opts = {}) {
 
 function createWalletAsync(client, walletName, network) {
   return new Promise((resolve, reject) => {
-    client.createWallet(
-      walletName,
-      'me',
-      1,
-      1,
-      {
-        network,
-      },
-      err => {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve();
-      }
+    client.createWallet(walletName, 'me', 1, 1, { network }, (err, res) =>
+      err ? reject(err) : resolve(res)
     );
   });
 }
 
-function createAddressAsync(client) {
+function createAddress(client) {
   return new Promise((resolve, reject) => {
-    client.createAddress(undefined, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
+    client.createAddress({ ignoreMaxGap: true }, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
 function getBalanceAsync(client) {
   return new Promise((resolve, reject) => {
-    client.getBalance(undefined, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
+    client.getBalance(undefined, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
 function getTxHistoryAsync(client) {
   return new Promise((resolve, reject) => {
-    client.getTxHistory(undefined, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
+    client.getTxHistory(undefined, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
 function getAddressesAsync(client) {
   return new Promise((resolve, reject) => {
-    client.getMainAddresses(undefined, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
+    client.getMainAddresses(undefined, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
-function createTxProposalAsync(client, address, amountSat, feeLevel, opts = { dryRun: false }) {
+function createTxProposal(client, address, amountSat, feeLevel, opts = { dryRun: false }) {
   return new Promise((resolve, reject) => {
     client.createTxProposal(
       {
@@ -447,61 +384,33 @@ function createTxProposalAsync(client, address, amountSat, feeLevel, opts = { dr
         excludeUnconfirmedUtxos: !SPEND_UNCONFIRMED,
         dryRun: opts.dryRun,
       },
-      (err, txp) => {
-        if (err) {
-          return reject(err);
-        }
-
-        return resolve(txp);
-      }
+      (err, res) => (err ? reject(err) : resolve(res))
     );
   });
 }
 
-function publishTxProposalAsync(client, txp) {
+function publishTxProposal(client, txp) {
   return new Promise((resolve, reject) => {
-    client.publishTxProposal({ txp }, (err, txp) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(txp);
-    });
+    client.publishTxProposal({ txp }, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
-function signTxProposalAsync(client, txp) {
+function signTxProposal(client, txp) {
   return new Promise((resolve, reject) => {
-    client.signTxProposal(txp, (err, txp) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(txp);
-    });
+    client.signTxProposal(txp, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
-function broadcastTxProposalAsync(client, txp) {
+function broadcastTxProposal(client, txp) {
   return new Promise((resolve, reject) => {
-    client.broadcastTxProposal(txp, (err, txp) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(txp);
-    });
+    client.broadcastTxProposal(txp, (err, res) => (err ? reject(err) : resolve(res)));
   });
 }
 
-function importFromMnemonicAsync(client, mnemonic, network) {
+function importFromMnemonic(client, mnemonic, network) {
   return new Promise((resolve, reject) => {
-    client.importFromMnemonic(mnemonic, { network }, (err, res) => {
-      if (err) {
-        return reject(err);
-      }
-
-      return resolve(res);
-    });
+    client.importFromMnemonic(mnemonic, { network }, (err, res) =>
+      err ? reject(err) : resolve(res)
+    );
   });
 }
