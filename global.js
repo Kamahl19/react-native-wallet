@@ -8,7 +8,7 @@ if (typeof window === 'object') {
   if (!window.crypto.getRandomValues) {
     window.crypto.getRandomValues = function getRandomValues(arr) {
       let orig = arr;
-      if (arr.byteLength != arr.length) {
+      if (arr.byteLength !== arr.length) {
         // Get access to the underlying raw bytes
         arr = new Uint8Array(arr.buffer);
       }
