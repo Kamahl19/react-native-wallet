@@ -2,9 +2,6 @@
 #
 .DS_Store
 
-# Editor
-.vscode
-
 # Xcode
 #
 build/
