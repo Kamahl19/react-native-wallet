@@ -81,8 +81,7 @@
     "redux": "^4.0.1",
     "redux-persist": "^5.10.0",
     "redux-saga": "^1.0.1",
-    "reselect": "^4.0.0",
-    "rn-nodeify": "^10.0.1"
+    "reselect": "^4.0.0"
   },
   "jest": {
     "preset": "react-native"
