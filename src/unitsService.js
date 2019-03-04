@@ -14,102 +14,51 @@ export const UNITS = {
 
 /**
  * Convert Satoshi to Bitcoin
- * @param {number|string} satoshi Amount of Satoshi to convert. Must be a whole number
- * @throws {TypeError} Thrown if input is not a number or string
+ * @param {number|string|BigNumber} satoshi Amount of Satoshi to convert. Must be a whole number
  * @throws {TypeError} Thrown if input is not a whole number
- * @returns {number}
+ * @returns {BigNumber}
  */
 export function satoshiToBitcoin(satoshi) {
-  let argType = typeof satoshi;
+  const satoshiBig = BigNumber(satoshi);
 
-  if (argType !== 'number' && argType !== 'string') {
-    throw new TypeError('satoshiToBitcoin must be called on a number or string, got ' + argType);
+  if (!satoshiBig.isInteger()) {
+    throw new TypeError('Amount must be an integer');
   }
 
-  if (argType === 'string') {
-    satoshi = Number(satoshi);
-  }
-
-  if (!Number.isInteger(satoshi)) {
-    throw new TypeError('satoshiToBitcoin must be called on an integer');
-  }
-
-  return Number(BigNumber(satoshi).div(UNITS.sat.toBitcoin));
+  return satoshiBig.div(UNITS.sat.toBitcoin);
 }
 
 /**
  * Convert Bitcoin to Satoshi
- * @param {number|string} bitcoin Amount of Bitcoin to convert
- * @throws {TypeError} Thrown if input is not a number or string
- * @returns {number}
+ * @param {number|string|BigNumber} bitcoin Amount of Bitcoin to convert
+ * @returns {BigNumber}
  */
 export function bitcoinToSatoshi(bitcoin) {
-  let argType = typeof bitcoin;
+  const bitcoinBig = BigNumber(bitcoin);
 
-  if (argType !== 'number' && argType !== 'string') {
-    throw new TypeError('bitcoinToSatoshi must be called on a number or string, got ' + argType);
-  }
-
-  if (argType === 'string') {
-    bitcoin = Number(bitcoin);
-  }
-
-  return Number.isNaN(bitcoin)
-    ? 0
-    : BigNumber(bitcoin)
-        .times(UNITS.btc.toSatoshis)
-        .toNumber();
+  return bitcoinBig.isNaN() ? BigNumber(0) : bitcoinBig.times(UNITS.btc.toSatoshis);
 }
 
 /**
  * Convert Bitcoin to USD
- * @param {number|string} bitcoin Amount of Bitcoin to convert
- * @param {number|string} btcInUsd Price of BTC in USD
- * @throws {TypeError} Thrown if bitcoin is not a number or string
- * @throws {TypeError} Thrown if btcInUsd is not a number or string
- * @returns {number}
+ * @param {number|string|BigNumber} bitcoin Amount of Bitcoin to convert
+ * @param {number|string|BigNumber} btcInUsd Price of BTC in USD
+ * @returns {BigNumber}
  */
 export function bitcoinToUsd(bitcoin, btcInUsd) {
-  let bitcoinType = typeof bitcoin;
-  let btcInUsdType = typeof btcInUsd;
+  const bitcoinBig = BigNumber(bitcoin);
+  const btcInUsdBig = BigNumber(btcInUsd);
 
-  if (bitcoinType !== 'number' && bitcoinType !== 'string') {
-    throw new TypeError(
-      "bitcoinToUsd's parameter bitcoin must be a number or string, got " + bitcoinType
-    );
-  }
-
-  if (btcInUsdType !== 'number' && btcInUsdType !== 'string') {
-    throw new TypeError(
-      "bitcoinToUsd's parameter btcInUsd must be a number or string, got " + btcInUsdType
-    );
-  }
-
-  if (bitcoinType === 'string') {
-    bitcoin = Number(bitcoin);
-  }
-
-  if (btcInUsdType === 'string') {
-    btcInUsd = Number(btcInUsd);
-  }
-
-  return Number.isNaN(bitcoin) || Number.isNaN(btcInUsd)
-    ? 0
-    : Number(
-        BigNumber(bitcoin)
-          .times(btcInUsd)
-          .toFixed(2)
-      );
+  return bitcoinBig.isNaN() || btcInUsdBig.isNaN()
+    ? BigNumber(0)
+    : bitcoinBig.times(btcInUsdBig).decimalPlaces(2);
 }
 
 /**
  * Convert Satoshi to USD
- * @param {number|string} satoshi Amount of Satoshi to convert. Must be a whole number
- * @param {number|string} btcInUsd Price of BTC in USD
- * @throws {TypeError} Thrown if satoshi is not a number or string
- * @throws {TypeError} Thrown if satoshi is not a whole number
- * @throws {TypeError} Thrown if btcInUsd is not a number or string
- * @returns {number}
+ * @param {number|string|BigNumber} satoshi Amount of Satoshi to convert. Must be a whole number
+ * @param {number|string|BigNumber} btcInUsd Price of BTC in USD
+ * @returns {BigNumber}
  */
 export function satoshiToUsd(satoshi, btcInUsd) {
   return bitcoinToUsd(satoshiToBitcoin(satoshi), btcInUsd);

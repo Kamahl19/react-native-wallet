@@ -14,7 +14,7 @@ react-native run-ios
 ## Hacks required to run Crypto on RN
 
 - polyfill NodeJS API using [node-libs-browser](https://github.com/webpack/node-libs-browser) and/or [node-libs-react-native](https://github.com/parshap/node-libs-react-native) in `rn-cli.config.js` via [extraNodeModules](https://facebook.github.io/metro/docs/en/configuration#extranodemodules) (NOTE: new RN versions have different structure, check the [docs](https://facebook.github.io/metro/docs/en/configuration#extranodemodules))
-- polyfill NodeJS globals in `global.js` using [shims](https://github.com/tradle/rn-nodeify/blob/master/shim.js)
+- polyfill NodeJS globals in `global.js` using edited version of [shims](https://github.com/tradle/rn-nodeify/blob/master/shim.js)
 - polyfill randomBytes using [react-native-randombytes](https://github.com/mvayngrib/react-native-randombytes) in `global.js`
 - fix the `bitcore-lib` [circular dependency](https://github.com/bitpay/bitcore-lib/issues/184) using the `postinstall` script (RN Metro bundler works differently than webpack which can work around the circular dependency)
 - use [shims](https://docs.ethers.io/ethers.js/html/cookbook-react.html) for the `ethers.js` lib

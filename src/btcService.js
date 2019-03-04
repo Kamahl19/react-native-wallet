@@ -211,7 +211,7 @@ export async function getTransactionFee(wallet, address, amount, feeLevel) {
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
-  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount));
+  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount)).toNumber();
 
   const client = await getClient(wallet);
 
@@ -225,7 +225,7 @@ export async function sendTransaction(wallet, address, amount, feeLevel) {
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
-  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount));
+  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount)).toNumber();
 
   const client = await getClient(wallet);
 
