@@ -24,8 +24,12 @@ describe('unitsService.js', () => {
       expect(satoshiToBitcoin(BigNumber(1e8))).toEqual(BigNumber(1));
     });
 
-    it('should throw if satoshi is not an integer', () => {
-      expect(() => satoshiToBitcoin(1.1)).toThrow('Amount must be an integer');
+    it('should convert to integer if satoshi is not an integer', () => {
+      expect(satoshiToBitcoin(10000000.9)).toEqual(BigNumber(0.1));
+    });
+
+    it('should return zero if satoshi is NaN', () => {
+      expect(satoshiToBitcoin('not-a-number')).toEqual(BigNumber(0));
     });
   });
 

@@ -14,18 +14,13 @@ export const UNITS = {
 
 /**
  * Convert Satoshi to Bitcoin
- * @param {number|string|BigNumber} satoshi Amount of Satoshi to convert. Must be a whole number
- * @throws {TypeError} Thrown if input is not a whole number
+ * @param {number|string|BigNumber} satoshi Amount of Satoshi to convert
  * @returns {BigNumber}
  */
 export function satoshiToBitcoin(satoshi) {
-  const satoshiBig = BigNumber(satoshi);
+  const satoshiBig = BigNumber(satoshi).decimalPlaces(0, 1);
 
-  if (!satoshiBig.isInteger()) {
-    throw new TypeError('Amount must be an integer');
-  }
-
-  return satoshiBig.div(UNITS.sat.toBitcoin);
+  return satoshiBig.isNaN() ? BigNumber(0) : satoshiBig.div(UNITS.sat.toBitcoin);
 }
 
 /**
