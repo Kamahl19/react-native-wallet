@@ -14,8 +14,8 @@ import {
   View,
   Radio,
 } from '../../../common/components';
-import { parseBitcoinInput, bip21Decode } from '../../../btcService';
-import { bitcoinToSatoshi } from '../../../unitsService';
+import { bip21Decode } from '../../../btcService';
+import { parseBitcoinInputToSatoshi } from '../../../unitsService';
 
 import { DEFAULT_FEE_LEVEL, feeLevelOptions } from '../constants';
 import Btc from '../components/Btc';
@@ -65,13 +65,13 @@ class SendTransaction extends Component {
   };
 
   getInputSatoshi = () => {
-    let bitcoins = 0;
+    let satoshi = 0;
 
     try {
-      bitcoins = parseBitcoinInput(this.props.form.getFieldValue('amount'));
+      satoshi = parseBitcoinInputToSatoshi(this.props.form.getFieldValue('amount'));
     } catch (err) {}
 
-    return bitcoinToSatoshi(bitcoins);
+    return satoshi;
   };
 
   render() {

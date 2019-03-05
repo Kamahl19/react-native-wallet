@@ -1,9 +1,11 @@
 import BigNumber from 'bignumber.js';
 
 import {
+  parseBitcoinInputToSatoshi,
   satoshiToBitcoin,
   bitcoinToSatoshi,
   bitcoinToUsd,
+  usdToBitcoin,
   satoshiToUsd,
   weiToUsd,
 } from './unitsService';
@@ -11,6 +13,36 @@ import {
 const btcInUsd = 3000;
 
 describe('unitsService.js', () => {
+  describe('#parseBitcoinInputToSatoshi', () => {
+    it('should parse Bitcoin string to Satoshi', async () => {
+      expect(parseBitcoinInputToSatoshi('10.123456')).toEqual(BigNumber(10.123456).times(1e8));
+    });
+
+    it('should parse Bitcoin string with comma separator to Satoshi', async () => {
+      expect(parseBitcoinInputToSatoshi('1,2')).toEqual(BigNumber(1.2).times(1e8));
+    });
+
+    it('should parse Bitcoin numeric value to Satoshi', async () => {
+      expect(parseBitcoinInputToSatoshi(1.2)).toEqual(BigNumber(1.2).times(1e8));
+    });
+
+    it('should parse Bitcoin BigNumber value to Satoshi', async () => {
+      expect(parseBitcoinInputToSatoshi(BigNumber(1.2))).toEqual(BigNumber(1.2).times(1e8));
+    });
+
+    it('should throw if value cant be parsed to BTC amount', async () => {
+      expect(() => parseBitcoinInputToSatoshi('not-a-number')).toThrow('Invalid amount');
+    });
+
+    it('should throw if value is zero', async () => {
+      expect(() => parseBitcoinInputToSatoshi(0)).toThrow('Invalid amount');
+    });
+
+    it('should throw if value is negativr', async () => {
+      expect(() => parseBitcoinInputToSatoshi(-1)).toThrow('Invalid amount');
+    });
+  });
+
   describe('#satoshiToBitcoin', () => {
     it('should convert number Satoshi to Bitcoin', () => {
       expect(satoshiToBitcoin(1e8)).toEqual(BigNumber(1));
@@ -73,6 +105,31 @@ describe('unitsService.js', () => {
 
     it('should return zero if btcInUsd is NaN', () => {
       expect(bitcoinToUsd(btc, 'not-a-number')).toEqual(BigNumber(0));
+    });
+  });
+
+  describe('#usdToBitcoin', () => {
+    const usd = 3333.33;
+    const res = 1.11111;
+
+    it('should convert number USD to Bitcoin', () => {
+      expect(usdToBitcoin(usd, btcInUsd)).toEqual(BigNumber(res));
+    });
+
+    it('should convert string USD to Bitcoin', () => {
+      expect(usdToBitcoin(`${usd}`, `${btcInUsd}`)).toEqual(BigNumber(res));
+    });
+
+    it('should convert BigNumber USD to Bitcoin', () => {
+      expect(usdToBitcoin(BigNumber(usd), BigNumber(btcInUsd))).toEqual(BigNumber(res));
+    });
+
+    it('should return zero if USD is NaN', () => {
+      expect(usdToBitcoin('not-a-number', btcInUsd)).toEqual(BigNumber(0));
+    });
+
+    it('should return zero if btcInUsd is NaN', () => {
+      expect(usdToBitcoin(usd, 'not-a-number')).toEqual(BigNumber(0));
     });
   });
 

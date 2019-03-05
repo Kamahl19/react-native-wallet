@@ -2,7 +2,7 @@ import bs58check from 'bs58check';
 import bip21 from 'bip21';
 import BitcoreClient from 'bitcore-wallet-client';
 
-import { bitcoinToSatoshi } from './unitsService';
+import { parseBitcoinInputToSatoshi } from './unitsService';
 import config from './config';
 
 export const SPEND_UNCONFIRMED = true;
@@ -23,15 +23,15 @@ export const BTC_NETWORKS = {
   LIVE_NET: 'livenet',
 };
 
-const numberOfNeededConfirmations = 1;
+export const NUMBER_OF_NEEDED_CONFIRMATIONS = 1;
 
 /**
  * VALIDATORS
  */
-function validateAddress(address) {
+export function validateAddress(address) {
   try {
     bs58check.decode(address);
-  } catch (e) {
+  } catch (err) {
     throw new Error('Invalid address');
   }
 }
@@ -58,29 +58,6 @@ function validateWallet(wallet) {
   if (!wallet) {
     throw new Error('Missing wallet');
   }
-}
-
-/**
- * Parse string to Bitcoin
- * @param {string} input Input to be parsed to bitcoin
- * @throws {TypeError} Thrown if input is not string or is empty string
- * @throws {TypeError} Thrown if input cannot be parsed to number or is <= 0
- * @returns {number}
- */
-export function parseBitcoinInput(input) {
-  if (typeof input !== 'string' || input === '') {
-    throw new Error('Invalid amount');
-  }
-
-  input = input.replace(',', '.');
-
-  const bitcoin = parseFloat(input);
-
-  if (Number.isNaN(bitcoin) || typeof bitcoin !== 'number' || bitcoin <= 0) {
-    throw new Error('Invalid amount');
-  }
-
-  return bitcoin;
 }
 
 /**
@@ -124,10 +101,24 @@ export function getTxConfirmationStatus(tx) {
   return {
     confirmations: tx.confirmations || 0,
     status:
-      tx.confirmations && tx.confirmations >= numberOfNeededConfirmations
+      tx.confirmations && tx.confirmations >= NUMBER_OF_NEEDED_CONFIRMATIONS
         ? 'confirmed'
         : 'unconfirmed',
   };
+}
+
+export function getTxStatus(tx) {
+  const { status } = getTxConfirmationStatus(tx);
+
+  if ((tx.action === 'moved' || tx.action === 'sent') && status === 'confirmed') {
+    return 'sent';
+  } else if (tx.action === 'received' && status === 'confirmed') {
+    return 'received';
+  } else if ((tx.action === 'moved' || tx.action === 'sent') && status === 'unconfirmed') {
+    return 'pending-sent';
+  }
+
+  return 'pending-received';
 }
 
 /**
@@ -211,11 +202,11 @@ export async function getTransactionFee(wallet, address, amount, feeLevel) {
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
-  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount)).toNumber();
+  const amountSat = parseBitcoinInputToSatoshi(amount).toNumber();
 
   const client = await getClient(wallet);
 
-  let txp = await createTxProposal(client, address, amountSat, feeLevel, { dryRun: true });
+  const txp = await createTxProposal(client, address, amountSat, feeLevel, { dryRun: true });
 
   return txp.fee;
 }
@@ -225,7 +216,7 @@ export async function sendTransaction(wallet, address, amount, feeLevel) {
   validateAddress(address);
   validateFeeLevel(feeLevel);
 
-  const amountSat = bitcoinToSatoshi(parseBitcoinInput(amount)).toNumber();
+  const amountSat = parseBitcoinInputToSatoshi(amount).toNumber();
 
   const client = await getClient(wallet);
 

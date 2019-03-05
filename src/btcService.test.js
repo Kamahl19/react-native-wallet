@@ -1,10 +1,11 @@
 import bip39 from 'bip39';
 
 import {
-  parseBitcoinInput,
+  validateAddress,
   getExploreAddressUrl,
   getExploreTxUrl,
   getTxConfirmationStatus,
+  getTxStatus,
   bip21Encode,
   bip21Decode,
   getTxDateTime,
@@ -19,6 +20,7 @@ import {
   exportWallet,
   importWalletFromData,
   importWalletFromMnemonic,
+  NUMBER_OF_NEEDED_CONFIRMATIONS,
   BTC_NETWORKS,
   SPEND_UNCONFIRMED,
   FEE_LEVELS,
@@ -28,17 +30,17 @@ const btcAddress = '3Nrj1FpEaz4R576GTWw5wgTcBwsn6znjV4';
 const btcTestnetAddress = 'n3WDexiKdJ7RA2xW1Zxx16UpBtuy276Los';
 
 describe('btcService.js', () => {
-  describe('#parseBitcoinInput', () => {
-    it('should parse the string to BTC amount', async () => {
-      expect(parseBitcoinInput('10.123456')).toEqual(10.123456);
-      expect(parseBitcoinInput('1,2')).toEqual(1.2);
+  describe('#validateAddress', () => {
+    it('should validate BTC mainnet address', () => {
+      expect(() => validateAddress(btcAddress)).not.toThrow();
     });
 
-    it('should throw if value cant be parsed to BTC amount', async () => {
-      expect(() => parseBitcoinInput(true)).toThrow('Invalid amount');
-      expect(() => parseBitcoinInput('')).toThrow('Invalid amount');
-      expect(() => parseBitcoinInput('a')).toThrow('Invalid amount');
-      expect(() => parseBitcoinInput('-1')).toThrow('Invalid amount');
+    it('should validate BTC testnet address', () => {
+      expect(() => validateAddress(btcTestnetAddress)).not.toThrow();
+    });
+
+    it('should throw for invalid address', () => {
+      expect(() => validateAddress('not-an-address')).toThrow('Invalid address');
     });
   });
 
@@ -74,7 +76,7 @@ describe('btcService.js', () => {
 
   describe('#getTxConfirmationStatus', () => {
     it('should return a confirmed status', () => {
-      const tx = { confirmations: 5 };
+      const tx = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS };
 
       expect(getTxConfirmationStatus(tx)).toEqual({
         confirmations: tx.confirmations,
@@ -83,10 +85,42 @@ describe('btcService.js', () => {
     });
 
     it('should return unconfirmed status', () => {
-      expect(getTxConfirmationStatus({})).toEqual({
+      const tx = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS - 1 };
+
+      expect(getTxConfirmationStatus(tx)).toEqual({
         confirmations: 0,
         status: 'unconfirmed',
       });
+    });
+  });
+
+  describe('#getTxStatus', () => {
+    it('should return status Sent', () => {
+      const tx = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS, action: 'moved' };
+      const tx2 = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS, action: 'sent' };
+
+      expect(getTxStatus(tx)).toEqual('sent');
+      expect(getTxStatus(tx2)).toEqual('sent');
+    });
+
+    it('should return status Received', () => {
+      const tx = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS, action: 'received' };
+
+      expect(getTxStatus(tx)).toEqual('received');
+    });
+
+    it('should return status Pending-sent', () => {
+      const tx = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS - 1, action: 'moved' };
+      const tx2 = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS - 1, action: 'sent' };
+
+      expect(getTxStatus(tx)).toEqual('pending-sent');
+      expect(getTxStatus(tx2)).toEqual('pending-sent');
+    });
+
+    it('should return status Pending-received', () => {
+      const tx = { confirmations: NUMBER_OF_NEEDED_CONFIRMATIONS - 1, action: 'received' };
+
+      expect(getTxStatus(tx)).toEqual('pending-received');
     });
   });
 

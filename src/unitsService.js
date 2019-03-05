@@ -13,6 +13,22 @@ export const UNITS = {
 };
 
 /**
+ * Parse Bitcoin amount to Satoshi
+ * @param {number|string|BigNumber} amount Amount of Bitcoin to be parsed to satoshi
+ * @throws {TypeError} Thrown if amount cannot be parsed to number or is <= 0
+ * @returns {BigNumber}
+ */
+export function parseBitcoinInputToSatoshi(amount) {
+  const amountBig = BigNumber(typeof amount === 'string' ? amount.replace(',', '.') : amount);
+
+  if (amountBig.isNaN() || amountBig.isZero() || amountBig.isNegative()) {
+    throw new Error('Invalid amount');
+  }
+
+  return amountBig.times(UNITS.btc.toSatoshis);
+}
+
+/**
  * Convert Satoshi to Bitcoin
  * @param {number|string|BigNumber} satoshi Amount of Satoshi to convert
  * @returns {BigNumber}
@@ -57,6 +73,21 @@ export function bitcoinToUsd(bitcoin, btcInUsd) {
  */
 export function satoshiToUsd(satoshi, btcInUsd) {
   return bitcoinToUsd(satoshiToBitcoin(satoshi), btcInUsd);
+}
+
+/**
+ * Convert USD to Bitcoin
+ * @param {number|string|BigNumber} usd Amount of USD to convert
+ * @param {number|string|BigNumber} btcInUsd Price of BTC in USD
+ * @returns {BigNumber}
+ */
+export function usdToBitcoin(usd, btcInUsd) {
+  const usdBig = BigNumber(usd);
+  const btcInUsdBig = BigNumber(btcInUsd);
+
+  return usdBig.isNaN() || btcInUsdBig.isNaN()
+    ? BigNumber(0)
+    : usdBig.div(btcInUsdBig).decimalPlaces(8);
 }
 
 /**
