@@ -1,11 +1,3 @@
-# IDE
-.vscode/
-
 # React Native
 android/
 ios/
-
-# Node
-node_modules/
-
-package.json
