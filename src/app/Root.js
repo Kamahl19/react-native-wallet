@@ -23,7 +23,7 @@ const Root = () => (
     >
       <Fragment>
         <AppNavigator />
-        <DropdownAlert ref={ref => AlertService.setAlert(ref)} />
+        <DropdownAlert ref={(ref) => AlertService.setAlert(ref)} />
       </Fragment>
     </PersistGate>
   </Provider>

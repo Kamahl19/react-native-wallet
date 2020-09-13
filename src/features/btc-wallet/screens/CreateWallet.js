@@ -41,7 +41,7 @@ class CreateWallet extends Component {
         <Radio
           options={networkOptions}
           value={network}
-          onChange={network => this.setState({ network })}
+          onChange={(network) => this.setState({ network })}
         />
 
         <FormItem label="Wallet Name">

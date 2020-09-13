@@ -28,7 +28,7 @@ export default createReducer(initialState, {
 /**
  * SELECTORS
  */
-export const selectPrices = state => state.prices;
+export const selectPrices = (state) => state.prices;
 
 /**
  * SAGAS

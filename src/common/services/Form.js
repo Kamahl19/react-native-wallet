@@ -12,7 +12,7 @@ export default function createForm(options) {
     ...options,
   });
 
-  return DecoratedComponent =>
+  return (DecoratedComponent) =>
     formWrapper(
       class Form extends Component {
         static propTypes = {
@@ -35,7 +35,7 @@ export default function createForm(options) {
           this.getDOMFieldDecorator(id, {
             trigger: 'onChangeText',
             validateTrigger: 'onChangeText',
-            getValueFromEvent: value => value,
+            getValueFromEvent: (value) => value,
             ...options,
           });
 

@@ -37,12 +37,12 @@ class SendTransaction extends Component {
     showScanner: false,
   };
 
-  handleFeeLevelChange = feeLevel => {
+  handleFeeLevelChange = (feeLevel) => {
     this.setState({ feeLevel });
     this.props.onInputChange();
   };
 
-  handleQRCodeRead = e => {
+  handleQRCodeRead = (e) => {
     const { address } = bip21Decode(e.data);
 
     this.props.form.setFieldsValue({ address });

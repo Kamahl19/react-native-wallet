@@ -27,7 +27,7 @@ class ImportWallet extends Component {
     showScanner: false,
   };
 
-  handleQRCodeRead = e => {
+  handleQRCodeRead = (e) => {
     this.props.form.setFieldsValue({ mnemonic: e.data });
     this.setState({ showScanner: false });
   };
@@ -57,7 +57,7 @@ class ImportWallet extends Component {
         <Radio
           options={networkOptions}
           value={network}
-          onChange={network => this.setState({ network })}
+          onChange={(network) => this.setState({ network })}
         />
 
         <FormItem label="Mnemonic">

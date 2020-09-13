@@ -12,7 +12,7 @@ import { apiCallIds } from '../constants';
 import { sendTransactionActions, selectActiveWallet } from '../ducks';
 import SendTransaction from '../screens/SendTransaction';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
   btcPrice: selectPrices(state).BTC,
   isLoading: selectIsInProgress(state, apiCallIds.SEND_TRANSACTION),
@@ -43,7 +43,7 @@ class SendTransactionContainer extends Component {
     });
   };
 
-  handleSubmit = async transactionData => {
+  handleSubmit = async (transactionData) => {
     const { activeWallet, sendTransaction } = this.props;
     const { confirmed } = this.state;
 
@@ -99,7 +99,4 @@ class SendTransactionContainer extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SendTransactionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SendTransactionContainer);

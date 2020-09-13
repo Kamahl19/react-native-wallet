@@ -8,7 +8,7 @@ import { apiCallIds } from '../constants';
 import { createWalletActions } from '../ducks';
 import ImportWallet from '../screens/ImportWallet';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   isLoading: selectIsInProgress(state, apiCallIds.CREATE_WALLET),
 });
 
@@ -25,7 +25,4 @@ ImportWalletContainer.propTypes = {
   createWallet: PropTypes.func.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ImportWalletContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ImportWalletContainer);

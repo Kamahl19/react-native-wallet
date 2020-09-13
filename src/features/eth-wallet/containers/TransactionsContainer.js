@@ -9,7 +9,7 @@ import { apiCallIds } from '../constants';
 import { getTxHistoryActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import Transactions from '../screens/Transactions';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
   activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.GET_TX_HISTORY),
@@ -50,7 +50,4 @@ class TransactionsContainer extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(TransactionsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(TransactionsContainer);

@@ -57,14 +57,14 @@ export default class Transactions extends Component {
     const { txs, isLoading, onRefresh } = this.props;
     const { txDirection } = this.state;
 
-    const filteredTxs = txs.filter(tx => tx.action === txDirection);
+    const filteredTxs = txs.filter((tx) => tx.action === txDirection);
 
     return (
       <ScreenWrapper disableScroll>
         <Radio
           options={txDirectionOptions}
           value={txDirection}
-          onChange={txDirection => this.setState({ txDirection })}
+          onChange={(txDirection) => this.setState({ txDirection })}
         />
 
         {filteredTxs.length > 0 ? (

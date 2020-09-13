@@ -43,13 +43,13 @@ function validateWalletName(walletName) {
 }
 
 function validateFeeLevel(feeLevel) {
-  if (!Object.values(FEE_LEVELS).find(fl => fl === feeLevel)) {
+  if (!Object.values(FEE_LEVELS).find((fl) => fl === feeLevel)) {
     throw new Error('Invalid fee level');
   }
 }
 
 function validateNetwork(network) {
-  if (!Object.values(BTC_NETWORKS).find(n => n === network)) {
+  if (!Object.values(BTC_NETWORKS).find((n) => n === network)) {
     throw new Error('Invalid network');
   }
 }
@@ -319,7 +319,7 @@ function getClient(wallet, opts = {}) {
   }
 
   return new Promise((resolve, reject) => {
-    client.openWallet(err => {
+    client.openWallet((err) => {
       if (err) {
         return reject(err);
       }

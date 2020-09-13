@@ -6,11 +6,11 @@ import SegmentedControl from './SegmentedControl';
 
 const Radio = ({ options, value, onChange }) => (
   <SegmentedControl
-    values={options.map(n => n.label)}
+    values={options.map((n) => n.label)}
     onChange={({ nativeEvent: { selectedSegmentIndex } }) =>
       onChange(options[selectedSegmentIndex].value)
     }
-    selectedIndex={options.findIndex(n => n.value === value)}
+    selectedIndex={options.findIndex((n) => n.value === value)}
     style={styles.select}
   />
 );

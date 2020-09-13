@@ -7,7 +7,7 @@ import { NoActiveWallet } from '../../../common/components';
 import { selectActiveWallet } from '../ducks';
 import ExportWallet from '../screens/ExportWallet';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
 });
 

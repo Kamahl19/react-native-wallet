@@ -10,7 +10,7 @@ import { apiCallIds } from '../constants';
 import { sendTransactionActions, selectActiveWallet } from '../ducks';
 import SendTransaction from '../screens/SendTransaction';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
   ethPrice: selectPrices(state).ETH,
   isLoading: selectIsInProgress(state, apiCallIds.SEND_TRANSACTION),
@@ -38,7 +38,4 @@ SendTransactionContainer.propTypes = {
   sendTransaction: PropTypes.func.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SendTransactionContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SendTransactionContainer);

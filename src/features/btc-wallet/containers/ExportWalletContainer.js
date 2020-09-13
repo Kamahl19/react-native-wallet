@@ -9,7 +9,7 @@ import { apiCallIds } from '../constants';
 import { exportWalletActions, selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import ExportWallet from '../screens/ExportWallet';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
   activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.EXPORT_WALLET),
@@ -38,7 +38,4 @@ ExportWalletContainer.propTypes = {
   exportWallet: PropTypes.func.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ExportWalletContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(ExportWalletContainer);

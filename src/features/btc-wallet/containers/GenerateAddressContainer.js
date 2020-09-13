@@ -9,7 +9,7 @@ import { apiCallIds } from '../constants';
 import { generateAddressActions, selectActiveWalletExtraData } from '../ducks';
 import GenerateAddress from '../screens/GenerateAddress';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.GENERATE_ADDRESS),
 });
@@ -35,7 +35,4 @@ GenerateAddressContainer.propTypes = {
   generateAddress: PropTypes.func.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(GenerateAddressContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(GenerateAddressContainer);

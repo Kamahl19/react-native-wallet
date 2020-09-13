@@ -8,7 +8,7 @@ import { selectPrices } from '../../prices/ducks';
 import { selectActiveWallet, selectActiveWalletExtraData } from '../ducks';
 import WalletInfo from '../screens/WalletInfo';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
   activeWalletExtraData: selectActiveWalletExtraData(state),
   ethPrice: selectPrices(state).ETH,

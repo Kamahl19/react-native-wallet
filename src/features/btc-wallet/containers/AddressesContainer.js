@@ -9,7 +9,7 @@ import { getAddressesActions, selectActiveWallet, selectActiveWalletExtraData } 
 import { apiCallIds } from '../constants';
 import Addresses from '../screens/Addresses';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   activeWallet: selectActiveWallet(state),
   activeWalletExtraData: selectActiveWalletExtraData(state),
   isLoading: selectIsInProgress(state, apiCallIds.GET_ADDRESSES),
@@ -49,7 +49,4 @@ class AddressesContainer extends Component {
   }
 }
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AddressesContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(AddressesContainer);

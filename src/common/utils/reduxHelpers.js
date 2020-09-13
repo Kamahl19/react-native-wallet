@@ -6,7 +6,7 @@ export const FAILURE = 'FAILURE';
 
 export const createActionType = (...parts) => flattenDeep(parts).join('_');
 
-export const createActionCreator = (...type) => payload => ({
+export const createActionCreator = (...type) => (payload) => ({
   type: createActionType(type),
   payload,
 });

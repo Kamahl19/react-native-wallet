@@ -71,7 +71,7 @@ const wallets = createReducer(initialState.wallets, {
   [IMPORT_WALLET]: {
     [SUCCESS]: (state, wallet) => [...state, wallet],
   },
-  [DELETE_WALLET]: (state, walletId) => removeFromArray(state, w => w.walletId === walletId),
+  [DELETE_WALLET]: (state, walletId) => removeFromArray(state, (w) => w.walletId === walletId),
 });
 
 const walletsExtraData = createReducer(initialState.walletsExtraData, {
@@ -153,16 +153,16 @@ export default combineReducers({
 /**
  * SELECTORS
  */
-export const selectBtcWallet = state => state.btcWallet;
+export const selectBtcWallet = (state) => state.btcWallet;
 
-export const selectActiveWalletId = state => selectBtcWallet(state).activeWalletId;
-export const selectWallets = state => selectBtcWallet(state).wallets;
-export const selectWalletsExtraData = state => selectBtcWallet(state).walletsExtraData;
+export const selectActiveWalletId = (state) => selectBtcWallet(state).activeWalletId;
+export const selectWallets = (state) => selectBtcWallet(state).wallets;
+export const selectWalletsExtraData = (state) => selectBtcWallet(state).walletsExtraData;
 
 export const selectActiveWallet = createSelector(
   selectActiveWalletId,
   selectWallets,
-  (activeWalletId, wallets) => activeWalletId && wallets.find(w => w.walletId === activeWalletId)
+  (activeWalletId, wallets) => activeWalletId && wallets.find((w) => w.walletId === activeWalletId)
 );
 
 export const selectActiveWalletExtraData = createSelector(
@@ -305,7 +305,7 @@ function* importWallet({ payload: { mnemonic, network, from3rdParty, walletData 
     }
 
     const existingWallets = yield select(selectWallets);
-    const alreadyExists = !!existingWallets.filter(w => w.walletId === wallet.walletId).length;
+    const alreadyExists = !!existingWallets.filter((w) => w.walletId === wallet.walletId).length;
 
     if (alreadyExists) {
       throw new Error('This wallet already exists in the device');

@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 import { selectActiveWalletAction, deleteWalletAction, selectWallets } from '../ducks';
 import SelectActiveWallet from '../screens/SelectActiveWallet';
 
-const mapStateToProps = state => ({
+const mapStateToProps = (state) => ({
   wallets: selectWallets(state),
 });
 
@@ -28,7 +28,4 @@ SelectActiveWalletContainer.propTypes = {
   selectActiveWallet: PropTypes.func.isRequired,
 };
 
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(SelectActiveWalletContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(SelectActiveWalletContainer);

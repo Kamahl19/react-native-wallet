@@ -25,7 +25,7 @@ export default class SelectActiveWallet extends Component {
     network: DEFAULT_NETWORK,
   };
 
-  handleDelete = privateKey => {
+  handleDelete = (privateKey) => {
     Alert.alert(
       'Do you really want to delete this wallet?',
       'Make sure you have a mnemonic or a backup of this wallet.',
@@ -55,14 +55,14 @@ export default class SelectActiveWallet extends Component {
     const { wallets } = this.props;
     const { network } = this.state;
 
-    const filteredWallets = wallets.filter(w => w.network === network);
+    const filteredWallets = wallets.filter((w) => w.network === network);
 
     return (
       <ScreenWrapper disableScroll>
         <Radio
           options={networkOptions}
           value={network}
-          onChange={network => this.setState({ network })}
+          onChange={(network) => this.setState({ network })}
         />
 
         {filteredWallets.length > 0 ? (

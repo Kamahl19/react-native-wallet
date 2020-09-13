@@ -70,7 +70,8 @@ const wallets = createReducer(initialState.wallets, {
       },
     ],
   },
-  [DELETE_WALLET]: (state, privateKey) => removeFromArray(state, w => w.privateKey === privateKey),
+  [DELETE_WALLET]: (state, privateKey) =>
+    removeFromArray(state, (w) => w.privateKey === privateKey),
 });
 
 const walletsExtraData = createReducer(initialState.walletsExtraData, {
@@ -114,21 +115,22 @@ export default combineReducers({
 /**
  * SELECTORS
  */
-export const selectEthWallet = state => state.ethWallet;
+export const selectEthWallet = (state) => state.ethWallet;
 
-export const selectActiveWalletPk = state => selectEthWallet(state).activeWalletPk;
-export const selectWallets = state => selectEthWallet(state).wallets;
-export const selectWalletsExtraData = state => selectEthWallet(state).walletsExtraData;
+export const selectActiveWalletPk = (state) => selectEthWallet(state).activeWalletPk;
+export const selectWallets = (state) => selectEthWallet(state).wallets;
+export const selectWalletsExtraData = (state) => selectEthWallet(state).walletsExtraData;
 
 export const selectActiveWallet = createSelector(
   selectActiveWalletPk,
   selectWallets,
-  (activeWalletPk, wallets) => activeWalletPk && wallets.find(w => w.privateKey === activeWalletPk)
+  (activeWalletPk, wallets) =>
+    activeWalletPk && wallets.find((w) => w.privateKey === activeWalletPk)
 );
 
 export const selectActiveWalletInstance = createSelector(
   selectActiveWallet,
-  activeWallet =>
+  (activeWallet) =>
     activeWallet &&
     ethService.createWallet(activeWallet.network, { privateKey: activeWallet.privateKey })
 );
@@ -150,7 +152,7 @@ function* createWallet({ payload: { network, walletName, mnemonic } }) {
 
     if (mnemonic) {
       const existingWallets = yield select(selectWallets);
-      const alreadyExists = !!existingWallets.find(w => w.privateKey === wallet.privateKey);
+      const alreadyExists = !!existingWallets.find((w) => w.privateKey === wallet.privateKey);
 
       if (alreadyExists) {
         throw new Error('This wallet already exists in the device');

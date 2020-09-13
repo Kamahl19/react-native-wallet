@@ -8,7 +8,7 @@ const Link = ({ url, title }) => (
   <Button
     title={title}
     onPress={() => {
-      Linking.openURL(url).catch(err => console.error('An error occurred', err));
+      Linking.openURL(url).catch((err) => console.error('An error occurred', err));
     }}
   />
 );

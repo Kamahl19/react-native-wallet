@@ -61,7 +61,7 @@ export default class Transactions extends Component {
     const addr = address.toLowerCase();
 
     return txs.filter(
-      tx => addr === tx[txDirection === TX_DIRECTIONS.RECEIVED ? 'to' : 'from'].toLowerCase()
+      (tx) => addr === tx[txDirection === TX_DIRECTIONS.RECEIVED ? 'to' : 'from'].toLowerCase()
     );
   };
 
@@ -76,7 +76,7 @@ export default class Transactions extends Component {
         <Radio
           options={txDirectionOptions}
           value={txDirection}
-          onChange={txDirection => this.setState({ txDirection })}
+          onChange={(txDirection) => this.setState({ txDirection })}
         />
 
         {filteredTxs.length > 0 ? (
